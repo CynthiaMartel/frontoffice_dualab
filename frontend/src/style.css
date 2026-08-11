@@ -1,0 +1,40 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html { font-family: 'Inter', sans-serif; }
+}
+
+/* ── Scroll-reveal: estado inicial (invisible) ────────────────────────────── */
+.reveal-init {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Estado final (visible): se activa al entrar en viewport */
+.reveal-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center gap-2 bg-primary-600 text-white px-5 py-2.5 rounded-lg font-medium text-sm transition-all hover:bg-primary-700 hover:-translate-y-px active:scale-95;
+  }
+  .btn-outline {
+    @apply inline-flex items-center gap-2 border border-primary-600 text-primary-600 px-5 py-2.5 rounded-lg font-medium text-sm transition-all hover:bg-primary-50;
+  }
+  .form-input {
+    @apply w-full border border-gray-300 rounded-lg px-3.5 py-2.5 text-sm text-gray-900 outline-none transition focus:border-primary-500 focus:ring-2 focus:ring-primary-100;
+  }
+  .card {
+    @apply bg-white border border-gray-200 rounded-xl p-5;
+  }
+  .badge-basico      { @apply text-xs font-semibold bg-blue-100 text-blue-700 px-2.5 py-0.5 rounded-full; }
+  .badge-intermedio  { @apply text-xs font-semibold bg-green-100 text-green-700 px-2.5 py-0.5 rounded-full; }
+  .badge-avanzado    { @apply text-xs font-semibold bg-pink-100 text-pink-700 px-2.5 py-0.5 rounded-full; }
+}

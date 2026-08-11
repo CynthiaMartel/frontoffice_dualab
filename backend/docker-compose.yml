@@ -1,0 +1,19 @@
+name: dualab_proyecto
+
+services:
+  mysql:
+    image: mysql:8.4
+    container_name: dualab_proyecto-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: dualab_proyecto
+      MYSQL_USER: dualab
+      MYSQL_PASSWORD: dualab_secret
+      MYSQL_ROOT_PASSWORD: dualab_root_secret
+    ports:
+      - "3308:3306"
+    volumes:
+      - dualab_proyecto_mysql_data:/var/lib/mysql
+
+volumes:
+  dualab_proyecto_mysql_data:
