@@ -68,7 +68,7 @@
             class="nav-link inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-[#00A859] to-[#99CC33] text-white rounded-full font-black text-xs uppercase tracking-widest shadow-[0_4px_14px_rgba(0,168,89,0.3)] hover:shadow-[0_8px_20px_rgba(153,204,51,0.4)] transition-all duration-300 hover:-translate-y-0.5 active:scale-95"
             :style="{ animationDelay: `${180 + (navLinks.length + 1) * 100}ms` }"
             :to="{ name: 'familias' }"
-          >Acceder</RouterLink>
+          >Ver retos</RouterLink>
         </template>
       </div>
 
@@ -128,7 +128,7 @@
                 :to="{ name: 'familias' }"
                 class="flex items-center justify-center gap-2 w-full py-3.5 bg-gradient-to-r from-[#00A859] to-[#99CC33] text-white rounded-full font-black text-sm uppercase tracking-widest shadow-[0_4px_14px_rgba(0,168,89,0.3)] active:scale-95 transition-all duration-300"
                 @click="menuOpen = false"
-              >Acceder a la plataforma</RouterLink>
+              >Ver retos</RouterLink>
             </template>
           </div>
         </div>
