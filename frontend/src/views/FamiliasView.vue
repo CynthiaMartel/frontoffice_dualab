@@ -21,12 +21,10 @@
   <section class="bg-gray-50 py-14 px-6">
     <div class="max-w-5xl mx-auto">
       <h2 class="text-lg font-bold text-gray-900 mb-1">Familias Profesionales</h2>
-      <p class="text-sm text-gray-500 mb-8">Explora los microretos organizados por áreas de conocimiento</p>
+      <p class="text-sm text-gray-500 mb-8">Explora los retos organizados por áreas de conocimiento</p>
 
-      <div v-if="store.loading" class="text-center py-12 text-gray-400">Cargando…</div>
-
-      <div v-else class="grid md:grid-cols-3 gap-5">
-        <div v-for="f in familias" :key="f.id"
+      <div class="grid md:grid-cols-3 gap-5">
+        <div v-for="f in familias" :key="f.slug"
              @click="$router.push({ name: 'familia-detalle', params: { slug: f.slug } })"
              class="bg-white border border-gray-200 rounded-xl overflow-hidden cursor-pointer hover:shadow-lg hover:-translate-y-0.5 transition-all">
           <div class="h-40 flex items-center justify-center"
@@ -47,8 +45,7 @@
 </template>
 
 <script setup>
-import { computed, onMounted } from 'vue'
-import { useFamiliasStore } from '@/stores/familias'
+import { familias } from '@/data/familias'
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
@@ -57,11 +54,6 @@ import {
   PresentationChartBarIcon,
   BookOpenIcon,
 } from '@heroicons/vue/24/outline'
-
-const store   = useFamiliasStore()
-const familias = computed(() => store.familias)
-
-onMounted(() => { if (!store.familias.length) store.fetchAll() })
 
 function lighten(hex) { return hex + '18' }
 

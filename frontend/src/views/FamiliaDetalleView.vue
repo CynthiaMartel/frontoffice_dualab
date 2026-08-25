@@ -18,41 +18,34 @@
 
   <section class="bg-white py-14 px-6">
     <div class="max-w-5xl mx-auto">
-      <h2 class="font-bold text-gray-900 mb-1">Microretos Disponibles</h2>
-      <p class="text-sm text-gray-500 mb-8">{{ retos.length }} reto{{ retos.length !== 1 ? 's' : '' }} disponible{{ retos.length !== 1 ? 's' : '' }}</p>
+      <h2 class="font-bold text-gray-900 mb-1">Retos Disponibles</h2>
+      <p class="text-sm text-gray-500 mb-8">{{ retos.length }} reto{{ retos.length !== 1 ? 's' : '' }} disponible{{ retos.length !== 1 ? 's' : '' }} de ejemplo</p>
 
-      <div v-if="loading" class="text-center py-12 text-gray-400">Cargando…</div>
-      <div v-else class="grid md:grid-cols-3 gap-5">
-        <RouterLink v-for="r in retos" :key="r.id"
-          :to="{ name: 'reto-detalle', params: { id: r.id } }"
-          class="card hover:shadow-md hover:-translate-y-0.5 transition-all no-underline">
-          <div class="flex items-start justify-between gap-2 mb-3">
-            <div class="font-bold text-sm text-gray-900">{{ r.titulo }}</div>
-            <span :class="nivelbadge(r.nivel)" class="flex-shrink-0">{{ capitalize(r.nivel) }}</span>
-          </div>
-          <p class="text-xs text-gray-500 leading-relaxed mb-4 line-clamp-3">{{ r.descripcion }}</p>
-          <div class="flex gap-4 text-xs text-gray-400">
-            <span class="flex items-center gap-1">
-              <ClockIcon class="w-3.5 h-3.5" /> {{ r.duracion }}
-            </span>
-            <span class="flex items-center gap-1">
-              <CheckCircleIcon class="w-3.5 h-3.5" /> {{ r.objetivos?.length ?? 0 }} objetivos
-            </span>
-          </div>
-        </RouterLink>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 mb-10">
+        <button v-for="r in retos" :key="r.id" @click="seleccionarReto(r.id)"
+          class="text-left p-4 rounded-xl border transition-all"
+          :class="retoActivoId === r.id
+            ? 'border-primary-600 bg-primary-50 shadow-sm'
+            : 'border-gray-200 bg-white hover:border-primary-400 hover:shadow-md hover:-translate-y-0.5'">
+          <p class="text-[9px] font-bold uppercase tracking-widest text-teal-600 mb-1">{{ r.ciclo }}</p>
+          <div class="font-bold text-sm text-gray-900 leading-snug">{{ r.titulo }}</div>
+          <p class="text-xs text-gray-400 mt-1">{{ r.empresa_nombre }}</p>
+        </button>
       </div>
+
+      <FichaRetoDetalle v-if="retoActivo" :reto="retoActivo" />
     </div>
   </section>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
-import api from '@/services/api'
+import { familiaPorSlug } from '@/data/familias'
+import { fichasRetoDemoPorFamiliaSlug } from '@/data/fichasRetoDemo'
+import FichaRetoDetalle from '@/components/retos/FichaRetoDetalle.vue'
 import {
   ChevronLeftIcon,
-  ClockIcon,
-  CheckCircleIcon,
   ComputerDesktopIcon,
   BriefcaseIcon,
   PresentationChartBarIcon,
@@ -60,19 +53,16 @@ import {
 } from '@heroicons/vue/24/outline'
 
 const route   = useRoute()
-const familia = ref(null)
-const retos   = ref([])
-const loading = ref(true)
+const familia = computed(() => familiaPorSlug(route.params.slug))
+const retos   = computed(() => fichasRetoDemoPorFamiliaSlug(route.params.slug))
 
-onMounted(async () => {
-  try {
-    const { data } = await api.get(`/familias/${route.params.slug}`)
-    familia.value = data
-    retos.value   = data.retos ?? []
-  } finally {
-    loading.value = false
-  }
-})
+const retoActivoId = ref(null)
+const retoActivo = computed(() =>
+  retos.value.find((r) => r.id === retoActivoId.value) ?? null
+)
+function seleccionarReto(id) {
+  retoActivoId.value = retoActivoId.value === id ? null : id
+}
 
 const FAMILIA_ICONS = {
   'administracion-gestion':        BriefcaseIcon,
@@ -82,9 +72,4 @@ const FAMILIA_ICONS = {
 function familiaIcon(slug) {
   return FAMILIA_ICONS[slug] ?? BookOpenIcon
 }
-
-function nivelbadge(n) {
-  return { basico: 'badge-basico', intermedio: 'badge-intermedio', avanzado: 'badge-avanzado' }[n] ?? ''
-}
-function capitalize(s) { return s ? s.charAt(0).toUpperCase() + s.slice(1) : '' }
 </script>
