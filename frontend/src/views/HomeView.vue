@@ -39,22 +39,6 @@
                 class="inline-flex items-center gap-2 px-6 py-3 bg-white/10 text-white border-2 border-white/40 rounded-full font-black text-sm uppercase tracking-widest hover:bg-white/20 hover:border-white/70 transition-all duration-300 hover:-translate-y-0.5 active:scale-95 backdrop-blur-sm whitespace-nowrap">
           Solicitar demo
         </button>
-
-        <Transition name="hero-news-btn">
-          <RouterLink
-            v-if="currentSlide?.type === 'news'"
-            :to="currentSlide.newsRoute || '/'"
-            class="group inline-flex items-center gap-2 px-6 py-3 bg-white/15 hover:bg-white/25 backdrop-blur-md text-white border border-white/40 hover:border-white/70 rounded-full font-black text-sm uppercase tracking-widest transition-all duration-300 hover:-translate-y-0.5 active:scale-95 whitespace-nowrap"
-          >
-            <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 12h6"/>
-            </svg>
-            Leer noticia
-            <svg class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/>
-            </svg>
-          </RouterLink>
-        </Transition>
       </div>
 
     </div>
@@ -78,15 +62,15 @@
   <!-- STATS -->
   <section class="bg-white border-b border-gray-100 py-8 px-6">
     <div v-reveal class="max-w-3xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-      <StatItem number="5"    label="Familias Profesionales" />
-      <StatItem number="15+"  label="Microretos Activos" />
+      <StatItem number="50+"  label="Retos Activos" />
       <StatItem number="3"    label="Niveles de Dificultad" />
-      <StatItem number="100%" label="Práctico" />
+      <StatItem number="20+"  label="Empresas" />
+      <StatItem number="100%" label="Aplicable a la vida laboral" />
     </div>
   </section>
 
   <!-- SERVICIOS -->
-  <section class="bg-white py-16 px-6">
+  <section class="bg-[#F8FAFC] py-16 px-6">
     <div v-reveal class="max-w-4xl mx-auto text-center mb-12">
       <div class="inline-block bg-[#99CC33]/15 text-[#00A859] px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest mb-4 border border-[#99CC33]/30">Servicios</div>
       <h2 class="text-3xl font-black tracking-tighter text-[#1F2937]">Todo lo que ofrecemos</h2>
@@ -101,8 +85,33 @@
 
   <ServiceModal :service="activeService" @close="activeService = null" />
 
+  <!-- GALERÍA -->
+  <section class="bg-green-50 py-16 px-6">
+    <div v-reveal class="max-w-5xl mx-auto text-center mb-10">
+      <div class="inline-block bg-[#99CC33]/15 text-[#00A859] px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest mb-4 border border-[#99CC33]/30">Nuestra galería</div>
+      <h2 class="text-3xl font-black tracking-tighter text-[#1F2937]">Hablamos con experiencia</h2>
+      <p class="text-gray-500 mt-2 font-medium">Momentos reales de formación, retos y trabajo en equipo</p>
+    </div>
+    <div v-reveal="100" class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-5">
+      <img v-for="img in galeriaImages" :key="img" :src="img" alt="Sesión de trabajo en DuaLab"
+           class="w-full h-64 object-cover rounded-2xl hover:scale-[1.02] transition-transform duration-300"
+           loading="lazy" />
+    </div>
+    <div v-reveal="150" class="text-center mt-10">
+      <button
+        type="button"
+        class="inline-flex items-center gap-2 px-7 py-3.5 bg-white text-[#1F2937] border-2 border-gray-200 rounded-full font-black text-sm uppercase tracking-widest hover:border-[#00A859] hover:text-[#00A859] transition-all duration-300 hover:-translate-y-0.5 active:scale-95"
+        @click="galleryOpen = true"
+      >
+        Ver más
+      </button>
+    </div>
+  </section>
+
+  <GalleryModal :open="galleryOpen" :images="allGalleryImages" @close="galleryOpen = false" />
+
   <!-- CÓMO FUNCIONA -->
-  <section id="como-funciona" class="bg-[#F8FAFC] py-20 px-6">
+  <section id="como-funciona" class="bg-white py-20 px-6">
     <div v-reveal class="max-w-3xl mx-auto text-center mb-12">
       <div class="inline-block bg-[#99CC33]/15 text-[#00A859] px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest mb-4 border border-[#99CC33]/30">
         Flujo de Trabajo
@@ -192,7 +201,7 @@
   />
 
   <!-- FAMILIAS -->
-  <section class="bg-gray-50 py-20 px-6">
+  <section class="bg-green-50 py-20 px-6">
     <div v-reveal class="max-w-4xl mx-auto text-center mb-10">
       <div class="inline-block bg-[#99CC33]/15 text-[#00A859] px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest mb-4 border border-[#99CC33]/30">Formación</div>
       <h2 class="text-3xl font-black tracking-tighter text-[#1F2937]">Familias Profesionales</h2>
@@ -314,13 +323,46 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
+import dua1 from '@/assets/1_dua.jpeg'
+import dua2 from '@/assets/2_dua.jpg'
+import dua3 from '@/assets/3_dua.jpg'
+import dua4 from '@/assets/4_dua.jpeg'
+import dua5 from '@/assets/5_dua.jpeg'
+import dua6 from '@/assets/6_dua.jpg'
+import dua7 from '@/assets/7_dua.jpg'
+import dua8 from '@/assets/8_dua.jpg'
+import dua9  from '@/assets/dua_9.jpg'
+import dua10 from '@/assets/dua_10.jpeg'
+import dua11 from '@/assets/dua_11.jpeg'
+import dua12 from '@/assets/dua_12.jpeg'
+import dua13 from '@/assets/dua_13.jpg'
+import dua14 from '@/assets/dua_14.jpeg'
+import dua16 from '@/assets/dua_16.jpg'
+import dua17 from '@/assets/dua_17.jpg'
+import dua18 from '@/assets/dua_18.jpg'
+import dua19 from '@/assets/dua_19.jpg'
+import dua20 from '@/assets/dua_20.jpg'
+import dua21 from '@/assets/dua_21.jpg'
+import dua22 from '@/assets/dua_22.jpg'
+import dua23 from '@/assets/dua_23.jpg'
+import dua24 from '@/assets/dua_24.jpg'
+import dua25 from '@/assets/dua_25.jpg'
+import dua26 from '@/assets/dua_26.jpg'
+import dua27 from '@/assets/dua_27.jpg'
+import dua28 from '@/assets/dua_28.jpg'
+import dua29 from '@/assets/dua_29.jpg'
+import dua30 from '@/assets/dua_30.jpg'
+import dua31 from '@/assets/dua_31.jpg'
+import dua32 from '@/assets/dua_32.jpg'
+import dua33 from '@/assets/dua_33.jpg'
 import StatItem        from '@/components/home/StatItem.vue'
 import ValueSection    from '@/components/home/ValueSection.vue'
 import FamiliaChip     from '@/components/home/FamiliaChip.vue'
 import StepCard        from '@/components/home/StepCard.vue'
 import ServiceItem     from '@/components/home/ServiceItem.vue'
 import ServiceModal    from '@/components/home/ServiceModal.vue'
+import GalleryModal    from '@/components/home/GalleryModal.vue'
 import TestimonialCard from '@/components/home/TestimonialCard.vue'
 import ContactForm     from '@/components/home/ContactForm.vue'
 import {
@@ -362,19 +404,29 @@ const vReveal = {
 
 // ── Carousel ──────────────────────────────────────────────────────────────────
 const heroSlides = [
-  { image: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1200&q=60', type: 'default' },
-  { image: 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=1200&q=60', type: 'default' },
-  {
-    image: 'https://images.unsplash.com/photo-1503428593586-e225b39bddfe?w=1200&q=60',
-    type: 'news',
-    newsRoute: null, // TODO: { name: 'noticia-detalle', params: { id: noticia.id } }
-  },
+  { image: dua1 },
+  { image: dua2 },
+  { image: dua3 },
+  { image: dua4 },
+  { image: dua5 },
+  { image: dua6 },
+  { image: dua7 },
+  { image: dua8 },
 ]
 
 const activeService = ref(null)
 
+const galeriaImages = [dua11, dua14, dua21]
+const galleryOpen = ref(false)
+const allGalleryImages = [
+  dua1, dua2, dua3, dua4, dua5, dua6, dua7, dua8,
+  dua9, dua10, dua11, dua12, dua13, dua14,
+  dua16, dua17, dua18, dua19, dua20, dua21,
+  dua22, dua23, dua24, dua25, dua26,
+  dua27, dua28, dua29, dua30, dua32,
+]
+
 const heroIndex = ref(0)
-const currentSlide = computed(() => heroSlides[heroIndex.value])
 let heroTimer = null
 
 function goToSlide(i) {
@@ -420,7 +472,7 @@ const serviciosItems = [
     title: 'Consultoría y asesoría',
     icon: PresentationChartBarIcon,
     desc: 'Asesoría y estrategias educativas y empresariales.',
-    image: 'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=600&q=70',
+    image: dua33,
     description: 'Prestamos servicios de **asesoría y consultoría especializada en formación**, desarrollando estrategias personalizadas para centros educativos, empresas y administraciones públicas.',
     highlights: [
       { title: 'Más de 12 años de experiencia', desc: 'Profundo conocimiento de la normativa y los procedimientos del sector formativo.' },
@@ -432,7 +484,7 @@ const serviciosItems = [
     title: 'Gestión de Proyectos',
     icon: ClipboardDocumentListIcon,
     desc: 'Gestión integral de proyectos formativos.',
-    image: 'https://images.unsplash.com/photo-1517048676732-d65bc937f952?w=600&q=70',
+    image: dua18,
     description: 'En DuaLab gestionamos **proyectos formativos de manera integral**, desde el diseño inicial hasta la evaluación final.',
     highlights: [
       { title: 'Planificación estratégica', desc: 'Diseño y organización de cada etapa del proyecto.' },
@@ -444,7 +496,7 @@ const serviciosItems = [
     title: 'Ruta a la Dual',
     icon: ArrowPathIcon,
     desc: 'Acompañamiento en la transición hacia la dual.',
-    image: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=600&q=70',
+    image: dua24,
     description: 'Ofrecemos un **servicio integral de acompañamiento** a los agentes del ecosistema educativo para facilitar su transición hacia la metodología dual.',
     highlights: [
       { title: 'Formaciones específicas', desc: 'Adaptadas a las necesidades de cada centro o territorio.' },
@@ -456,8 +508,8 @@ const serviciosItems = [
     title: 'Formación de tutores de empresa',
     icon: BookOpenIcon,
     desc: 'Formación flexible para tutores de FP.',
-    image: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?w=600&q=70',
-    description: 'Hemos formado a **miles de tutores de empresa** en proyectos de FP Dual en todo el territorio español.',
+    image: dua31,
+    description: 'Hemos formado a **tutores de empresa** en proyectos de FP Dual en todo el territorio español.',
     highlights: [
       { title: 'Contenidos propios y actualizados', desc: 'Alineados con la normativa vigente en cada momento.' },
       { title: 'Plataforma interactiva', desc: 'Gestionada por profesionales con amplia experiencia en el sector.' },
@@ -468,7 +520,7 @@ const serviciosItems = [
     title: 'Orientación Profesional',
     icon: MapIcon,
     desc: 'Fortalecemos la orientación profesional educativa.',
-    image: 'https://images.unsplash.com/photo-1521791136064-7986c2920216?w=600&q=70',
+    image: dua19,
     description: 'Guiamos a **jóvenes, desempleados y trabajadores** hacia oportunidades formativas y laborales alineadas con su perfil.',
     highlights: [
       { title: 'Cobertura nacional', desc: 'Hemos formado a orientadores de todas las comunidades autónomas.' },
@@ -480,7 +532,7 @@ const serviciosItems = [
     title: 'Prospección Efectiva',
     icon: MagnifyingGlassIcon,
     desc: 'Formación práctica para prospectores educativos.',
-    image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=600&q=70',
+    image: dua20,
     description: 'Capacitamos a **profesionales de la prospección** en todos los sectores y niveles educativos.',
     highlights: [
       { title: 'Amplia experiencia', desc: 'Prospección de empresas para proyectos educativos en varias comunidades autónomas.' },
@@ -492,7 +544,7 @@ const serviciosItems = [
     title: 'Acreditación de competencias',
     icon: CheckBadgeIcon,
     desc: 'Acreditación de competencias profesionales.',
-    image: 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=600&q=70',
+    image: dua9,
     description: 'Gestionamos proyectos de **acreditación de competencias profesionales** para diversos colectivos en distintas comunidades autónomas.',
     highlights: [
       { title: 'Itinerarios personalizados', desc: 'Alineados con las necesidades del mercado laboral.' },
@@ -504,7 +556,7 @@ const serviciosItems = [
     title: 'Publicaciones',
     icon: NewspaperIcon,
     desc: 'Publicaciones sobre formación dual.',
-    image: 'https://images.unsplash.com/photo-1495446815901-a7297e633e8d?w=600&q=70',
+    image: dua16,
     description: 'Desarrollamos **guías, manuales y estudios** que abordan los aspectos clave de la formación dual.',
     highlights: [
       { title: 'Recursos prácticos', desc: 'Materiales aplicables directamente en el día a día formativo.' },
@@ -517,7 +569,7 @@ const serviciosItems = [
     title: 'HR Itinerarios Formativos',
     icon: UserGroupIcon,
     desc: 'Creación de perfiles profesionales adaptados.',
-    image: 'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=600&q=70',
+    image: dua12,
     description: 'Ayudamos a las empresas a **desarrollar perfiles profesionales** adaptados a las competencias que necesitan sus posiciones clave.',
     highlights: [
       { title: 'Perfiles híbridos', desc: 'Creación de roles adaptados a los nuevos retos del mercado laboral.' },
@@ -529,7 +581,7 @@ const serviciosItems = [
     title: 'Expansión educativa',
     icon: ArrowTrendingUpIcon,
     desc: 'Desarrollo estratégico para instituciones educativas.',
-    image: 'https://images.unsplash.com/photo-1591123120675-6f7f1aae0e5b?w=600&q=70',
+    image: dua10,
     description: 'Colaboramos con **instituciones educativas** para impulsar el desarrollo y crecimiento de sus modelos de negocio.',
     highlights: [
       { title: 'Oportunidades estratégicas', desc: 'Identificación y optimización de la oferta educativa.' },
@@ -589,14 +641,4 @@ const quickFamilias = [
   animation: ctaAttention 3s ease-in-out infinite;
 }
 
-/* ── Transición del botón de noticia centrado ────────────────────────────── */
-.hero-news-btn-enter-active,
-.hero-news-btn-leave-active {
-  transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.hero-news-btn-enter-from,
-.hero-news-btn-leave-to {
-  opacity: 0;
-  transform: scale(0.85) translateY(12px);
-}
 </style>
