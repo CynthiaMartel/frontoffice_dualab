@@ -12,7 +12,7 @@ api.interceptors.response.use(
   (error) => {
     const isAuthCheck = error.config?.url === '/auth/me'
     if (error.response?.status === 401 && !isAuthCheck) {
-      window.location.href = '/login'
+      window.location.href = '/'
     }
     return Promise.reject(error)
   },

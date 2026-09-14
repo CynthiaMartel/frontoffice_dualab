@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { useAuthStore } from '@/stores/auth'
 
 const routes = [
   {
@@ -13,7 +12,11 @@ const routes = [
     component: () => import('@/views/NoticiasView.vue'),
   },
   {
-    path: '/empresas',
+    // Path distinto (no /empresas a secas): la herramienta ya usa /empresas
+    // para su propia gestión interna de empresas — mismo dominio, tienen que
+    // no chocar. El `name` se queda igual, así ningún RouterLink/$router.push
+    // por nombre necesita tocarse.
+    path: '/empresas-asociadas',
     name: 'empresas',
     component: () => import('@/views/EmpresasView.vue'),
   },
@@ -33,27 +36,20 @@ const routes = [
     component: () => import('@/views/FamiliaDetalleView.vue'),
   },
   {
-    path: '/retos/:id',
+    // Path distinto (no /retos/:id a secas): la herramienta ya usa /retos/:id
+    // para la ficha interna de un microreto — mismo dominio, tienen que no
+    // chocar. El `name` se queda igual.
+    path: '/retos-destacados/:id',
     name: 'reto-detalle',
     component: () => import('@/views/RetoDetalleView.vue'),
   },
   {
-    path: '/login',
-    name: 'login',
-    component: () => import('@/views/auth/LoginView.vue'),
-    meta: { guestOnly: true },
-  },
-  {
-    path: '/register',
-    name: 'register',
-    component: () => import('@/views/auth/RegisterView.vue'),
-    meta: { guestOnly: true },
-  },
-  {
-    path: '/dashboard',
-    name: 'dashboard',
-    component: () => import('@/views/DashboardView.vue'),
-    meta: { requiresAuth: true },
+    // Reemplaza a /login, /register y /dashboard: no hay un portal propio de
+    // alumno/empresa/centro que mantener — el login real vive en dualab.es
+    // (la herramienta). Esto es solo un formulario de contacto/lead.
+    path: '/contacto',
+    name: 'contacto',
+    component: () => import('@/views/ContactoView.vue'),
   },
   {
     path: '/:pathMatch(.*)*',
@@ -70,22 +66,6 @@ const router = createRouter({
     if (to.hash) return new Promise(resolve => setTimeout(() => resolve({ el: to.hash, behavior: 'smooth' }), 80))
     return { top: 0 }
   },
-})
-
-router.beforeEach(async (to) => {
-  const auth = useAuthStore()
-
-  // Solo comprueba la sesión una vez por carga de página
-  if (!auth.isInitialized) {
-    await auth.init()
-  }
-
-  if (to.meta.requiresAuth && !auth.isLoggedIn) {
-    return { name: 'login', query: { redirect: to.fullPath } }
-  }
-  if (to.meta.guestOnly && auth.isLoggedIn) {
-    return { name: 'dashboard' }
-  }
 })
 
 export default router

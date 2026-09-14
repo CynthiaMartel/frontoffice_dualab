@@ -13,7 +13,7 @@
       </span>
       <h1 class="text-3xl md:text-4xl font-extrabold text-white mb-3">Familias Profesionales</h1>
       <p class="text-white/75 text-base max-w-xl">
-        Diseños prácticos para desarrollar tus habilidades profesionales, organizados por área de conocimiento.
+        Retos reales de empresas, organizados por área de conocimiento.
       </p>
     </div>
   </section>
@@ -23,20 +23,23 @@
       <h2 class="text-lg font-bold text-gray-900 mb-1">Familias Profesionales</h2>
       <p class="text-sm text-gray-500 mb-8">Explora los retos organizados por áreas de conocimiento</p>
 
-      <div class="grid md:grid-cols-3 gap-5">
-        <div v-for="f in familias" :key="f.slug"
-             @click="$router.push({ name: 'familia-detalle', params: { slug: f.slug } })"
+      <p v-if="loading" class="text-gray-400 text-sm">Cargando…</p>
+      <p v-else-if="!familias.length" class="text-gray-400 text-sm">
+        Todavía no hay retos publicados en el escaparate.
+      </p>
+      <div v-else class="grid md:grid-cols-3 gap-5">
+        <div v-for="f in familias" :key="f.id"
+             @click="$router.push({ name: 'familia-detalle', params: { slug: f.id } })"
              class="bg-white border border-gray-200 rounded-xl overflow-hidden cursor-pointer hover:shadow-lg hover:-translate-y-0.5 transition-all">
-          <div class="h-40 flex items-center justify-center"
-               :style="{ background: lighten(f.color_hex) }">
-            <component :is="familiaIcon(f.slug)" class="w-16 h-16" :style="{ color: f.color_hex }" />
+          <div class="h-40 flex items-center justify-center bg-primary-50">
+            <img v-if="f.imagen_url" :src="f.imagen_url" :alt="f.nombre" class="w-16 h-16 object-contain" />
+            <component v-else :is="familiaIcon(f.nombre)" class="w-16 h-16 text-primary-600" />
           </div>
           <div class="p-4">
             <div class="font-bold text-sm text-gray-900 flex items-center justify-between">
               {{ f.nombre }}
               <ChevronRightIcon class="w-4 h-4 text-primary-600" />
             </div>
-            <div class="text-xs text-gray-500 mt-1.5 leading-relaxed">{{ f.descripcion }}</div>
           </div>
         </div>
       </div>
@@ -45,7 +48,8 @@
 </template>
 
 <script setup>
-import { familias } from '@/data/familias'
+import { ref, onMounted } from 'vue'
+import microretosPublicApi from '@/services/microretosPublicApi'
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
@@ -55,14 +59,26 @@ import {
   BookOpenIcon,
 } from '@heroicons/vue/24/outline'
 
-function lighten(hex) { return hex + '18' }
+const familias = ref([])
+const loading  = ref(true)
+
+onMounted(async () => {
+  try {
+    const { data } = await microretosPublicApi.get('/public/microretos/familias')
+    familias.value = data.data ?? data
+  } catch {
+    familias.value = []
+  } finally {
+    loading.value = false
+  }
+})
 
 const FAMILIA_ICONS = {
-  'administracion-gestion':        BriefcaseIcon,
-  'comercio-marketing':            PresentationChartBarIcon,
-  'informatica-comunicaciones':    ComputerDesktopIcon,
+  'Administración y Gestión':       BriefcaseIcon,
+  'Comercio y Marketing':           PresentationChartBarIcon,
+  'Informática y Comunicaciones':   ComputerDesktopIcon,
 }
-function familiaIcon(slug) {
-  return FAMILIA_ICONS[slug] ?? BookOpenIcon
+function familiaIcon(nombre) {
+  return FAMILIA_ICONS[nombre] ?? BookOpenIcon
 }
 </script>

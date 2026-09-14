@@ -34,7 +34,9 @@
     "statusBar.debuggingForeground": "#e7e7e7",
     "statusBarItem.hoverBackground": "#007fff",
     "statusBarItem.remoteBackground": "#ff80bf",
-    "statusBarItem.remoteForeground": "#e7e7e7"
+    "statusBarItem.remoteForeground": "#e7e7e7",
+    "activityBar.activeBorder": "#e7e7e7",
+    "activityBarTop.activeBorder": "#e7e7e7"
   },
 
   "peacock.color": "#0066cc",

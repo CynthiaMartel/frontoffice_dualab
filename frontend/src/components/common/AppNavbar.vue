@@ -29,47 +29,43 @@
         </span>
       </RouterLink>
 
-      <!-- Desktop nav -->
+      <!-- Desktop nav: Empresas, Centros, Alumnos, Noticias, Contacto, luego los
+           dos botones destacados (Ver retos / Usar DuaLab) -->
       <div class="hidden md:flex items-center gap-7">
-        <RouterLink
-          v-for="(link, i) in navLinks"
-          :key="link.name"
-          class="nav-link relative text-sm text-gray-600 hover:text-[#00A859] transition-colors py-1"
-          :style="{ animationDelay: `${180 + i * 100}ms` }"
-          :to="link.to"
-          active-class="text-[#00A859]"
-        >
-          {{ link.label }}
-          <span class="absolute bottom-0 left-0 right-0 h-0.5 bg-[#00A859] scale-x-0 transition-transform duration-200 origin-left router-link-exact-active:scale-x-100" />
-        </RouterLink>
-
-        <button
-          class="nav-link text-sm text-gray-600 hover:text-[#00A859] transition-colors"
-          :style="{ animationDelay: `${180 + navLinks.length * 100}ms` }"
-          @click="goToAlumnos"
-        >
-          Alumnos
-        </button>
-
-        <template v-if="auth.isLoggedIn">
+        <template v-for="(link, i) in navLinks" :key="link.name">
           <RouterLink
-            class="nav-link inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-[#00A859] to-[#99CC33] text-white rounded-full font-black text-xs uppercase tracking-widest shadow-[0_4px_14px_rgba(0,168,89,0.3)] hover:shadow-[0_8px_20px_rgba(153,204,51,0.4)] transition-all duration-300 hover:-translate-y-0.5 active:scale-95"
-            :style="{ animationDelay: `${180 + (navLinks.length + 1) * 100}ms` }"
-            :to="{ name: 'dashboard' }"
-          >Mi panel</RouterLink>
+            v-if="link.to"
+            class="nav-link relative text-sm text-gray-600 hover:text-[#00A859] transition-colors py-1"
+            :style="{ animationDelay: `${180 + i * 100}ms` }"
+            :to="link.to"
+            active-class="text-[#00A859]"
+          >
+            {{ link.label }}
+            <span class="absolute bottom-0 left-0 right-0 h-0.5 bg-[#00A859] scale-x-0 transition-transform duration-200 origin-left router-link-exact-active:scale-x-100" />
+          </RouterLink>
           <button
-            class="nav-link text-sm text-gray-500 hover:text-gray-700 transition-colors"
-            :style="{ animationDelay: `${180 + (navLinks.length + 2) * 100}ms` }"
-            @click="handleLogout"
-          >Salir</button>
+            v-else
+            class="nav-link text-sm text-gray-600 hover:text-[#00A859] transition-colors"
+            :style="{ animationDelay: `${180 + i * 100}ms` }"
+            @click="link.action"
+          >{{ link.label }}</button>
         </template>
-        <template v-else>
-          <RouterLink
-            class="nav-link inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-[#00A859] to-[#99CC33] text-white rounded-full font-black text-xs uppercase tracking-widest shadow-[0_4px_14px_rgba(0,168,89,0.3)] hover:shadow-[0_8px_20px_rgba(153,204,51,0.4)] transition-all duration-300 hover:-translate-y-0.5 active:scale-95"
-            :style="{ animationDelay: `${180 + (navLinks.length + 1) * 100}ms` }"
-            :to="{ name: 'familias' }"
-          >Ver retos</RouterLink>
-        </template>
+
+        <RouterLink
+          class="nav-link inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-[#00A859] to-[#99CC33] text-white rounded-full font-black text-xs uppercase tracking-widest shadow-[0_4px_14px_rgba(0,168,89,0.3)] hover:shadow-[0_8px_20px_rgba(153,204,51,0.4)] transition-all duration-300 hover:-translate-y-0.5 active:scale-95"
+          :style="{ animationDelay: `${180 + (navLinks.length + 1) * 100}ms` }"
+          :to="{ name: 'familias' }"
+        >Ver retos</RouterLink>
+
+        <!-- Enlace externo a propósito: la herramienta DuaLab es otra SPA (otro
+             dominio/puerto), no una ruta de este router — nunca RouterLink aquí.
+             Mismo "pill" que "Ver retos" pero en outline, para que se note que es
+             una acción distinta (sales a otra app) sin salirse de la paleta. -->
+        <a
+          :href="`${toolUrl}/login`"
+          class="nav-link inline-flex items-center gap-2 px-5 py-2.5 bg-white text-[#00A859] border-2 border-[#00A859] rounded-full font-black text-xs uppercase tracking-widest hover:bg-[#00A859] hover:text-white transition-all duration-300 hover:-translate-y-0.5 active:scale-95"
+          :style="{ animationDelay: `${180 + (navLinks.length + 2) * 100}ms` }"
+        >Usar DuaLab</a>
       </div>
 
       <!-- Hamburger (mobile) -->
@@ -97,39 +93,32 @@
     <Transition name="mobile-menu">
       <div v-if="menuOpen" class="md:hidden border-t border-gray-100 bg-white shadow-lg">
         <div class="max-w-5xl mx-auto px-6 py-4 flex flex-col">
-          <RouterLink
-            v-for="link in navLinks"
-            :key="link.name"
-            class="text-sm font-semibold text-gray-700 hover:text-[#00A859] py-3.5 border-b border-gray-100 transition-colors"
-            :to="link.to"
-            active-class="text-[#00A859]"
-            @click="menuOpen = false"
-          >{{ link.label }}</RouterLink>
+          <template v-for="link in navLinks" :key="link.name">
+            <RouterLink
+              v-if="link.to"
+              class="text-sm font-semibold text-gray-700 hover:text-[#00A859] py-3.5 border-b border-gray-100 transition-colors"
+              :to="link.to"
+              active-class="text-[#00A859]"
+              @click="menuOpen = false"
+            >{{ link.label }}</RouterLink>
+            <button
+              v-else
+              class="text-left text-sm font-semibold text-gray-700 hover:text-[#00A859] py-3.5 border-b border-gray-100 transition-colors"
+              @click="link.action(); menuOpen = false"
+            >{{ link.label }}</button>
+          </template>
 
-          <button
-            class="text-left text-sm font-semibold text-gray-700 hover:text-[#00A859] py-3.5 border-b border-gray-100 transition-colors"
-            @click="goToAlumnos(); menuOpen = false"
-          >Alumnos</button>
-
-          <div class="pt-4">
-            <template v-if="auth.isLoggedIn">
-              <RouterLink
-                :to="{ name: 'dashboard' }"
-                class="flex items-center justify-center gap-2 w-full py-3.5 bg-gradient-to-r from-[#00A859] to-[#99CC33] text-white rounded-full font-black text-sm uppercase tracking-widest shadow-[0_4px_14px_rgba(0,168,89,0.3)] active:scale-95 transition-all duration-300"
-                @click="menuOpen = false"
-              >Mi panel</RouterLink>
-              <button
-                class="mt-3 w-full text-sm text-gray-400 hover:text-gray-600 py-2 transition-colors"
-                @click="handleLogout(); menuOpen = false"
-              >Cerrar sesión</button>
-            </template>
-            <template v-else>
-              <RouterLink
-                :to="{ name: 'familias' }"
-                class="flex items-center justify-center gap-2 w-full py-3.5 bg-gradient-to-r from-[#00A859] to-[#99CC33] text-white rounded-full font-black text-sm uppercase tracking-widest shadow-[0_4px_14px_rgba(0,168,89,0.3)] active:scale-95 transition-all duration-300"
-                @click="menuOpen = false"
-              >Ver retos</RouterLink>
-            </template>
+          <div class="pt-4 space-y-3">
+            <RouterLink
+              :to="{ name: 'familias' }"
+              class="flex items-center justify-center gap-2 w-full py-3.5 bg-gradient-to-r from-[#00A859] to-[#99CC33] text-white rounded-full font-black text-sm uppercase tracking-widest shadow-[0_4px_14px_rgba(0,168,89,0.3)] active:scale-95 transition-all duration-300"
+              @click="menuOpen = false"
+            >Ver retos</RouterLink>
+            <a
+              :href="`${toolUrl}/login`"
+              class="flex items-center justify-center gap-2 w-full py-3.5 bg-white text-[#00A859] border-2 border-[#00A859] rounded-full font-black text-sm uppercase tracking-widest active:scale-95 transition-all duration-300"
+              @click="menuOpen = false"
+            >Usar DuaLab</a>
           </div>
         </div>
       </div>
@@ -139,15 +128,17 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
-import { useAuthStore } from '@/stores/auth'
 import { useRouter, useRoute } from 'vue-router'
 
-const auth   = useAuthStore()
 const router = useRouter()
 const route  = useRoute()
 
 const scrolled  = ref(false)
 const menuOpen  = ref(false)
+
+// La herramienta DuaLab (login real, docente/empresa/admin) — otra SPA, otro
+// dominio en producción (dualab.es) u otro puerto en local (localhost:5173).
+const toolUrl = import.meta.env.VITE_TOOL_URL ?? 'https://dualab.es'
 
 function onScroll() {
   scrolled.value = window.scrollY > 12
@@ -155,12 +146,6 @@ function onScroll() {
 
 onMounted(() => window.addEventListener('scroll', onScroll, { passive: true }))
 onUnmounted(() => window.removeEventListener('scroll', onScroll))
-
-const navLinks = [
-  { label: 'Empresas',           name: 'empresas', to: { name: 'empresas' } },
-  { label: 'Centros Educativos', name: 'centros',  to: { name: 'centros'  } },
-  { label: 'Noticias',           name: 'noticias', to: { name: 'noticias' } },
-]
 
 function goToAlumnos() {
   if (route.name === 'home') {
@@ -170,10 +155,13 @@ function goToAlumnos() {
   }
 }
 
-async function handleLogout() {
-  await auth.logout()
-  router.push({ name: 'home' })
-}
+const navLinks = [
+  { label: 'Empresas',           name: 'empresas', to: { name: 'empresas' } },
+  { label: 'Centros Educativos', name: 'centros',  to: { name: 'centros'  } },
+  { label: 'Alumnos',            name: 'alumnos',  action: goToAlumnos },
+  { label: 'Noticias',           name: 'noticias', to: { name: 'noticias' } },
+  { label: 'Contacto',           name: 'contacto', to: { name: 'contacto' } },
+]
 </script>
 
 <style scoped>
