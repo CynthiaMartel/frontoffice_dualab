@@ -1,1 +1,4 @@
 .DS_Store
+
+# Contiene SSH_HOST/SSH_USER/SSH_PORT reales del servidor — nunca versionar
+/deploy.sh
