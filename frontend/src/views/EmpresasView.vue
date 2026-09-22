@@ -1,6 +1,6 @@
 <template>
   <!-- Header -->
-  <section class="bg-primary-700 py-16 px-6 relative overflow-hidden">
+  <section class="bg-empresas py-16 px-6 relative overflow-hidden">
     <div class="absolute inset-0 bg-cover bg-center opacity-10"
          style="background-image: url('https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200&q=60')" />
     <div class="relative max-w-4xl mx-auto">
@@ -27,12 +27,12 @@
              class="bg-white rounded-2xl border border-gray-200 p-6 flex flex-col gap-4 hover:shadow-lg transition-shadow">
           <!-- Logo + nombre -->
           <div class="flex items-center gap-4">
-            <div class="w-14 h-14 rounded-xl bg-primary-100 text-primary-700 font-extrabold text-lg flex items-center justify-center flex-shrink-0">
+            <div class="w-14 h-14 rounded-xl bg-empresas/15 text-empresas font-extrabold text-lg flex items-center justify-center flex-shrink-0">
               {{ initials(e.nombre) }}
             </div>
             <div>
               <h3 class="font-bold text-gray-900">{{ e.nombre }}</h3>
-              <span class="text-xs font-medium text-primary-600 bg-primary-50 border border-primary-100 px-2 py-0.5 rounded-full">
+              <span class="text-xs font-medium text-empresas bg-empresas/10 border border-empresas/20 px-2 py-0.5 rounded-full">
                 {{ e.sector }}
               </span>
             </div>
@@ -54,7 +54,7 @@
           </div>
 
           <!-- CTA -->
-          <a :href="e.web" class="btn-primary justify-center">
+          <a :href="e.web" class="btn-empresas justify-center">
             Visitar web
             <ArrowTopRightOnSquareIcon class="w-4 h-4" />
           </a>
@@ -62,10 +62,10 @@
       </div>
 
       <!-- CTA secundario -->
-      <div class="mt-12 bg-primary-50 border border-primary-100 rounded-2xl p-8 text-center">
+      <div class="mt-12 bg-empresas/10 border border-empresas/20 rounded-2xl p-8 text-center">
         <h3 class="text-lg font-bold text-gray-900 mb-2">¿Tu empresa quiere unirse?</h3>
         <p class="text-sm text-gray-500 mb-5">Publica retos reales y accede al talento de los mejores estudiantes de FP.</p>
-        <RouterLink :to="{ name: 'home', hash: '#contact' }" class="btn-primary">
+        <RouterLink :to="{ name: 'home', hash: '#contact' }" class="btn-empresas">
           Contactar ahora
           <ArrowRightIcon class="w-4 h-4" />
         </RouterLink>

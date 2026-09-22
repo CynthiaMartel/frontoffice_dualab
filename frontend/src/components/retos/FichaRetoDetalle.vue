@@ -14,7 +14,7 @@ defineProps({
         <div class="relative bg-gray-50 border-b border-gray-100 overflow-hidden">
           <div class="relative z-10 px-6 py-8 md:px-14 md:pt-12 md:pb-10 max-w-4xl">
 
-            <p class="text-[#00A859] font-bold text-[10px] tracking-[0.2em] uppercase mb-4
+            <p class="text-primary-700 font-bold text-[10px] tracking-[0.2em] uppercase mb-4
                       flex items-center gap-2">
               DuaLab · Ficha de Reto
             </p>
@@ -136,11 +136,11 @@ defineProps({
           <!-- Quién es / Día a día -->
           <div class="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-8 lg:gap-10">
             <div v-if="reto.quien_es">
-              <h3 class="section-title text-[#00A859]">¿Quién es {{ reto.empresa_nombre }}?</h3>
+              <h3 class="section-title text-primary-700">¿Quién es {{ reto.empresa_nombre }}?</h3>
               <p class="text-gray-600 text-sm leading-relaxed">{{ reto.quien_es }}</p>
             </div>
             <div v-if="reto.dia_a_dia">
-              <h3 class="section-title text-[#00A859]">Su día a día</h3>
+              <h3 class="section-title text-primary-700">Su día a día</h3>
               <p class="text-gray-600 text-sm leading-relaxed">{{ reto.dia_a_dia }}</p>
             </div>
           </div>
@@ -158,9 +158,9 @@ defineProps({
           </div>
 
           <!-- Pregunta del reto -->
-          <div class="bg-gradient-to-r from-gray-50 to-white border-l-4 border-[#00A859]
+          <div class="bg-gradient-to-r from-gray-50 to-white border-l-4 border-primary-700
                       p-6 md:p-8 rounded-r-2xl shadow-sm border-y border-r border-gray-100">
-            <h3 class="text-[#00A859] font-black uppercase text-[10px] tracking-[0.2em] mb-3">
+            <h3 class="text-primary-700 font-black uppercase text-[10px] tracking-[0.2em] mb-3">
               Pregunta del Reto
             </h3>
             <p class="text-lg md:text-2xl font-bold text-[#1F2937] leading-snug">
@@ -171,11 +171,11 @@ defineProps({
           <!-- Qué necesitan / Limitaciones -->
           <div class="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-8 lg:gap-10">
             <div v-if="reto.que_necesitan?.length">
-              <h3 class="section-title text-[#00A859]">Qué necesitan</h3>
+              <h3 class="section-title text-primary-700">Qué necesitan</h3>
               <ul class="space-y-2 pl-1">
                 <li v-for="(item, i) in reto.que_necesitan" :key="i"
                     class="flex items-start gap-3 text-sm text-gray-700">
-                  <span class="text-[#00A859] font-black mt-0.5 shrink-0">•</span>
+                  <span class="text-primary-700 font-black mt-0.5 shrink-0">•</span>
                   <span>{{ item }}</span>
                 </li>
               </ul>
@@ -195,11 +195,11 @@ defineProps({
           <!-- Prototipos / ODS -->
           <div class="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-8 lg:gap-10">
             <div v-if="reto.prototipos?.length">
-              <h3 class="section-title text-[#00A859]">Ejemplos de Prototipos</h3>
+              <h3 class="section-title text-primary-700">Ejemplos de Prototipos</h3>
               <ul class="space-y-2 pl-1">
                 <li v-for="(item, i) in reto.prototipos" :key="i"
                     class="flex items-start gap-3 text-sm text-gray-700">
-                  <span class="text-[#00A859] font-black mt-0.5 shrink-0">•</span>
+                  <span class="text-primary-700 font-black mt-0.5 shrink-0">•</span>
                   <span>{{ item }}</span>
                 </li>
               </ul>
@@ -248,7 +248,7 @@ defineProps({
                   </span>
                 </div>
                 <div class="mb-4">
-                  <p class="text-[10px] uppercase font-bold text-[#00A859] mb-1">Resultado de Aprendizaje</p>
+                  <p class="text-[10px] uppercase font-bold text-primary-700 mb-1">Resultado de Aprendizaje</p>
                   <p class="text-sm font-semibold text-gray-700 bg-gray-50 p-4 rounded-xl border border-gray-100">
                     {{ evalObj.ra }}
                   </p>
@@ -258,7 +258,7 @@ defineProps({
                   <ul class="space-y-1.5">
                     <li v-for="(ce, i) in evalObj.ce" :key="i"
                         class="text-sm text-gray-600 flex items-start gap-2">
-                      <span class="text-[#00A859] font-bold mt-0.5 shrink-0">✓</span>
+                      <span class="text-primary-700 font-bold mt-0.5 shrink-0">✓</span>
                       <span>{{ ce }}</span>
                     </li>
                   </ul>
@@ -275,7 +275,7 @@ defineProps({
 
           <!-- Variantes -->
           <div v-if="reto.variantes?.length" class="pt-2">
-            <h3 class="section-title text-[#00A859]">Variantes</h3>
+            <h3 class="section-title text-primary-700">Variantes</h3>
             <ul class="space-y-3">
               <li v-for="(varItem, i) in reto.variantes" :key="i"
                   class="text-sm text-gray-700 bg-gray-50 border border-gray-200 p-4 rounded-xl shadow-sm">
@@ -314,7 +314,7 @@ defineProps({
                class="bg-white p-5 md:p-6 rounded-2xl border border-gray-100 shadow-sm">
             <div class="text-sm text-gray-700 leading-relaxed">
               <template v-if="tip.includes(':')">
-                <strong class="text-[#00A859] flex items-center gap-1.5 mb-2
+                <strong class="text-primary-700 flex items-center gap-1.5 mb-2
                                uppercase tracking-wider text-[10px]">
                   {{ tip.split(':')[0] }}
                 </strong>

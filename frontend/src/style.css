@@ -28,6 +28,20 @@
   .btn-outline {
     @apply inline-flex items-center gap-2 border border-primary-600 text-primary-600 px-5 py-2.5 rounded-lg font-medium text-sm transition-all hover:bg-primary-50;
   }
+  /* Variantes por colectivo — mismo patrón que .btn-primary, un color distinto
+     por audiencia (ver tailwind.config.js: centros/empresas/administraciones/alumnos). */
+  .btn-centros {
+    @apply inline-flex items-center gap-2 bg-centros text-white px-5 py-2.5 rounded-lg font-medium text-sm transition-all hover:bg-centros/90 hover:-translate-y-px active:scale-95;
+  }
+  .btn-empresas {
+    @apply inline-flex items-center gap-2 bg-empresas text-white px-5 py-2.5 rounded-lg font-medium text-sm transition-all hover:bg-empresas/90 hover:-translate-y-px active:scale-95;
+  }
+  .btn-administraciones {
+    @apply inline-flex items-center gap-2 bg-administraciones text-white px-5 py-2.5 rounded-lg font-medium text-sm transition-all hover:bg-administraciones/90 hover:-translate-y-px active:scale-95;
+  }
+  .btn-alumnos {
+    @apply inline-flex items-center gap-2 bg-alumnos text-white px-5 py-2.5 rounded-lg font-medium text-sm transition-all hover:bg-alumnos/90 hover:-translate-y-px active:scale-95;
+  }
   .form-input {
     @apply w-full border border-gray-300 rounded-lg px-3.5 py-2.5 text-sm text-gray-900 outline-none transition focus:border-primary-500 focus:ring-2 focus:ring-primary-100;
   }

@@ -24,7 +24,7 @@
 
           <div class="grid md:grid-cols-2 gap-8 items-center p-8">
             <div>
-              <span class="inline-flex items-center gap-1.5 text-xs font-black uppercase tracking-widest text-[#00A859] bg-[#99CC33]/15 border border-[#99CC33]/30 px-4 py-1.5 rounded-full mb-4">
+              <span class="inline-flex items-center gap-1.5 text-xs font-black uppercase tracking-widest text-primary-700 bg-primary-100 border border-primary-200 px-4 py-1.5 rounded-full mb-4">
                 <component :is="service.icon" class="w-3.5 h-3.5" />
                 Servicio
               </span>
@@ -55,7 +55,7 @@
               <RouterLink
                 v-if="service.link"
                 :to="service.link.to"
-                class="group inline-flex items-center gap-2.5 px-6 py-3 bg-gradient-to-r from-[#00A859] to-[#99CC33] text-white rounded-full font-black text-xs uppercase tracking-widest shadow-[0_8px_25px_rgba(0,168,89,0.3)] hover:shadow-[0_14px_35px_rgba(153,204,51,0.4)] transition-all duration-300 hover:-translate-y-0.5 active:scale-95"
+                class="group inline-flex items-center gap-2.5 px-6 py-3 bg-primary-600 text-white rounded-full font-black text-xs uppercase tracking-widest shadow-[0_8px_25px_rgba(48,114,170,0.3)] hover:shadow-[0_14px_35px_rgba(48,114,170,0.4)] hover:bg-primary-700 transition-all duration-300 hover:-translate-y-0.5 active:scale-95"
                 @click="$emit('close')"
               >
                 {{ service.link.label }}

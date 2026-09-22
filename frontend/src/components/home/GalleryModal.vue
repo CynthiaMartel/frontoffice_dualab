@@ -50,7 +50,7 @@
                 v-for="(_, i) in images"
                 :key="i"
                 class="shrink-0 rounded-full transition-all duration-300"
-                :class="index === i ? 'w-6 h-2 bg-[#00A859]' : 'w-2 h-2 bg-gray-300 hover:bg-gray-400'"
+                :class="index === i ? 'w-6 h-2 bg-primary-600' : 'w-2 h-2 bg-gray-300 hover:bg-gray-400'"
                 :aria-label="`Ir a la foto ${i + 1}`"
                 @click="index = i"
               />

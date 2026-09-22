@@ -17,20 +17,20 @@
         Innovación Educativa B2B
       </span>
       <h1 class="hero-title text-5xl md:text-6xl font-black tracking-tighter text-white leading-[1.1] mb-5">
-        Conecta talento<br>con <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#fde68a] to-[#a3e635]">retos reales</span>
+        Conecta talento<br>con <span class="text-transparent bg-clip-text bg-gradient-to-r from-alumnos to-administraciones">retos reales</span>
       </h1>
       <p class="hero-desc text-white/70 text-base leading-relaxed mb-8 max-w-lg">
         DuaLab es la <strong class="text-white font-bold">solución definitiva</strong> para conectar
-        <strong class="text-[#86efac] font-bold">empresas</strong> con el
-        <strong class="text-[#86efac] font-bold">alumnado en prácticas</strong>.
+        <strong class="text-[#8fc46a] font-bold">empresas</strong> con el
+        <strong class="text-[#ffb066] font-bold">alumnado en prácticas</strong>.
         Transformamos necesidades empresariales en
         <strong class="text-white font-black">retos académicos</strong>
         para impulsar el <strong class="text-white font-bold">aprendizaje práctico</strong>
-        y descubrir <strong class="text-[#a3e635] font-black">talento emergente</strong>.
+        y descubrir <strong class="text-[#5fd0d0] font-black">talento emergente</strong>.
       </p>
       <div class="hero-btns flex flex-wrap md:flex-nowrap gap-3">
         <button @click="scrollToComoFunciona"
-                class="cta-attention group inline-flex items-center gap-2 px-6 py-3 bg-white text-[#15803d] rounded-full font-black text-sm uppercase tracking-widest shadow-[0_8px_25px_rgba(0,0,0,0.2)] hover:shadow-[0_14px_35px_rgba(0,0,0,0.3)] hover:[animation-play-state:paused] transition-all duration-300 hover:-translate-y-0.5 active:scale-95 whitespace-nowrap">
+                class="cta-attention group inline-flex items-center gap-2 px-6 py-3 bg-white text-primary-700 rounded-full font-black text-sm uppercase tracking-widest shadow-[0_8px_25px_rgba(0,0,0,0.2)] hover:shadow-[0_14px_35px_rgba(0,0,0,0.3)] hover:[animation-play-state:paused] transition-all duration-300 hover:-translate-y-0.5 active:scale-95 whitespace-nowrap">
           <svg class="w-4 h-4 transition-transform group-hover:rotate-90 duration-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
           Cómo funciona
         </button>
@@ -72,7 +72,7 @@
   <!-- SERVICIOS -->
   <section class="bg-[#F8FAFC] py-16 px-6">
     <div v-reveal class="max-w-4xl mx-auto text-center mb-12">
-      <div class="inline-block bg-[#99CC33]/15 text-[#00A859] px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest mb-4 border border-[#99CC33]/30">Servicios</div>
+      <div class="inline-block bg-primary-100 text-primary-700 px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest mb-4 border border-primary-200">Servicios</div>
       <h2 class="text-3xl font-black tracking-tighter text-[#1F2937]">Todo lo que ofrecemos</h2>
       <p class="text-gray-500 mt-2 font-medium">Soluciones integrales para conectar empresas, centros educativos y alumnado</p>
     </div>
@@ -86,9 +86,9 @@
   <ServiceModal :service="activeService" @close="activeService = null" />
 
   <!-- GALERÍA -->
-  <section class="bg-green-50 py-16 px-6">
+  <section class="bg-primary-50 py-16 px-6">
     <div v-reveal class="max-w-5xl mx-auto text-center mb-10">
-      <div class="inline-block bg-[#99CC33]/15 text-[#00A859] px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest mb-4 border border-[#99CC33]/30">Nuestra galería</div>
+      <div class="inline-block bg-primary-100 text-primary-700 px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest mb-4 border border-primary-200">Nuestra galería</div>
       <h2 class="text-3xl font-black tracking-tighter text-[#1F2937]">Hablamos con experiencia</h2>
       <p class="text-gray-500 mt-2 font-medium">Momentos reales de formación, retos y trabajo en equipo</p>
     </div>
@@ -100,7 +100,7 @@
     <div v-reveal="150" class="text-center mt-10">
       <button
         type="button"
-        class="inline-flex items-center gap-2 px-7 py-3.5 bg-white text-[#1F2937] border-2 border-gray-200 rounded-full font-black text-sm uppercase tracking-widest hover:border-[#00A859] hover:text-[#00A859] transition-all duration-300 hover:-translate-y-0.5 active:scale-95"
+        class="inline-flex items-center gap-2 px-7 py-3.5 bg-white text-[#1F2937] border-2 border-gray-200 rounded-full font-black text-sm uppercase tracking-widest hover:border-primary-600 hover:text-primary-600 transition-all duration-300 hover:-translate-y-0.5 active:scale-95"
         @click="galleryOpen = true"
       >
         Ver más
@@ -113,7 +113,7 @@
   <!-- CÓMO FUNCIONA -->
   <section id="como-funciona" class="bg-white py-20 px-6">
     <div v-reveal class="max-w-3xl mx-auto text-center mb-12">
-      <div class="inline-block bg-[#99CC33]/15 text-[#00A859] px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest mb-4 border border-[#99CC33]/30">
+      <div class="inline-block bg-primary-100 text-primary-700 px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest mb-4 border border-primary-200">
         Flujo de Trabajo
       </div>
       <h2 class="text-3xl font-black tracking-tighter text-[#1F2937]">¿Cómo funciona DuaLab?</h2>
@@ -142,19 +142,20 @@
     description="Propón retos reales y encuentra candidatos con habilidades demostradas. Conecta con centros educativos para formar a los profesionales que necesitas."
     :features="empresasFeatures"
     image="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=500&q=70"
+    color="empresas"
     bg-gray
   >
     <template #actions>
       <div class="flex flex-wrap gap-4">
         <button
-          class="group inline-flex items-center gap-2.5 px-7 py-3.5 bg-gradient-to-r from-[#00A859] to-[#99CC33] text-white rounded-full font-black text-sm uppercase tracking-widest shadow-[0_8px_25px_rgba(0,168,89,0.3)] hover:shadow-[0_14px_35px_rgba(153,204,51,0.4)] transition-all duration-300 hover:-translate-y-0.5 active:scale-95"
+          class="group inline-flex items-center gap-2.5 px-7 py-3.5 bg-empresas text-white rounded-full font-black text-sm uppercase tracking-widest shadow-[0_8px_25px_rgba(80,153,40,0.3)] hover:shadow-[0_14px_35px_rgba(80,153,40,0.4)] transition-all duration-300 hover:-translate-y-0.5 active:scale-95"
           @click="scrollToContact"
         >
           Contactar ahora
           <svg class="w-4 h-4 transition-transform group-hover:translate-x-1 duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
         </button>
         <RouterLink
-          class="inline-flex items-center gap-2 px-7 py-3.5 bg-white text-[#1F2937] border-2 border-gray-200 rounded-full font-black text-sm uppercase tracking-widest hover:border-[#00A859] hover:text-[#00A859] transition-all duration-300 hover:-translate-y-0.5 active:scale-95"
+          class="inline-flex items-center gap-2 px-7 py-3.5 bg-white text-[#1F2937] border-2 border-gray-200 rounded-full font-black text-sm uppercase tracking-widest hover:border-empresas hover:text-empresas transition-all duration-300 hover:-translate-y-0.5 active:scale-95"
           :to="{ name: 'empresas' }"
         >Empresas asociadas</RouterLink>
       </div>
@@ -168,19 +169,20 @@
     description="Accede a retos actualizados y conecta con empresas que buscan talento. Ofrece formación práctica y relevante para el mercado laboral."
     :features="centrosFeatures"
     image="https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=500&q=70"
+    color="centros"
     reverse
   >
     <template #actions>
       <div class="flex flex-wrap gap-4">
         <button
-          class="group inline-flex items-center gap-2.5 px-7 py-3.5 bg-gradient-to-r from-[#00A859] to-[#99CC33] text-white rounded-full font-black text-sm uppercase tracking-widest shadow-[0_8px_25px_rgba(0,168,89,0.3)] hover:shadow-[0_14px_35px_rgba(153,204,51,0.4)] transition-all duration-300 hover:-translate-y-0.5 active:scale-95"
+          class="group inline-flex items-center gap-2.5 px-7 py-3.5 bg-centros text-white rounded-full font-black text-sm uppercase tracking-widest shadow-[0_8px_25px_rgba(48,114,170,0.3)] hover:shadow-[0_14px_35px_rgba(48,114,170,0.4)] transition-all duration-300 hover:-translate-y-0.5 active:scale-95"
           @click="scrollToContact"
         >
           Solicitar demo
           <svg class="w-4 h-4 transition-transform group-hover:translate-x-1 duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
         </button>
         <RouterLink
-          class="inline-flex items-center gap-2 px-7 py-3.5 bg-white text-[#1F2937] border-2 border-gray-200 rounded-full font-black text-sm uppercase tracking-widest hover:border-[#00A859] hover:text-[#00A859] transition-all duration-300 hover:-translate-y-0.5 active:scale-95"
+          class="inline-flex items-center gap-2 px-7 py-3.5 bg-white text-[#1F2937] border-2 border-gray-200 rounded-full font-black text-sm uppercase tracking-widest hover:border-centros hover:text-centros transition-all duration-300 hover:-translate-y-0.5 active:scale-95"
           :to="{ name: 'centros' }"
         >Centros asociados</RouterLink>
       </div>
@@ -196,14 +198,15 @@
     :features="alumnosFeatures"
     cta-label="Explorar retos →"
     image="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=500&q=70"
+    color="alumnos"
     bg-gray
     @cta="$router.push({ name: 'familias' })"
   />
 
   <!-- FAMILIAS -->
-  <section class="bg-green-50 py-20 px-6">
+  <section class="bg-primary-50 py-20 px-6">
     <div v-reveal class="max-w-4xl mx-auto text-center mb-10">
-      <div class="inline-block bg-[#99CC33]/15 text-[#00A859] px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest mb-4 border border-[#99CC33]/30">Formación</div>
+      <div class="inline-block bg-primary-100 text-primary-700 px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest mb-4 border border-primary-200">Formación</div>
       <h2 class="text-3xl font-black tracking-tighter text-[#1F2937]">Familias Profesionales</h2>
       <p class="text-gray-500 mt-2 font-medium">Retos organizados en áreas clave del mercado laboral</p>
     </div>
@@ -219,7 +222,7 @@
     <div v-reveal class="max-w-5xl mx-auto">
       <div class="flex items-center justify-between mb-8">
         <div>
-          <p class="inline-block bg-[#99CC33]/15 text-[#00A859] px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest border border-[#99CC33]/30">Actualidad</p>
+          <p class="inline-block bg-primary-100 text-primary-700 px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest border border-primary-200">Actualidad</p>
           <h2 class="text-3xl font-black tracking-tighter text-[#1F2937] mt-3">Últimas noticias</h2>
         </div>
         <RouterLink :to="{ name: 'noticias' }"
@@ -312,7 +315,7 @@
   <!-- CONTACTO -->
   <section id="contact" class="bg-white py-20 px-6">
     <div v-reveal class="max-w-xl mx-auto text-center mb-8">
-      <div class="inline-block bg-[#99CC33]/15 text-[#00A859] px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest mb-4 border border-[#99CC33]/30">Contacto</div>
+      <div class="inline-block bg-primary-100 text-primary-700 px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest mb-4 border border-primary-200">Contacto</div>
       <h2 class="text-3xl font-black tracking-tighter text-[#1F2937]">¿Listo para empezar?</h2>
       <p class="text-gray-500 mt-2 font-medium">Déjanos tus datos y nos pondremos en contacto contigo</p>
     </div>

@@ -3,14 +3,14 @@
     <div class="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
 
       <!-- Logo — mismo tratamiento que navbar -->
-      <RouterLink :to="{ name: 'home' }" class="flex items-center group">
+      <RouterLink :to="{ name: 'home' }" class="flex items-center gap-1 group">
         <img
-          src="@/assets/logo.png"
+          src="@/assets/logo_colores.png"
           alt="Logo DuaLab"
-          class="h-9 object-contain relative z-10 -mr-2.5 transition-transform duration-300 group-hover:scale-105"
+          class="h-12 object-contain relative z-10 transition-transform duration-300 group-hover:scale-105"
         />
         <span class="font-black tracking-tighter uppercase leading-none relative z-20 flex items-baseline gap-0">
-          <span class="text-white text-[22px]">Dua</span><span class="text-[#00A859] text-[22px]">Lab</span>
+          <span class="text-white text-[22px]">Dua</span><span class="text-primary-700 text-[22px]">Lab</span>
         </span>
       </RouterLink>
 

@@ -20,14 +20,21 @@ const props = defineProps({ number: String, icon: Object, title: String, desc: S
 
 const n = computed(() => Number(props.number))
 
+// Paso 1: la Empresa propone → verde (empresas). Paso 2: la IA transforma →
+// turquesa (administraciones, usado aquí como acento tecnológico neutro).
+// Paso 3: el Alumnado resuelve → naranja (alumnos).
 const cardClass = computed(() =>
-  n.value === 2 ? 'bg-[#99CC33]/10 border border-[#99CC33]/20' : 'hover:bg-white'
+  n.value === 2 ? 'bg-administraciones/10 border border-administraciones/20' : 'hover:bg-white'
 )
 const badgeClass = computed(() => {
-  if (n.value === 1) return 'bg-[#1F2937] text-white'
-  if (n.value === 2) return 'bg-[#99CC33] text-[#121212]'
-  return 'bg-[#00A859] text-white shadow-[#00A859]/30'
+  if (n.value === 1) return 'bg-empresas text-white'
+  if (n.value === 2) return 'bg-administraciones text-white'
+  return 'bg-alumnos text-white'
 })
-const titleClass = computed(() => n.value === 2 ? 'text-[#00A859]' : 'text-[#1F2937]')
-const descClass  = computed(() => n.value === 2 ? 'text-gray-600' : 'text-gray-500')
+const titleClass = computed(() => {
+  if (n.value === 1) return 'text-empresas'
+  if (n.value === 2) return 'text-administraciones'
+  return 'text-alumnos'
+})
+const descClass  = computed(() => 'text-gray-500')
 </script>

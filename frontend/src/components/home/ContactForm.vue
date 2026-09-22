@@ -25,7 +25,7 @@
     </div>
     <button
       type="submit"
-      class="w-full inline-flex items-center justify-center gap-2.5 py-4 bg-gradient-to-r from-[#00A859] to-[#99CC33] text-white rounded-full font-black text-sm uppercase tracking-widest shadow-[0_8px_25px_rgba(0,168,89,0.3)] hover:shadow-[0_14px_35px_rgba(153,204,51,0.4)] transition-all duration-300 hover:-translate-y-0.5 active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0"
+      class="w-full inline-flex items-center justify-center gap-2.5 py-4 bg-primary-600 text-white rounded-full font-black text-sm uppercase tracking-widest shadow-[0_8px_25px_rgba(48,114,170,0.3)] hover:shadow-[0_14px_35px_rgba(48,114,170,0.4)] hover:bg-primary-700 transition-all duration-300 hover:-translate-y-0.5 active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0"
       :disabled="loading"
     >
       {{ loading ? 'Enviando…' : 'Enviar solicitud' }}

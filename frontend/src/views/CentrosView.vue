@@ -1,6 +1,6 @@
 <template>
   <!-- Header -->
-  <section class="bg-emerald-700 py-16 px-6 relative overflow-hidden">
+  <section class="bg-centros py-16 px-6 relative overflow-hidden">
     <div class="absolute inset-0 bg-cover bg-center opacity-10"
          style="background-image: url('https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=1200&q=60')" />
     <div class="relative max-w-4xl mx-auto">
@@ -27,12 +27,12 @@
              class="bg-white rounded-2xl border border-gray-200 p-6 flex flex-col gap-4 hover:shadow-lg transition-shadow">
           <!-- Logo + nombre -->
           <div class="flex items-center gap-4">
-            <div class="w-14 h-14 rounded-xl bg-emerald-100 text-emerald-700 font-extrabold text-lg flex items-center justify-center flex-shrink-0">
+            <div class="w-14 h-14 rounded-xl bg-centros/15 text-centros font-extrabold text-lg flex items-center justify-center flex-shrink-0">
               {{ initials(c.nombre) }}
             </div>
             <div>
               <h3 class="font-bold text-gray-900">{{ c.nombre }}</h3>
-              <span class="text-xs font-medium text-emerald-600 bg-emerald-50 border border-emerald-100 px-2 py-0.5 rounded-full">
+              <span class="text-xs font-medium text-centros bg-centros/10 border border-centros/20 px-2 py-0.5 rounded-full">
                 {{ c.tipo }}
               </span>
             </div>
@@ -55,7 +55,7 @@
 
           <!-- CTA -->
           <a :href="c.web"
-             class="inline-flex items-center justify-center gap-2 bg-emerald-600 text-white px-5 py-2.5 rounded-lg font-medium text-sm transition-all hover:bg-emerald-700 hover:-translate-y-px active:scale-95">
+             class="inline-flex items-center justify-center gap-2 bg-centros text-white px-5 py-2.5 rounded-lg font-medium text-sm transition-all hover:bg-centros/90 hover:-translate-y-px active:scale-95">
             Visitar web
             <ArrowTopRightOnSquareIcon class="w-4 h-4" />
           </a>
@@ -63,11 +63,11 @@
       </div>
 
       <!-- CTA secundario -->
-      <div class="mt-12 bg-emerald-50 border border-emerald-100 rounded-2xl p-8 text-center">
+      <div class="mt-12 bg-centros/10 border border-centros/20 rounded-2xl p-8 text-center">
         <h3 class="text-lg font-bold text-gray-900 mb-2">¿Tu centro quiere unirse?</h3>
         <p class="text-sm text-gray-500 mb-5">Ofrece a tus alumnos retos reales de empresa y mejora su inserción laboral.</p>
         <RouterLink :to="{ name: 'home', hash: '#contact' }"
-                    class="inline-flex items-center gap-2 bg-emerald-600 text-white px-5 py-2.5 rounded-lg font-medium text-sm transition-all hover:bg-emerald-700">
+                    class="inline-flex items-center gap-2 bg-centros text-white px-5 py-2.5 rounded-lg font-medium text-sm transition-all hover:bg-centros/90">
           Solicitar demo
           <ArrowRightIcon class="w-4 h-4" />
         </RouterLink>

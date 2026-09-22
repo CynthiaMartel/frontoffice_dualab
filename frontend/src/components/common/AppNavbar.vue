@@ -10,20 +10,21 @@
       :class="scrolled ? 'h-14' : 'h-16'"
     >
 
-      <!-- Logo: imagen se mete detrás de la D con margen negativo -->
-      <RouterLink :to="{ name: 'home' }" class="logo-animate group flex items-center">
+      <!-- Logo: separado de la D para que se vea completo el aspa azul, y con
+           margen propio para no quedar pegado al resto de enlaces del topbar -->
+      <RouterLink :to="{ name: 'home' }" class="logo-animate group flex items-center gap-1 mr-6 shrink-0">
         <img
-          src="@/assets/logo.png"
+          src="@/assets/logo_colores.png"
           alt="Logo DuaLab"
           class="object-contain relative z-10 transition-all duration-300 group-hover:scale-105"
-          :class="scrolled ? 'h-9 -mr-2.5' : 'h-11 -mr-3'"
+          :class="scrolled ? 'h-11' : 'h-14'"
         />
         <span class="font-black tracking-tighter uppercase leading-none relative z-20 flex items-baseline gap-0">
           <span
             class="text-[#1F2937] transition-all duration-300"
             :class="scrolled ? 'text-[22px]' : 'text-[28px]'"
           >Dua</span><span
-            class="text-[#00A859] transition-all duration-300"
+            class="text-primary-700 transition-all duration-300"
             :class="scrolled ? 'text-[22px]' : 'text-[28px]'"
           >Lab</span>
         </span>
@@ -31,28 +32,28 @@
 
       <!-- Desktop nav: Empresas, Centros, Alumnos, Noticias, Contacto, luego los
            dos botones destacados (Ver retos / Usar DuaLab) -->
-      <div class="hidden md:flex items-center gap-7">
+      <div class="hidden md:flex items-center gap-5">
         <template v-for="(link, i) in navLinks" :key="link.name">
           <RouterLink
             v-if="link.to"
-            class="nav-link relative text-sm text-gray-600 hover:text-[#00A859] transition-colors py-1"
+            class="nav-link relative text-sm text-gray-600 hover:text-primary-700 transition-colors py-1 whitespace-nowrap"
             :style="{ animationDelay: `${180 + i * 100}ms` }"
             :to="link.to"
-            active-class="text-[#00A859]"
+            active-class="text-primary-700"
           >
             {{ link.label }}
-            <span class="absolute bottom-0 left-0 right-0 h-0.5 bg-[#00A859] scale-x-0 transition-transform duration-200 origin-left router-link-exact-active:scale-x-100" />
+            <span class="absolute bottom-0 left-0 right-0 h-0.5 bg-primary-600 scale-x-0 transition-transform duration-200 origin-left router-link-exact-active:scale-x-100" />
           </RouterLink>
           <button
             v-else
-            class="nav-link text-sm text-gray-600 hover:text-[#00A859] transition-colors"
+            class="nav-link text-sm text-gray-600 hover:text-primary-700 transition-colors whitespace-nowrap"
             :style="{ animationDelay: `${180 + i * 100}ms` }"
             @click="link.action"
           >{{ link.label }}</button>
         </template>
 
         <RouterLink
-          class="nav-link inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-[#00A859] to-[#99CC33] text-white rounded-full font-black text-xs uppercase tracking-widest shadow-[0_4px_14px_rgba(0,168,89,0.3)] hover:shadow-[0_8px_20px_rgba(153,204,51,0.4)] transition-all duration-300 hover:-translate-y-0.5 active:scale-95"
+          class="nav-link inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-primary-600 to-primary-400 text-white rounded-full font-black text-xs uppercase tracking-widest shadow-[0_4px_14px_rgba(48,114,170,0.3)] hover:shadow-[0_8px_20px_rgba(48,114,170,0.4)] transition-all duration-300 hover:-translate-y-0.5 active:scale-95 whitespace-nowrap"
           :style="{ animationDelay: `${180 + (navLinks.length + 1) * 100}ms` }"
           :to="{ name: 'familias' }"
         >Ver retos</RouterLink>
@@ -63,7 +64,7 @@
              una acción distinta (sales a otra app) sin salirse de la paleta. -->
         <a
           :href="`${toolUrl}/login`"
-          class="nav-link inline-flex items-center gap-2 px-5 py-2.5 bg-white text-[#00A859] border-2 border-[#00A859] rounded-full font-black text-xs uppercase tracking-widest hover:bg-[#00A859] hover:text-white transition-all duration-300 hover:-translate-y-0.5 active:scale-95"
+          class="nav-link inline-flex items-center gap-2 px-5 py-2.5 bg-white text-primary-700 border-2 border-primary-600 rounded-full font-black text-xs uppercase tracking-widest hover:bg-primary-600 hover:text-white transition-all duration-300 hover:-translate-y-0.5 active:scale-95 whitespace-nowrap"
           :style="{ animationDelay: `${180 + (navLinks.length + 2) * 100}ms` }"
         >Usar DuaLab</a>
       </div>
@@ -96,14 +97,14 @@
           <template v-for="link in navLinks" :key="link.name">
             <RouterLink
               v-if="link.to"
-              class="text-sm font-semibold text-gray-700 hover:text-[#00A859] py-3.5 border-b border-gray-100 transition-colors"
+              class="text-sm font-semibold text-gray-700 hover:text-primary-700 py-3.5 border-b border-gray-100 transition-colors"
               :to="link.to"
-              active-class="text-[#00A859]"
+              active-class="text-primary-700"
               @click="menuOpen = false"
             >{{ link.label }}</RouterLink>
             <button
               v-else
-              class="text-left text-sm font-semibold text-gray-700 hover:text-[#00A859] py-3.5 border-b border-gray-100 transition-colors"
+              class="text-left text-sm font-semibold text-gray-700 hover:text-primary-700 py-3.5 border-b border-gray-100 transition-colors"
               @click="link.action(); menuOpen = false"
             >{{ link.label }}</button>
           </template>
@@ -111,12 +112,12 @@
           <div class="pt-4 space-y-3">
             <RouterLink
               :to="{ name: 'familias' }"
-              class="flex items-center justify-center gap-2 w-full py-3.5 bg-gradient-to-r from-[#00A859] to-[#99CC33] text-white rounded-full font-black text-sm uppercase tracking-widest shadow-[0_4px_14px_rgba(0,168,89,0.3)] active:scale-95 transition-all duration-300"
+              class="flex items-center justify-center gap-2 w-full py-3.5 bg-gradient-to-r from-primary-600 to-primary-400 text-white rounded-full font-black text-sm uppercase tracking-widest shadow-[0_4px_14px_rgba(48,114,170,0.3)] active:scale-95 transition-all duration-300"
               @click="menuOpen = false"
             >Ver retos</RouterLink>
             <a
               :href="`${toolUrl}/login`"
-              class="flex items-center justify-center gap-2 w-full py-3.5 bg-white text-[#00A859] border-2 border-[#00A859] rounded-full font-black text-sm uppercase tracking-widest active:scale-95 transition-all duration-300"
+              class="flex items-center justify-center gap-2 w-full py-3.5 bg-white text-primary-700 border-2 border-primary-600 rounded-full font-black text-sm uppercase tracking-widest active:scale-95 transition-all duration-300"
               @click="menuOpen = false"
             >Usar DuaLab</a>
           </div>
