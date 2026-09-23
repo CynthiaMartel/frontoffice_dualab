@@ -15,8 +15,8 @@
     </div>
   </section>
 
-  <section class="bg-white py-14 px-6">
-    <div class="max-w-5xl mx-auto">
+  <section class="bg-gray-50 py-14 px-6">
+    <div class="max-w-6xl mx-auto">
       <h2 class="font-bold text-gray-900 mb-1">Retos Disponibles</h2>
       <p class="text-sm text-gray-500 mb-8">
         <template v-if="!loading">{{ retos.length }} reto{{ retos.length !== 1 ? 's' : '' }} disponible{{ retos.length !== 1 ? 's' : '' }}</template>
@@ -26,15 +26,48 @@
       <p v-else-if="!retos.length" class="text-gray-400 text-sm">
         Todavía no hay retos publicados en esta familia.
       </p>
-      <div v-else class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
-        <RouterLink v-for="r in retos" :key="r.uuid"
-          :to="{ name: 'reto-detalle', params: { id: r.uuid } }"
-          class="text-left p-4 rounded-xl border border-gray-200 bg-white hover:border-primary-400 hover:shadow-md hover:-translate-y-0.5 transition-all">
-          <p v-if="r.curso" class="text-[9px] font-bold uppercase tracking-widest text-teal-600 mb-1">Curso {{ r.curso }}</p>
-          <div class="font-bold text-sm text-gray-900 leading-snug">{{ r.titulo }}</div>
-          <p v-if="r.empresa_nombre" class="text-xs text-gray-400 mt-1">{{ r.empresa_nombre }}</p>
-        </RouterLink>
-      </div>
+
+      <template v-else>
+        <!-- ── Cards de reto — mismo diseño que el Explorador de Retos de la app DuaLab ── -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <RouterLink v-for="r in retos" :key="r.uuid"
+            :to="{ name: 'reto-detalle', params: { id: r.uuid } }"
+            class="bg-white rounded-[1.5rem] border border-gray-100 hover:shadow-[0_20px_40px_rgba(0,0,0,0.06)] hover:border-primary-200
+                   shadow-sm transition-all duration-300 flex flex-col overflow-hidden transform hover:-translate-y-1">
+
+            <div class="p-5 pb-0 flex flex-wrap justify-end gap-1.5">
+              <span class="border px-2.5 py-0.5 text-[9px] font-black uppercase tracking-widest rounded-full whitespace-nowrap" :class="nivelClase(r.nivel_grupo)">
+                Nivel: {{ r.nivel_grupo || 'N/D' }}
+              </span>
+            </div>
+
+            <div class="px-6 pb-6 pt-4 flex-1 flex flex-col">
+              <h3 class="text-[#1F2937] font-black text-lg leading-tight mb-3 line-clamp-2">{{ r.titulo }}</h3>
+              <div class="flex flex-col gap-1.5 mb-4 border-l-2 border-gray-100 pl-3">
+                <p v-if="r.empresa_nombre" class="text-[#1F2937] text-xs font-bold uppercase tracking-wider flex items-center gap-2">
+                  <BuildingOffice2Icon class="w-4 h-4 shrink-0 text-primary-600" />
+                  <span class="truncate">{{ r.empresa_nombre }}</span>
+                </p>
+                <p v-if="r.centro_educativo" class="text-gray-500 text-[10px] font-bold uppercase tracking-wider flex items-center gap-2">
+                  <AcademicCapIcon class="w-4 h-4 text-gray-400 shrink-0" />
+                  <span class="truncate">{{ r.centro_educativo }}</span>
+                </p>
+              </div>
+              <p v-if="r.pregunta_reto" class="text-gray-600 text-sm leading-relaxed line-clamp-3 mb-5 flex-1">
+                {{ r.pregunta_reto }}
+              </p>
+              <div class="mt-auto flex flex-wrap items-center gap-2">
+                <span v-if="r.ciclo" class="inline-block bg-gray-50 text-gray-600 border border-gray-200 px-3 py-1.5 rounded-lg text-xs font-medium truncate max-w-full">
+                  {{ r.ciclo }}
+                </span>
+                <span v-if="r.curso" class="inline-block bg-gray-50 text-gray-500 border border-gray-200 px-2.5 py-1.5 rounded-lg text-xs font-bold shrink-0">
+                  {{ r.curso === 'ambos_cursos' ? 'Ambos Cursos' : r.curso + 'º curso' }}
+                </span>
+              </div>
+            </div>
+          </RouterLink>
+        </div>
+      </template>
     </div>
   </section>
 </template>
@@ -49,6 +82,8 @@ import {
   BriefcaseIcon,
   PresentationChartBarIcon,
   BookOpenIcon,
+  BuildingOffice2Icon,
+  AcademicCapIcon,
 } from '@heroicons/vue/24/outline'
 
 const route = useRoute()
@@ -71,6 +106,14 @@ onMounted(async () => {
     loading.value = false
   }
 })
+
+function nivelClase(nivel) {
+  return {
+    Bajo:  'bg-primary-50 border-primary-200 text-primary-700',
+    Medio: 'bg-[#F59E0B]/10 border-[#F59E0B]/20 text-[#F59E0B]',
+    Alto:  'bg-[#D64545]/10 border-[#D64545]/20 text-[#D64545]',
+  }[nivel] || 'bg-gray-100 border-gray-200 text-gray-500'
+}
 
 const FAMILIA_ICONS = {
   'Administración y Gestión':       BriefcaseIcon,

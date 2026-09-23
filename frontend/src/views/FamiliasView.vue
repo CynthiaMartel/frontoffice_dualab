@@ -32,8 +32,7 @@
              @click="$router.push({ name: 'familia-detalle', params: { slug: f.id } })"
              class="bg-white border border-gray-200 rounded-xl overflow-hidden cursor-pointer hover:shadow-lg hover:-translate-y-0.5 transition-all">
           <div class="h-40 flex items-center justify-center bg-primary-50">
-            <img v-if="f.imagen_url" :src="f.imagen_url" :alt="f.nombre" class="w-16 h-16 object-contain" />
-            <component v-else :is="familiaIcon(f.nombre)" class="w-16 h-16 text-primary-600" />
+            <component :is="familiaIcon(f.nombre)" class="w-16 h-16 text-primary-600" />
           </div>
           <div class="p-4">
             <div class="font-bold text-sm text-gray-900 flex items-center justify-between">

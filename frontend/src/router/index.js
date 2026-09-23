@@ -44,6 +44,11 @@ const routes = [
     component: () => import('@/views/RetoDetalleView.vue'),
   },
   {
+    path: '/proyectos-destacados/:uuid',
+    name: 'proyecto-detalle',
+    component: () => import('@/views/ProyectoDetalleView.vue'),
+  },
+  {
     // Reemplaza a /login, /register y /dashboard: no hay un portal propio de
     // alumno/empresa/centro que mantener — el login real vive en dualab.es
     // (la herramienta). Esto es solo un formulario de contacto/lead.
