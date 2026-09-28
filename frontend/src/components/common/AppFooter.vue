@@ -1,5 +1,5 @@
 <template>
-  <footer class="bg-[#1F2937] text-white/60 py-8 px-6 border-t border-white/10">
+  <footer class="bg-azul-noche text-white/60 py-8 px-6 border-t border-white/10">
     <div class="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
 
       <!-- Logo — mismo tratamiento que navbar -->

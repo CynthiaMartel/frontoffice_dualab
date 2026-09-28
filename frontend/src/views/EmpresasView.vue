@@ -31,7 +31,7 @@
               {{ initials(e.nombre) }}
             </div>
             <div>
-              <h3 class="font-bold text-gray-900">{{ e.nombre }}</h3>
+              <h3 class="font-bold text-azul-noche">{{ e.nombre }}</h3>
               <span class="text-xs font-medium text-empresas bg-empresas/10 border border-empresas/20 px-2 py-0.5 rounded-full">
                 {{ e.sector }}
               </span>
@@ -63,7 +63,7 @@
 
       <!-- CTA secundario -->
       <div class="mt-12 bg-empresas/10 border border-empresas/20 rounded-2xl p-8 text-center">
-        <h3 class="text-lg font-bold text-gray-900 mb-2">¿Tu empresa quiere unirse?</h3>
+        <h3 class="text-lg font-bold text-azul-noche mb-2">¿Tu empresa quiere unirse?</h3>
         <p class="text-sm text-gray-500 mb-5">Publica retos reales y accede al talento de los mejores estudiantes de FP.</p>
         <RouterLink :to="{ name: 'home', hash: '#contact' }" class="btn-empresas">
           Contactar ahora

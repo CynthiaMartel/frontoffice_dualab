@@ -31,7 +31,7 @@
               {{ initials(c.nombre) }}
             </div>
             <div>
-              <h3 class="font-bold text-gray-900">{{ c.nombre }}</h3>
+              <h3 class="font-bold text-azul-noche">{{ c.nombre }}</h3>
               <span class="text-xs font-medium text-centros bg-centros/10 border border-centros/20 px-2 py-0.5 rounded-full">
                 {{ c.tipo }}
               </span>
@@ -64,7 +64,7 @@
 
       <!-- CTA secundario -->
       <div class="mt-12 bg-centros/10 border border-centros/20 rounded-2xl p-8 text-center">
-        <h3 class="text-lg font-bold text-gray-900 mb-2">¿Tu centro quiere unirse?</h3>
+        <h3 class="text-lg font-bold text-azul-noche mb-2">¿Tu centro quiere unirse?</h3>
         <p class="text-sm text-gray-500 mb-5">Ofrece a tus alumnos retos reales de empresa y mejora su inserción laboral.</p>
         <RouterLink :to="{ name: 'home', hash: '#contact' }"
                     class="inline-flex items-center gap-2 bg-centros text-white px-5 py-2.5 rounded-lg font-medium text-sm transition-all hover:bg-centros/90">

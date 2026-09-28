@@ -33,7 +33,7 @@
             <span class="bg-primary-100 text-primary-700 text-[10px] font-bold px-2.5 py-1 rounded-full tracking-wider uppercase">Novedad</span>
             <span class="text-xs text-gray-400">19 jun 2026 · 4 min</span>
           </div>
-          <h2 class="text-xl font-bold text-gray-900 mb-2">DuaLab revoluciona la FP Dual con IA: retos académicos generados automáticamente</h2>
+          <h2 class="text-xl font-bold text-azul-noche mb-2">DuaLab revoluciona la FP Dual con IA: retos académicos generados automáticamente</h2>
           <p class="text-sm text-gray-500 leading-relaxed mb-4">
             Nuestra plataforma transforma necesidades empresariales reales en retos académicos alineados al currículo oficial mediante inteligencia artificial, reduciendo el tiempo de diseño de un reto de días a minutos.
           </p>
@@ -51,7 +51,7 @@
               <span :class="n.badgeClass" class="text-[10px] font-bold px-2 py-0.5 rounded-full tracking-wider uppercase">{{ n.categoria }}</span>
               <span class="text-xs text-gray-400">{{ n.fecha }}</span>
             </div>
-            <h3 class="font-bold text-gray-900 text-sm mb-2 leading-snug flex-1">{{ n.titulo }}</h3>
+            <h3 class="font-bold text-azul-noche text-sm mb-2 leading-snug flex-1">{{ n.titulo }}</h3>
             <p class="text-xs text-gray-500 leading-relaxed mb-4">{{ n.extracto }}</p>
             <button class="btn-outline !text-xs !py-1.5">Leer más →</button>
           </div>

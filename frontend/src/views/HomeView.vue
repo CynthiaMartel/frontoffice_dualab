@@ -73,7 +73,7 @@
   <section class="bg-[#F8FAFC] py-16 px-6">
     <div v-reveal class="max-w-4xl mx-auto text-center mb-12">
       <div class="inline-block bg-primary-100 text-primary-700 px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest mb-4 border border-primary-200">Servicios</div>
-      <h2 class="text-3xl font-black tracking-tighter text-[#1F2937]">Todo lo que ofrecemos</h2>
+      <h2 class="text-3xl font-black tracking-tighter text-azul-noche">Todo lo que ofrecemos</h2>
       <p class="text-gray-500 mt-2 font-medium">Soluciones integrales para conectar empresas, centros educativos y alumnado</p>
     </div>
     <div v-reveal="100" class="max-w-4xl mx-auto grid grid-cols-2 md:grid-cols-5 gap-8">
@@ -89,7 +89,7 @@
   <section class="bg-primary-50 py-16 px-6">
     <div v-reveal class="max-w-5xl mx-auto text-center mb-10">
       <div class="inline-block bg-primary-100 text-primary-700 px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest mb-4 border border-primary-200">Nuestra galería</div>
-      <h2 class="text-3xl font-black tracking-tighter text-[#1F2937]">Hablamos con experiencia</h2>
+      <h2 class="text-3xl font-black tracking-tighter text-azul-noche">Hablamos con experiencia</h2>
       <p class="text-gray-500 mt-2 font-medium">Momentos reales de formación, retos y trabajo en equipo</p>
     </div>
     <div v-reveal="100" class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-5">
@@ -116,7 +116,7 @@
       <div class="inline-block bg-primary-100 text-primary-700 px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest mb-4 border border-primary-200">
         Flujo de Trabajo
       </div>
-      <h2 class="text-3xl font-black tracking-tighter text-[#1F2937]">¿Cómo funciona DuaLab?</h2>
+      <h2 class="text-3xl font-black tracking-tighter text-azul-noche">¿Cómo funciona DuaLab?</h2>
       <p class="text-gray-500 mt-2 text-sm font-medium">Tres pasos para transformar necesidades reales en aprendizaje práctico</p>
     </div>
     <div class="max-w-3xl mx-auto grid md:grid-cols-3 gap-4">
@@ -207,7 +207,7 @@
   <section class="bg-primary-50 py-20 px-6">
     <div v-reveal class="max-w-4xl mx-auto text-center mb-10">
       <div class="inline-block bg-primary-100 text-primary-700 px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest mb-4 border border-primary-200">Formación</div>
-      <h2 class="text-3xl font-black tracking-tighter text-[#1F2937]">Familias Profesionales</h2>
+      <h2 class="text-3xl font-black tracking-tighter text-azul-noche">Familias Profesionales</h2>
       <p class="text-gray-500 mt-2 font-medium">Retos organizados en áreas clave del mercado laboral</p>
     </div>
     <div v-reveal="100" class="max-w-2xl mx-auto grid grid-cols-3 gap-4">
@@ -223,7 +223,7 @@
       <div class="flex items-center justify-between mb-8">
         <div>
           <p class="inline-block bg-primary-100 text-primary-700 px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest border border-primary-200">Actualidad</p>
-          <h2 class="text-3xl font-black tracking-tighter text-[#1F2937] mt-3">Últimas noticias</h2>
+          <h2 class="text-3xl font-black tracking-tighter text-azul-noche mt-3">Últimas noticias</h2>
         </div>
         <RouterLink :to="{ name: 'noticias' }"
                     class="text-sm font-medium text-primary-600 hover:text-primary-700 flex items-center gap-1 transition-colors">
@@ -316,7 +316,7 @@
   <section id="contact" class="bg-white py-20 px-6">
     <div v-reveal class="max-w-xl mx-auto text-center mb-8">
       <div class="inline-block bg-primary-100 text-primary-700 px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest mb-4 border border-primary-200">Contacto</div>
-      <h2 class="text-3xl font-black tracking-tighter text-[#1F2937]">¿Listo para empezar?</h2>
+      <h2 class="text-3xl font-black tracking-tighter text-azul-noche">¿Listo para empezar?</h2>
       <p class="text-gray-500 mt-2 font-medium">Déjanos tus datos y nos pondremos en contacto contigo</p>
     </div>
     <div v-reveal="100">

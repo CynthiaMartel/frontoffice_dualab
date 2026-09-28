@@ -36,7 +36,7 @@
           </span>
         </div>
 
-        <h1 class="text-2xl md:text-3xl font-black tracking-tight text-[#121212] mb-2 leading-tight">
+        <h1 class="text-2xl md:text-3xl font-black tracking-tight text-azul-noche mb-2 leading-tight">
           {{ proyecto.titulo }}
         </h1>
         <p v-if="proyecto.diseno_reto?.pregunta_reto" class="text-base md:text-lg font-bold italic mb-5 leading-snug text-primary-700">
@@ -247,7 +247,7 @@
       <!-- ══ Resolución del alumnado — recorte aparte, como en la app DuaLab ══ -->
       <div v-if="equipos.length" id="resolucion-alumnado" class="ficha-recortable">
         <div class="ficha-recortable__corte" />
-        <h2 class="text-lg font-black text-[#1F2937] mb-4 flex items-center gap-2">
+        <h2 class="text-lg font-black text-azul-noche mb-4 flex items-center gap-2">
           <UserGroupIcon class="w-5 h-5 text-primary-600" />
           Resolución del alumnado
         </h2>
@@ -261,6 +261,18 @@
                 {{ m.alias }}<span v-if="m.rol" class="text-primary-400"> · {{ m.rol }}</span>
               </span>
             </div>
+
+            <a v-if="eq.entregable_final?.url" :href="eq.entregable_final.url" target="_blank" rel="noopener"
+               class="flex items-center gap-2 p-2.5 mb-3 bg-primary-50 rounded-xl border border-primary-200
+                      hover:border-primary-400 hover:bg-primary-100 transition-colors">
+              <span class="w-7 h-7 rounded-lg bg-white shrink-0 flex items-center justify-center">
+                <DocumentIcon class="w-4 h-4 text-primary-600" />
+              </span>
+              <span class="flex-1 min-w-0 text-left">
+                <p class="text-[10px] font-black uppercase tracking-wider text-primary-600">Entregable final</p>
+                <p class="text-xs font-bold text-gray-700 truncate">{{ eq.entregable_final.titulo || 'Ver documento' }}</p>
+              </span>
+            </a>
 
             <div v-if="eq.diagnostico_final?.resumen" class="card-section mb-3">
               <p class="section-label">Diagnóstico final</p>

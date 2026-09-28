@@ -25,9 +25,15 @@ export default {
         empresas: '#509928',
         administraciones: '#19A7A8',
         alumnos: '#FF8920',
+        // Azul noche de marca (Manual de marca e imagen DUALAB V2.0, sección
+        // 05/Paleta): color global de estructura y navegación — footer,
+        // cabeceras y chrome que representa la marca en su conjunto.
+        'azul-noche': '#17283E',
       },
       fontFamily: {
         sans: ['Inter', 'ui-sans-serif', 'system-ui'],
+        // Montserrat para titulares (manual, sección 07/Tipografía).
+        heading: ['Montserrat', 'ui-sans-serif', 'system-ui'],
       },
     },
   },

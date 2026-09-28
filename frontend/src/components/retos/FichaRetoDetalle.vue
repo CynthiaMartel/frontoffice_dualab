@@ -19,7 +19,7 @@ defineProps({
               DuaLab · Ficha de Reto
             </p>
 
-            <h1 class="text-2xl sm:text-3xl md:text-5xl font-black text-[#1F2937]
+            <h1 class="text-2xl sm:text-3xl md:text-5xl font-black text-azul-noche
                        tracking-tight leading-tight mb-3">
               {{ reto.titulo }}
             </h1>
@@ -230,7 +230,7 @@ defineProps({
 
           <!-- RA / CE -->
           <div v-if="reto.evaluacion_oficial?.length" class="pt-2">
-            <h3 class="flex items-center gap-2 text-[#1F2937] font-bold uppercase text-xs
+            <h3 class="flex items-center gap-2 text-azul-noche font-bold uppercase text-xs
                        tracking-widest border-b-2 border-gray-200 pb-2 mb-6">
               Módulos + RA/CE seleccionados
             </h3>
@@ -302,7 +302,7 @@ defineProps({
           Uso Exclusivo Docente
         </div>
 
-        <h2 class="text-xl md:text-2xl font-black text-[#1F2937] mb-1 mt-2">
+        <h2 class="text-xl md:text-2xl font-black text-azul-noche mb-1 mt-2">
           Guía de Implementación
         </h2>
         <p class="text-gray-500 text-sm mb-8">

@@ -21,7 +21,7 @@
         />
         <span class="font-black tracking-tighter uppercase leading-none relative z-20 flex items-baseline gap-0">
           <span
-            class="text-[#1F2937] transition-all duration-300"
+            class="text-azul-noche transition-all duration-300"
             :class="scrolled ? 'text-[22px]' : 'text-[28px]'"
           >Dua</span><span
             class="text-primary-700 transition-all duration-300"
@@ -76,15 +76,15 @@
         @click="menuOpen = !menuOpen"
       >
         <span
-          class="block w-5 h-0.5 bg-[#1F2937] transition-all duration-300 origin-center"
+          class="block w-5 h-0.5 bg-azul-noche transition-all duration-300 origin-center"
           :class="menuOpen ? 'rotate-45 translate-y-[7px]' : ''"
         />
         <span
-          class="block w-5 h-0.5 bg-[#1F2937] transition-all duration-300"
+          class="block w-5 h-0.5 bg-azul-noche transition-all duration-300"
           :class="menuOpen ? 'opacity-0 scale-x-0' : ''"
         />
         <span
-          class="block w-5 h-0.5 bg-[#1F2937] transition-all duration-300 origin-center"
+          class="block w-5 h-0.5 bg-azul-noche transition-all duration-300 origin-center"
           :class="menuOpen ? '-rotate-45 -translate-y-[7px]' : ''"
         />
       </button>

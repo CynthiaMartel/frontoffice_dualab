@@ -17,7 +17,7 @@
 
   <section class="bg-gray-50 py-14 px-6">
     <div class="max-w-6xl mx-auto">
-      <h2 class="font-bold text-gray-900 mb-1">Retos Disponibles</h2>
+      <h2 class="font-bold text-azul-noche mb-1">Retos Disponibles</h2>
       <p class="text-sm text-gray-500 mb-8">
         <template v-if="!loading">{{ retos.length }} reto{{ retos.length !== 1 ? 's' : '' }} disponible{{ retos.length !== 1 ? 's' : '' }}</template>
       </p>
@@ -42,7 +42,7 @@
             </div>
 
             <div class="px-6 pb-6 pt-4 flex-1 flex flex-col">
-              <h3 class="text-[#1F2937] font-black text-lg leading-tight mb-3 line-clamp-2">{{ r.titulo }}</h3>
+              <h3 class="text-azul-noche font-black text-lg leading-tight mb-3 line-clamp-2">{{ r.titulo }}</h3>
               <div class="flex flex-col gap-1.5 mb-4 border-l-2 border-gray-100 pl-3">
                 <p v-if="r.empresa_nombre" class="text-[#1F2937] text-xs font-bold uppercase tracking-wider flex items-center gap-2">
                   <BuildingOffice2Icon class="w-4 h-4 shrink-0 text-primary-600" />

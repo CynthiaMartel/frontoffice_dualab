@@ -29,7 +29,7 @@
                 Servicio
               </span>
 
-              <h3 :id="titleId" class="text-xl font-bold text-gray-900 mb-2">{{ service.title }}</h3>
+              <h3 :id="titleId" class="text-xl font-bold text-azul-noche mb-2">{{ service.title }}</h3>
 
               <p class="text-gray-500 text-sm leading-relaxed mb-4">
                 <template v-for="(part, i) in descriptionParts" :key="i">

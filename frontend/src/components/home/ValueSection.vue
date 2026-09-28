@@ -8,7 +8,7 @@
         <span :class="['inline-flex items-center gap-1.5 text-xs font-black uppercase tracking-widest px-4 py-1.5 rounded-full mb-4 border', theme.tag]">
           {{ tag }}
         </span>
-        <h2 class="text-xl font-bold text-gray-900 mb-2">{{ title }}</h2>
+        <h2 class="text-xl font-bold text-azul-noche mb-2">{{ title }}</h2>
         <p class="text-gray-500 text-sm leading-relaxed mb-4">{{ description }}</p>
         <ul class="mb-5 space-y-2">
           <li v-for="f in features" :key="f.title" class="flex items-start gap-2.5">

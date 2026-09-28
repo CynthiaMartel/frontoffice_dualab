@@ -49,7 +49,7 @@
                 <DocumentTextIcon class="w-4 h-4 shrink-0" />
                 DuaLab · Ficha de Reto
               </p>
-              <h1 class="text-2xl md:text-4xl font-black text-[#1F2937] tracking-tight leading-tight mb-2">{{ reto.titulo }}</h1>
+              <h1 class="text-2xl md:text-4xl font-black text-azul-noche tracking-tight leading-tight mb-2">{{ reto.titulo }}</h1>
               <h2 v-if="reto.pregunta_reto" class="text-base md:text-lg text-gray-600 font-bold leading-snug mb-2">{{ reto.pregunta_reto }}</h2>
               <h3 v-if="reto.subtitulo" class="text-sm md:text-base text-gray-500 font-medium leading-relaxed mb-6">{{ reto.subtitulo }}</h3>
 
@@ -133,7 +133,7 @@
 
             <!-- Resumen de diagnóstico -->
             <div class="space-y-8">
-              <h3 class="flex items-center gap-2 text-[#1F2937] font-bold uppercase text-xs tracking-widest border-b-2 border-gray-200 pb-2">
+              <h3 class="flex items-center gap-2 text-azul-noche font-bold uppercase text-xs tracking-widest border-b-2 border-gray-200 pb-2">
                 <DocumentTextIcon class="w-5 h-5 text-primary-600 shrink-0" />
                 Resumen de diagnóstico
               </h3>
@@ -216,7 +216,7 @@
 
             <!-- RA/CE -->
             <div v-if="reto.evaluacion_oficial?.length" class="pt-2">
-              <h3 class="flex items-center gap-2 text-[#1F2937] font-bold uppercase text-xs tracking-widest border-b-2 border-gray-200 pb-2 mb-6">
+              <h3 class="flex items-center gap-2 text-azul-noche font-bold uppercase text-xs tracking-widest border-b-2 border-gray-200 pb-2 mb-6">
                 <AcademicCapIcon class="w-5 h-5 text-primary-600 shrink-0" />
                 RA/CE Seleccionados
               </h3>
@@ -267,7 +267,7 @@
           <div class="absolute top-0 right-0 bg-white border-b border-l border-gray-200 text-gray-400 px-4 py-1.5 font-black text-[9px] tracking-widest uppercase rounded-bl-2xl">
             Uso Exclusivo Docente
           </div>
-          <h2 class="text-lg md:text-xl font-black text-[#1F2937] mb-1 mt-2 flex items-center gap-3">
+          <h2 class="text-lg md:text-xl font-black text-azul-noche mb-1 mt-2 flex items-center gap-3">
             <LightBulbIcon class="w-5 h-5 text-yellow-500 shrink-0" />
             Guía de Implementación
           </h2>

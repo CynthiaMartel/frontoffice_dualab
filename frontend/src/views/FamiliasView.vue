@@ -20,7 +20,7 @@
 
   <section class="bg-gray-50 py-14 px-6">
     <div class="max-w-5xl mx-auto">
-      <h2 class="text-lg font-bold text-gray-900 mb-1">Familias Profesionales</h2>
+      <h2 class="text-lg font-bold text-azul-noche mb-1">Familias Profesionales</h2>
       <p class="text-sm text-gray-500 mb-8">Explora los retos organizados por áreas de conocimiento</p>
 
       <p v-if="loading" class="text-gray-400 text-sm">Cargando…</p>
