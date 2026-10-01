@@ -18,4 +18,13 @@ api.interceptors.response.use(
   },
 )
 
+// El backend trata este frontend como SPA stateful (SANCTUM_STATEFUL_DOMAINS):
+// toda petición de escritura necesita la cookie XSRF-TOKEN. Se pide justo antes
+// de cada envío porque microretos (otro backend en localhost) usa el mismo
+// nombre de cookie y puede haberla sobrescrito.
+export function ensureCsrfCookie() {
+  const origin = api.defaults.baseURL.replace(/\/api\/?$/, '')
+  return axios.get(`${origin}/sanctum/csrf-cookie`, { withCredentials: true })
+}
+
 export default api

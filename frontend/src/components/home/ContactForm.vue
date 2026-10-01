@@ -38,7 +38,7 @@
 
 <script setup>
 import { reactive, ref } from 'vue'
-import api from '@/services/api'
+import api, { ensureCsrfCookie } from '@/services/api'
 
 const form    = reactive({ nombre: '', email: '', tipo: '', telefono: '' })
 const loading = ref(false)
@@ -47,6 +47,7 @@ const success = ref(false)
 async function submit() {
   loading.value = true
   try {
+    await ensureCsrfCookie()
     await api.post('/contacto', form)
     success.value = true
     Object.assign(form, { nombre: '', email: '', tipo: '', telefono: '' })

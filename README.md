@@ -41,7 +41,7 @@ php artisan migrate --seed
 php artisan vendor:publish --provider="Laravel\Sanctum\SanctumServiceProvider"
 
 # 6. Levantar servidor
-php artisan serve          # http://localhost:8000
+php artisan serve          # http://localhost:8001 (SERVER_PORT en .env)
 ```
 
 ### Stack backend
@@ -101,7 +101,7 @@ cp .env.example .env
 # VITE_API_URL=http://localhost:8001/api
 
 # 3. Servidor de desarrollo
-npm run dev     # http://localhost:5173
+npm run dev     # http://localhost:5174
 
 # 4. Build producción
 npm run build
