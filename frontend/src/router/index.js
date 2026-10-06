@@ -44,9 +44,18 @@ const routes = [
     component: () => import('@/views/RetoDetalleView.vue'),
   },
   {
+    // "Ver proyecto" de un reto: en vez de mostrar el proyecto completado en
+    // abierto, se pide una demo.
+    path: '/retos-destacados/:id/solicitar-demo',
+    name: 'reto-solicitar-demo',
+    component: () => import('@/views/SolicitarDemoProyectoView.vue'),
+  },
+  {
+    // El proyecto ya no se muestra en abierto (ProyectoDetalleView se conserva
+    // por si se vuelve a activar): los enlaces antiguos van a contacto.
     path: '/proyectos-destacados/:uuid',
     name: 'proyecto-detalle',
-    component: () => import('@/views/ProyectoDetalleView.vue'),
+    redirect: { name: 'contacto' },
   },
   {
     // Reemplaza a /login, /register y /dashboard: no hay un portal propio de

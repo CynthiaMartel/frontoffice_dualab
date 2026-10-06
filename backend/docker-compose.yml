@@ -15,5 +15,16 @@ services:
     volumes:
       - dualab_proyecto_mysql_data:/var/lib/mysql
 
+  # Bandeja de correo local: captura los emails del formulario de contacto sin
+  # enviarlos a nadie. Web: http://localhost:8026 · SMTP: localhost:1026
+  # (puertos distintos al Mailpit de microretos, 8025/1025).
+  mailpit:
+    image: axllent/mailpit:latest
+    container_name: dualab_proyecto-mailpit
+    restart: unless-stopped
+    ports:
+      - "1026:1025"
+      - "8026:8025"
+
 volumes:
   dualab_proyecto_mysql_data:

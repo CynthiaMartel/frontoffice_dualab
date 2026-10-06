@@ -37,10 +37,15 @@
 </template>
 
 <script setup>
-import { reactive, ref } from 'vue'
+import { reactive, ref, watch } from 'vue'
 import api, { ensureCsrfCookie } from '@/services/api'
 
-const form    = reactive({ nombre: '', email: '', tipo: '', telefono: '' })
+// Tipo preseleccionado desde fuera (p. ej. botón "Inscribe tu centro" de la
+// home). Solo rellena el select: el usuario puede cambiarlo antes de enviar.
+const props = defineProps({ tipo: { type: String, default: '' } })
+
+const form    = reactive({ nombre: '', email: '', tipo: props.tipo, telefono: '' })
+watch(() => props.tipo, (t) => { form.tipo = t })
 const loading = ref(false)
 const success = ref(false)
 

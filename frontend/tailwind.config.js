@@ -29,11 +29,16 @@ export default {
         // 05/Paleta): color global de estructura y navegación — footer,
         // cabeceras y chrome que representa la marca en su conjunto.
         'azul-noche': '#17283E',
+        // Fondo claro para alternar secciones con el blanco (sutil, entre
+        // primary-50 y primary-100). Mismo tono que el fondo del diseño.
+        superficie: '#EDF4FA',
       },
       fontFamily: {
         sans: ['Inter', 'ui-sans-serif', 'system-ui'],
         // Montserrat para titulares (manual, sección 07/Tipografía).
         heading: ['Montserrat', 'ui-sans-serif', 'system-ui'],
+        // Rotulación manuscrita de los diseños de marca ("Ideas de hoy…").
+        hand: ['Caveat', 'cursive'],
       },
     },
   },

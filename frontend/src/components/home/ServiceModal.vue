@@ -25,8 +25,8 @@
           <div class="grid md:grid-cols-2 gap-8 items-center p-8">
             <div>
               <span class="inline-flex items-center gap-1.5 text-xs font-black uppercase tracking-widest text-primary-700 bg-primary-100 border border-primary-200 px-4 py-1.5 rounded-full mb-4">
-                <component :is="service.icon" class="w-3.5 h-3.5" />
-                Servicio
+                <component v-if="service.icon" :is="service.icon" class="w-3.5 h-3.5" />
+                {{ service.badge ?? 'Servicio' }}
               </span>
 
               <h3 :id="titleId" class="text-xl font-bold text-azul-noche mb-2">{{ service.title }}</h3>
@@ -52,6 +52,13 @@
                 </li>
               </ul>
 
+              <div v-if="service.link || service.contact" class="flex flex-wrap gap-3">
+              <button
+                v-if="service.contact"
+                type="button"
+                class="group inline-flex items-center gap-2.5 px-6 py-3 bg-azul-noche text-white rounded-full font-black text-xs uppercase tracking-widest hover:bg-primary-800 transition-all duration-300 hover:-translate-y-0.5 active:scale-95"
+                @click="$emit('contact', service.contact.tipo)"
+              >{{ service.contact.label }}</button>
               <RouterLink
                 v-if="service.link"
                 :to="service.link.to"
@@ -61,6 +68,7 @@
                 {{ service.link.label }}
                 <svg class="w-3.5 h-3.5 transition-transform group-hover:translate-x-1 duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
               </RouterLink>
+              </div>
             </div>
 
             <div>
@@ -78,7 +86,7 @@
 import { computed, watch, onUnmounted } from 'vue'
 
 const props = defineProps({ service: Object })
-const emit = defineEmits(['close'])
+const emit = defineEmits(['close', 'contact'])
 
 const titleId = computed(() => `service-modal-title-${props.service?.title ?? ''}`)
 

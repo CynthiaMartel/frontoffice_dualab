@@ -11,7 +11,7 @@
 
       <!-- CTA destacada: este reto ya tiene un proyecto real hecho por alumnado -->
       <RouterLink v-if="reto.proyecto_completado_uuid"
-                  :to="{ name: 'proyecto-detalle', params: { uuid: reto.proyecto_completado_uuid } }"
+                  :to="{ name: 'reto-solicitar-demo', params: { id: route.params.id } }"
                   class="group flex items-center justify-between gap-4 mb-6 px-5 py-4 sm:px-7 sm:py-5 rounded-2xl
                          bg-gradient-to-r from-primary-600 to-primary-700 shadow-lg shadow-primary-600/30
                          hover:shadow-xl hover:shadow-primary-600/40 hover:-translate-y-0.5 transition-all">
@@ -21,7 +21,7 @@
           </div>
           <div>
             <p class="text-white font-black text-sm sm:text-base leading-tight">Este reto ya tiene un proyecto completado</p>
-            <p class="text-primary-100 text-xs sm:text-sm">Descubre cómo lo resolvió un equipo de alumnado real</p>
+            <p class="text-primary-100 text-xs sm:text-sm">Solicita una demo y te enseñamos cómo lo resolvió un equipo de alumnado real</p>
           </div>
         </div>
         <span class="hidden sm:inline-flex items-center gap-1.5 bg-white text-primary-700 font-black text-xs uppercase

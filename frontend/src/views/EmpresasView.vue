@@ -65,7 +65,7 @@
       <div class="mt-12 bg-empresas/10 border border-empresas/20 rounded-2xl p-8 text-center">
         <h3 class="text-lg font-bold text-azul-noche mb-2">¿Tu empresa quiere unirse?</h3>
         <p class="text-sm text-gray-500 mb-5">Publica retos reales y accede al talento de los mejores estudiantes de FP.</p>
-        <RouterLink :to="{ name: 'home', hash: '#contact' }" class="btn-empresas">
+        <RouterLink :to="{ name: 'contacto', query: { tipo: 'empresa' } }" class="btn-empresas">
           Contactar ahora
           <ArrowRightIcon class="w-4 h-4" />
         </RouterLink>

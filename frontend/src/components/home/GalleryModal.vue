@@ -68,6 +68,8 @@ import { ref, watch, onUnmounted } from 'vue'
 const props = defineProps({
   open: Boolean,
   images: { type: Array, default: () => [] },
+  // Foto con la que se abre (índice en `images`); 0 desde "Ver más".
+  startIndex: { type: Number, default: 0 },
 })
 const emit = defineEmits(['close'])
 
@@ -89,7 +91,7 @@ function handleKeydown(e) {
 watch(() => props.open, (isOpen) => {
   document.body.style.overflow = isOpen ? 'hidden' : ''
   if (isOpen) {
-    index.value = 0
+    index.value = props.startIndex
     window.addEventListener('keydown', handleKeydown)
   } else {
     window.removeEventListener('keydown', handleKeydown)

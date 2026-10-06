@@ -19,10 +19,13 @@
     <div class="max-w-6xl mx-auto">
       <h2 class="font-bold text-azul-noche mb-1">Retos Disponibles</h2>
       <p class="text-sm text-gray-500 mb-8">
-        <template v-if="!loading">{{ retos.length }} reto{{ retos.length !== 1 ? 's' : '' }} disponible{{ retos.length !== 1 ? 's' : '' }}</template>
+        <template v-if="!loading && !loadError">{{ retos.length }} reto{{ retos.length !== 1 ? 's' : '' }} disponible{{ retos.length !== 1 ? 's' : '' }}</template>
       </p>
 
       <p v-if="loading" class="text-gray-400 text-sm">Cargando…</p>
+      <p v-else-if="loadError" class="text-gray-500 text-sm">
+        No hemos podido cargar los retos en este momento. Inténtalo de nuevo más tarde.
+      </p>
       <p v-else-if="!retos.length" class="text-gray-400 text-sm">
         Todavía no hay retos publicados en esta familia.
       </p>
@@ -90,6 +93,7 @@ const route = useRoute()
 const retos = ref([])
 const familiaNombre = ref('')
 const loading = ref(true)
+const loadError = ref(false)
 
 onMounted(async () => {
   try {
@@ -102,6 +106,7 @@ onMounted(async () => {
     familiaNombre.value = familias.find((f) => String(f.id) === String(route.params.slug))?.nombre ?? ''
   } catch {
     retos.value = []
+    loadError.value = true
   } finally {
     loading.value = false
   }

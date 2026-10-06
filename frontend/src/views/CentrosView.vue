@@ -66,7 +66,7 @@
       <div class="mt-12 bg-centros/10 border border-centros/20 rounded-2xl p-8 text-center">
         <h3 class="text-lg font-bold text-azul-noche mb-2">¿Tu centro quiere unirse?</h3>
         <p class="text-sm text-gray-500 mb-5">Ofrece a tus alumnos retos reales de empresa y mejora su inserción laboral.</p>
-        <RouterLink :to="{ name: 'home', hash: '#contact' }"
+        <RouterLink :to="{ name: 'contacto', query: { tipo: 'centro' } }"
                     class="inline-flex items-center gap-2 bg-centros text-white px-5 py-2.5 rounded-lg font-medium text-sm transition-all hover:bg-centros/90">
           Solicitar demo
           <ArrowRightIcon class="w-4 h-4" />

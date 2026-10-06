@@ -6,7 +6,7 @@
       : 'bg-white border-b border-gray-100'"
   >
     <div
-      class="max-w-5xl mx-auto px-6 flex items-center justify-between transition-all duration-300"
+      class="max-w-6xl mx-auto px-6 flex items-center justify-between transition-all duration-300"
       :class="scrolled ? 'h-14' : 'h-16'"
     >
 
@@ -19,31 +19,43 @@
           class="object-contain relative z-10 transition-all duration-300 group-hover:scale-105"
           :class="scrolled ? 'h-11' : 'h-14'"
         />
-        <span class="font-black tracking-tighter uppercase leading-none relative z-20 flex items-baseline gap-0">
-          <span
-            class="text-azul-noche transition-all duration-300"
-            :class="scrolled ? 'text-[22px]' : 'text-[28px]'"
-          >Dua</span><span
-            class="text-primary-700 transition-all duration-300"
-            :class="scrolled ? 'text-[22px]' : 'text-[28px]'"
-          >Lab</span>
+        <span class="relative z-20 flex flex-col items-start gap-[3px]">
+          <span class="font-black tracking-tighter uppercase leading-none flex items-baseline gap-0">
+            <span
+              class="text-azul-noche transition-all duration-300"
+              :class="scrolled ? 'text-[22px]' : 'text-[28px]'"
+            >Dua</span><span
+              class="text-primary-700 transition-all duration-300"
+              :class="scrolled ? 'text-[22px]' : 'text-[28px]'"
+            >Lab</span>
+          </span>
+          <LogoLegend :small="scrolled" />
         </span>
       </RouterLink>
 
-      <!-- Desktop nav: Empresas, Centros, Alumnos, Noticias, Contacto, luego los
-           dos botones destacados (Ver retos / Usar DuaLab) -->
-      <div class="hidden md:flex items-center gap-5">
+      <!-- Desktop nav (orden del diseño Dualab Web_HOME): DuaLab, Centros Educativos,
+           Empresas, Alumnado, Entidades, Contacto; luego los dos botones destacados
+           (Conéctate / Solicita tu demo). Desde lg: con 6 enlaces no cabe en md. -->
+      <div class="hidden lg:flex items-center gap-5">
         <template v-for="(link, i) in navLinks" :key="link.name">
           <RouterLink
             v-if="link.to"
             class="nav-link relative text-sm text-gray-600 hover:text-primary-700 transition-colors py-1 whitespace-nowrap"
             :style="{ animationDelay: `${180 + i * 100}ms` }"
             :to="link.to"
-            active-class="text-primary-700"
+            exact-active-class="nav-link-active"
           >
             {{ link.label }}
-            <span class="absolute bottom-0 left-0 right-0 h-0.5 bg-primary-600 scale-x-0 transition-transform duration-200 origin-left router-link-exact-active:scale-x-100" />
+            <span class="nav-underline absolute -bottom-0.5 left-0 right-0 h-[3px] rounded-full bg-azul-noche scale-x-0 transition-transform duration-200 origin-left" />
           </RouterLink>
+          <!-- Enlace pendiente de su vista: visible pero sin navegación -->
+          <span
+            v-else-if="link.pending"
+            class="nav-link text-sm text-gray-400 py-1 whitespace-nowrap cursor-default"
+            :style="{ animationDelay: `${180 + i * 100}ms` }"
+            aria-disabled="true"
+            title="Próximamente"
+          >{{ link.label }}</span>
           <button
             v-else
             class="nav-link text-sm text-gray-600 hover:text-primary-700 transition-colors whitespace-nowrap"
@@ -52,26 +64,23 @@
           >{{ link.label }}</button>
         </template>
 
-        <RouterLink
-          class="nav-link inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-primary-600 to-primary-400 text-white rounded-full font-black text-xs uppercase tracking-widest shadow-[0_4px_14px_rgba(48,114,170,0.3)] hover:shadow-[0_8px_20px_rgba(48,114,170,0.4)] transition-all duration-300 hover:-translate-y-0.5 active:scale-95 whitespace-nowrap"
-          :style="{ animationDelay: `${180 + (navLinks.length + 1) * 100}ms` }"
-          :to="{ name: 'familias' }"
-        >Ver retos</RouterLink>
-
-        <!-- Enlace externo a propósito: la herramienta DuaLab es otra SPA (otro
-             dominio/puerto), no una ruta de este router — nunca RouterLink aquí.
-             Mismo "pill" que "Ver retos" pero en outline, para que se note que es
-             una acción distinta (sales a otra app) sin salirse de la paleta. -->
+        <!-- Botones del diseño: Conéctate (login de la herramienta, otra SPA →
+             enlace externo, nunca RouterLink) y Solicita tu demo (/contacto). -->
         <a
           :href="`${toolUrl}/login`"
           class="nav-link inline-flex items-center gap-2 px-5 py-2.5 bg-white text-primary-700 border-2 border-primary-600 rounded-full font-black text-xs uppercase tracking-widest hover:bg-primary-600 hover:text-white transition-all duration-300 hover:-translate-y-0.5 active:scale-95 whitespace-nowrap"
+          :style="{ animationDelay: `${180 + (navLinks.length + 1) * 100}ms` }"
+        >Conéctate</a>
+        <RouterLink
+          :to="{ name: 'contacto' }"
+          class="nav-link inline-flex items-center gap-2 px-5 py-2.5 bg-primary-600 text-white rounded-full font-black text-xs uppercase tracking-widest shadow-[0_4px_14px_rgba(48,114,170,0.3)] hover:shadow-[0_8px_20px_rgba(48,114,170,0.4)] hover:bg-primary-700 transition-all duration-300 hover:-translate-y-0.5 active:scale-95 whitespace-nowrap"
           :style="{ animationDelay: `${180 + (navLinks.length + 2) * 100}ms` }"
-        >Usar DuaLab</a>
+        >Solicita tu demo</RouterLink>
       </div>
 
       <!-- Hamburger (mobile) -->
       <button
-        class="md:hidden flex flex-col items-center justify-center w-9 h-9 gap-[5px] rounded-lg hover:bg-gray-100 transition-colors"
+        class="lg:hidden flex flex-col items-center justify-center w-9 h-9 gap-[5px] rounded-lg hover:bg-gray-100 transition-colors"
         :aria-label="menuOpen ? 'Cerrar menú' : 'Abrir menú'"
         @click="menuOpen = !menuOpen"
       >
@@ -92,8 +101,8 @@
 
     <!-- Mobile menu panel -->
     <Transition name="mobile-menu">
-      <div v-if="menuOpen" class="md:hidden border-t border-gray-100 bg-white shadow-lg">
-        <div class="max-w-5xl mx-auto px-6 py-4 flex flex-col">
+      <div v-if="menuOpen" class="lg:hidden border-t border-gray-100 bg-white shadow-lg">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex flex-col">
           <template v-for="link in navLinks" :key="link.name">
             <RouterLink
               v-if="link.to"
@@ -102,6 +111,11 @@
               active-class="text-primary-700"
               @click="menuOpen = false"
             >{{ link.label }}</RouterLink>
+            <span
+              v-else-if="link.pending"
+              class="text-sm font-semibold text-gray-400 py-3.5 border-b border-gray-100"
+              aria-disabled="true"
+            >{{ link.label }} <span class="text-xs font-normal">(próximamente)</span></span>
             <button
               v-else
               class="text-left text-sm font-semibold text-gray-700 hover:text-primary-700 py-3.5 border-b border-gray-100 transition-colors"
@@ -110,16 +124,16 @@
           </template>
 
           <div class="pt-4 space-y-3">
-            <RouterLink
-              :to="{ name: 'familias' }"
-              class="flex items-center justify-center gap-2 w-full py-3.5 bg-gradient-to-r from-primary-600 to-primary-400 text-white rounded-full font-black text-sm uppercase tracking-widest shadow-[0_4px_14px_rgba(48,114,170,0.3)] active:scale-95 transition-all duration-300"
-              @click="menuOpen = false"
-            >Ver retos</RouterLink>
             <a
               :href="`${toolUrl}/login`"
               class="flex items-center justify-center gap-2 w-full py-3.5 bg-white text-primary-700 border-2 border-primary-600 rounded-full font-black text-sm uppercase tracking-widest active:scale-95 transition-all duration-300"
               @click="menuOpen = false"
-            >Usar DuaLab</a>
+            >Conéctate</a>
+            <RouterLink
+              :to="{ name: 'contacto' }"
+              class="flex items-center justify-center gap-2 w-full py-3.5 bg-primary-600 text-white rounded-full font-black text-sm uppercase tracking-widest shadow-[0_4px_14px_rgba(48,114,170,0.3)] active:scale-95 transition-all duration-300"
+              @click="menuOpen = false"
+            >Solicita tu demo</RouterLink>
           </div>
         </div>
       </div>
@@ -130,6 +144,7 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
+import LogoLegend from '@/components/common/LogoLegend.vue'
 
 const router = useRouter()
 const route  = useRoute()
@@ -139,7 +154,7 @@ const menuOpen  = ref(false)
 
 // La herramienta DuaLab (login real, docente/empresa/admin) — otra SPA, otro
 // dominio en producción (dualab.es) u otro puerto en local (localhost:5173).
-const toolUrl = import.meta.env.VITE_TOOL_URL ?? 'https://dualab.es'
+const toolUrl = import.meta.env.VITE_TOOL_URL ?? (import.meta.env.DEV ? 'http://localhost:5173' : 'https://dualab.es')
 
 function onScroll() {
   scrolled.value = window.scrollY > 12
@@ -156,12 +171,14 @@ function goToAlumnos() {
   }
 }
 
+// pending: enlaces pendientes de su nueva vista (se muestran sin navegar).
 const navLinks = [
-  { label: 'Empresas',           name: 'empresas', to: { name: 'empresas' } },
-  { label: 'Centros Educativos', name: 'centros',  to: { name: 'centros'  } },
-  { label: 'Alumnos',            name: 'alumnos',  action: goToAlumnos },
-  { label: 'Noticias',           name: 'noticias', to: { name: 'noticias' } },
-  { label: 'Contacto',           name: 'contacto', to: { name: 'contacto' } },
+  { label: 'DuaLab',             name: 'home',      to: { name: 'home' } },
+  { label: 'Centros Educativos', name: 'centros',   to: { name: 'centros'  } },
+  { label: 'Empresas',           name: 'empresas',  to: { name: 'empresas' } },
+  { label: 'Alumnado',           name: 'alumnos',   action: goToAlumnos },
+  { label: 'Entidades',          name: 'entidades', pending: true },
+  { label: 'Contacto',           name: 'contacto',  to: { name: 'contacto' } },
 ]
 </script>
 
@@ -178,6 +195,16 @@ const navLinks = [
 
 .nav-link {
   animation: fadeSlideDown 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Enlace de la página actual: texto oscuro y subrayado azul noche (diseño) */
+.nav-link-active {
+  color: #17283E;
+  font-weight: 600;
+}
+.nav-link-active .nav-underline,
+.nav-link:hover .nav-underline {
+  transform: scaleX(1);
 }
 
 /* Mobile menu slide-down */

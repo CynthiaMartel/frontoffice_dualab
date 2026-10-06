@@ -26,3 +26,11 @@ export const familias = [
 export function familiaPorSlug(slug) {
   return familias.find((f) => f.slug === slug) ?? null
 }
+
+// Familias que todavía no tienen retos en el escaparate: se muestran como
+// "Próximamente" en la home y en /familias.
+export const familiasProximamente = [
+  { nombre: 'Sanidad',                     slug: 'sanidad' },
+  { nombre: 'Hostelería y Turismo',        slug: 'hosteleria-turismo' },
+  { nombre: 'Electricidad y Electrónica',  slug: 'electricidad-electronica' },
+]

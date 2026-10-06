@@ -1,4 +1,13 @@
 <template>
+  <!-- Formas de recorte reutilizables (coordenadas relativas 0–1 a la imagen) -->
+  <svg width="0" height="0" class="absolute" aria-hidden="true">
+    <defs>
+      <clipPath id="blob-shape" clipPathUnits="objectBoundingBox">
+        <path d="M0.06,0.42 C0.12,0.2 0.3,0.26 0.46,0.14 C0.62,0.02 0.8,-0.02 0.93,0.07 C1,0.12 1,0.28 1,0.4 L1,0.86 C1,0.95 0.96,1 0.88,1 L0.18,1 C0.07,1 0.01,0.9 0,0.76 C-0.01,0.62 0.02,0.52 0.06,0.42 Z" />
+      </clipPath>
+    </defs>
+  </svg>
+
   <!-- HERO -->
   <section class="relative overflow-hidden bg-primary-700 py-24 px-6">
     <!-- Carousel backgrounds -->
@@ -29,13 +38,13 @@
         y descubrir <strong class="text-[#5fd0d0] font-black">talento emergente</strong>.
       </p>
       <div class="hero-btns flex flex-wrap md:flex-nowrap gap-3">
-        <button @click="scrollToComoFunciona"
+        <button @click="comoFuncionaOpen = true"
                 class="cta-attention group inline-flex items-center gap-2 px-6 py-3 bg-white text-primary-700 rounded-full font-black text-sm uppercase tracking-widest shadow-[0_8px_25px_rgba(0,0,0,0.2)] hover:shadow-[0_14px_35px_rgba(0,0,0,0.3)] hover:[animation-play-state:paused] transition-all duration-300 hover:-translate-y-0.5 active:scale-95 whitespace-nowrap">
           <svg class="w-4 h-4 transition-transform group-hover:rotate-90 duration-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
           Cómo funciona
         </button>
 
-        <button @click="scrollToContact"
+        <button @click="goToContact()"
                 class="inline-flex items-center gap-2 px-6 py-3 bg-white/10 text-white border-2 border-white/40 rounded-full font-black text-sm uppercase tracking-widest hover:bg-white/20 hover:border-white/70 transition-all duration-300 hover:-translate-y-0.5 active:scale-95 backdrop-blur-sm whitespace-nowrap">
           Solicitar demo
         </button>
@@ -60,273 +69,230 @@
   </section>
 
   <!-- STATS -->
-  <section class="bg-white border-b border-gray-100 py-8 px-6">
-    <div v-reveal class="max-w-3xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+  <section class="bg-white pt-8 px-6">
+    <div v-reveal class="max-w-3xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 text-center pb-8">
       <StatItem number="50+"  label="Retos Activos" />
       <StatItem number="3"    label="Niveles de Dificultad" />
       <StatItem number="20+"  label="Empresas" />
       <StatItem number="100%" label="Aplicable a la vida laboral" />
     </div>
   </section>
+  <!-- Franja con los cuatro colores de colectivo -->
+  <div class="grid grid-cols-4 h-2" aria-hidden="true">
+    <span class="bg-centros" /><span class="bg-empresas" /><span class="bg-alumnos" /><span class="bg-administraciones" />
+  </div>
 
-  <!-- SERVICIOS -->
-  <section class="bg-[#F8FAFC] py-16 px-6">
-    <div v-reveal class="max-w-4xl mx-auto text-center mb-12">
-      <div class="inline-block bg-primary-100 text-primary-700 px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest mb-4 border border-primary-200">Servicios</div>
-      <h2 class="text-3xl font-black tracking-tighter text-azul-noche">Todo lo que ofrecemos</h2>
-      <p class="text-gray-500 mt-2 font-medium">Soluciones integrales para conectar empresas, centros educativos y alumnado</p>
-    </div>
-    <div v-reveal="100" class="max-w-4xl mx-auto grid grid-cols-2 md:grid-cols-5 gap-8">
-      <ServiceItem v-for="s in serviciosItems" :key="s.title"
-                   :icon="s.icon" :title="s.title" :desc="s.desc"
-                   @click="activeService = s" />
+  <!-- ECOSISTEMA -->
+  <section id="ecosistema" class="bg-white py-20 px-6">
+    <div class="max-w-6xl mx-auto grid lg:grid-cols-[5fr_7fr] gap-14 items-center">
+      <div v-reveal>
+        <p class="section-eyebrow">Un ecosistema colaborativo</p>
+        <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight text-azul-noche leading-tight">
+          Todo el ecosistema de la Formación Dual, <span class="text-primary-600">conectado</span>
+        </h2>
+        <p class="text-gray-500 leading-relaxed mt-5 max-w-md">
+          DuaLab pone en relación a todos los <strong class="text-centros font-semibold">agentes</strong>
+          de la FP Dual en un entorno único, facilitando la <strong class="text-alumnos font-semibold">gestión</strong>,
+          la colaboración y la generación de
+          <strong class="text-administraciones font-semibold">oportunidades de aprendizaje</strong>
+          y <strong class="text-empresas font-semibold">empleo</strong>.
+        </p>
+        <button type="button" class="btn-pill-outline mt-8" @click="comoFuncionaOpen = true">
+          Descubre en qué consiste
+        </button>
+      </div>
+      <div v-reveal="150">
+        <EcosystemDiagram />
+      </div>
     </div>
   </section>
 
-  <ServiceModal :service="activeService" @close="activeService = null" />
+  <!-- SOLUCIÓN INTEGRAL (funcionalidades clave + servicios actuales) -->
+  <section id="servicios" class="bg-superficie py-20 px-6">
+    <div v-reveal class="max-w-4xl mx-auto text-center mb-12">
+      <p class="section-eyebrow">Funcionalidades clave</p>
+      <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight text-azul-noche leading-tight">
+        Una solución integral para una Formación Dual<br class="hidden md:block">
+        <span class="text-primary-600"> más eficiente</span>
+      </h2>
+    </div>
+    <div v-reveal="100" class="max-w-6xl mx-auto grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <FeatureCard v-for="f in funcionalidades" :key="f.title"
+                   :icon="f.icon" :icon-class="f.iconClass" :title="f.title" :desc="f.desc"
+                   @click="activeService = f.modal" />
+    </div>
+
+    <!-- Otros servicios (consultoría/formación): ocultos hasta pulsar "Otros servicios" -->
+    <div class="max-w-6xl mx-auto text-center mt-10">
+      <button
+        type="button"
+        class="btn-pill-outline"
+        :aria-expanded="moreServicesOpen"
+        aria-controls="otros-servicios"
+        @click="moreServicesOpen = !moreServicesOpen"
+      >
+        Otros servicios
+        <svg class="w-4 h-4 transition-transform duration-300" :class="moreServicesOpen ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
+      </button>
+    </div>
+    <Transition name="expand">
+      <div v-show="moreServicesOpen" id="otros-servicios" class="max-w-6xl mx-auto mt-8 bg-white rounded-2xl p-8 shadow-[0_2px_12px_rgba(23,40,62,0.05)]">
+        <p class="text-sm text-gray-500 text-center mb-8">Además de la plataforma, te acompañamos con servicios de consultoría y formación</p>
+        <div class="grid grid-cols-2 md:grid-cols-5 gap-8">
+          <ServiceItem v-for="s in serviciosItems" :key="s.title"
+                       :icon="s.icon" :title="s.title" :desc="s.desc"
+                       @click="activeService = s" />
+        </div>
+      </div>
+    </Transition>
+  </section>
+
+  <ServiceModal :service="activeService" @close="activeService = null" @contact="onModalContact" />
+
+  <!-- RETOS ACADÉMICOS -->
+  <section class="bg-white py-20 px-6 overflow-hidden">
+    <div class="max-w-6xl mx-auto grid lg:grid-cols-2 gap-10 items-center">
+      <div v-reveal class="relative z-10">
+        <p class="section-eyebrow">Aprendizaje real</p>
+        <h2 class="text-3xl md:text-[42px] font-extrabold tracking-tight text-azul-noche leading-[1.1]">
+          Retos académicos que generan <span class="text-primary-500">talento</span>
+          y <span class="text-primary-500">soluciones</span> reales.
+        </h2>
+        <p class="text-gray-500 leading-relaxed mt-5 max-w-md">
+          Los retos de DuaLab acercan al alumnado a proyectos planteados por empresas,
+          fomentando la <strong class="text-primary-600 font-semibold">innovación</strong>, el trabajo en equipo
+          y el desarrollo de <strong class="text-primary-600 font-semibold">competencias clave</strong>.
+        </p>
+        <div class="flex flex-col gap-3 mt-10 max-w-xs">
+          <RouterLink :to="{ name: 'contacto', query: { tipo: 'centro' } }" class="btn-pill bg-centros hover:bg-centros/90">Inscribe tu centro</RouterLink>
+          <RouterLink :to="{ name: 'contacto', query: { tipo: 'empresa' } }" class="btn-pill bg-empresas hover:bg-empresas/90">Participa como empresa</RouterLink>
+          <!-- Formulario de alumnado bloqueado de momento (ver contactoConfig.js) -->
+          <span class="btn-pill bg-alumnos/50 shadow-none cursor-not-allowed hover:translate-y-0" aria-disabled="true" title="Próximamente">
+            Encuentra tus prácticas
+            <span class="text-[10px] font-black bg-white/25 rounded-full px-2 py-0.5 normal-case tracking-normal">Próximamente</span>
+          </span>
+          <RouterLink :to="{ name: 'familias' }" class="btn-pill bg-administraciones hover:bg-administraciones/90">Explora retos</RouterLink>
+        </div>
+      </div>
+
+      <div v-reveal="150" class="relative">
+        <!-- Rotulación manuscrita con flechas hacia la imagen -->
+        <div class="absolute left-[18%] -top-2 md:-top-6 z-10 font-hand text-primary-600 text-2xl md:text-3xl leading-7 -rotate-6" aria-hidden="true">
+          Ideas de hoy<br>para el mundo<br>de mañana
+        </div>
+        <svg class="absolute left-[12%] top-14 md:top-9 w-16 h-24 z-10" viewBox="0 0 100 120" fill="none" aria-hidden="true">
+          <path d="M10 8 C 0 50, 20 90, 70 108" stroke="#FF8920" stroke-width="2.5" stroke-linecap="round" />
+          <path d="M60 100 L72 109 L58 114" stroke="#FF8920" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        <svg class="absolute left-[40%] top-24 md:top-20 w-24 h-16 z-10" viewBox="0 0 100 60" fill="none" aria-hidden="true">
+          <path d="M8 6 C 10 36, 40 50, 88 44" stroke="#19A7A8" stroke-width="2.5" stroke-linecap="round" />
+          <path d="M78 36 L90 44 L78 52" stroke="#19A7A8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        <img :src="dua26" alt="Alumnado trabajando en un reto en el aula"
+             class="blob-image w-full h-[340px] md:h-[440px] object-cover mt-20 md:mt-16" loading="lazy" />
+      </div>
+    </div>
+  </section>
+
+  <!-- UNA SOLUCIÓN PARA CADA AGENTE (antes: Para Empresas / Centros / Alumnos) -->
+  <section class="bg-superficie py-20 px-6">
+    <div v-reveal class="max-w-4xl mx-auto text-center mb-10">
+      <p class="section-eyebrow">Cuatro agentes, un mismo objetivo</p>
+      <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight text-azul-noche">Una solución para cada agente</h2>
+    </div>
+    <div class="max-w-6xl mx-auto grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      <div v-for="(a, i) in agentes" :id="a.id" :key="a.title" v-reveal="i * 100" class="scroll-mt-24">
+        <AgentCard :title="a.title" :desc="a.desc" :image="a.image" :bullets="a.bullets" :color="a.color"
+                   @more="activeService = a.modal" />
+      </div>
+    </div>
+  </section>
+
+  <!-- PLATAFORMA: toda la gestión en un mismo lugar -->
+  <section id="plataforma" class="bg-white py-20 px-6 scroll-mt-16">
+    <div class="max-w-6xl mx-auto grid lg:grid-cols-[7fr_5fr] gap-12 items-center">
+      <div v-reveal class="order-2 lg:order-1">
+        <PlatformMockup />
+      </div>
+      <div v-reveal="150" class="order-1 lg:order-2">
+        <p class="section-eyebrow">Plataforma DuaLab</p>
+        <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight text-azul-noche leading-tight">
+          Toda la <span class="text-primary-500">gestión</span><br>en un <span class="text-primary-500">mismo lugar</span>
+        </h2>
+        <p class="text-gray-500 leading-relaxed mt-5">
+          Una plataforma intuitiva y completa para gestionar prácticas, tutores, documentación,
+          comunicaciones y mucho más, con información siempre actualizada y accesible para todos los agentes.
+        </p>
+        <ul class="space-y-2 mt-6">
+          <li v-for="p in plataformaFeatures" :key="p" class="flex items-center gap-2.5 font-medium text-azul-noche">
+            <span class="w-5 h-5 rounded-full bg-administraciones flex items-center justify-center shrink-0">
+              <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true"><path d="M1.5 5l2.5 2.5L8.5 2" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            {{ p }}
+          </li>
+        </ul>
+        <div class="flex flex-wrap gap-3 mt-8">
+          <button type="button" class="btn-pill bg-primary-600 hover:bg-primary-700 px-8" @click="goToContact()">Solicitar demo</button>
+          <!-- Enlace externo: la herramienta es otra SPA (mismo botón que en el navbar) -->
+          <a :href="`${toolUrl}/login`" class="btn-pill-outline">Usar DuaLab</a>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <!-- GALERÍA -->
-  <section class="bg-primary-50 py-16 px-6">
+  <section id="experiencia" class="bg-superficie py-20 px-6 scroll-mt-16">
     <div v-reveal class="max-w-5xl mx-auto text-center mb-10">
       <div class="inline-block bg-primary-100 text-primary-700 px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest mb-4 border border-primary-200">Nuestra galería</div>
       <h2 class="text-3xl font-black tracking-tighter text-azul-noche">Hablamos con experiencia</h2>
       <p class="text-gray-500 mt-2 font-medium">Momentos reales de formación, retos y trabajo en equipo</p>
     </div>
     <div v-reveal="100" class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-5">
-      <img v-for="img in galeriaImages" :key="img" :src="img" alt="Sesión de trabajo en DuaLab"
-           class="w-full h-64 object-cover rounded-2xl hover:scale-[1.02] transition-transform duration-300"
-           loading="lazy" />
+      <button v-for="img in galeriaImages" :key="img" type="button"
+              class="block rounded-2xl overflow-hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-600 focus-visible:ring-offset-2"
+              aria-label="Ampliar foto"
+              @click="openGallery(img)">
+        <img :src="img" alt="Sesión de trabajo en DuaLab"
+             class="w-full h-64 object-cover rounded-2xl hover:scale-[1.02] transition-transform duration-300 cursor-zoom-in"
+             loading="lazy" />
+      </button>
     </div>
     <div v-reveal="150" class="text-center mt-10">
       <button
         type="button"
         class="inline-flex items-center gap-2 px-7 py-3.5 bg-white text-[#1F2937] border-2 border-gray-200 rounded-full font-black text-sm uppercase tracking-widest hover:border-primary-600 hover:text-primary-600 transition-all duration-300 hover:-translate-y-0.5 active:scale-95"
-        @click="galleryOpen = true"
+        @click="openGallery()"
       >
         Ver más
       </button>
     </div>
   </section>
 
-  <GalleryModal :open="galleryOpen" :images="allGalleryImages" @close="galleryOpen = false" />
+  <GalleryModal :open="galleryOpen" :images="allGalleryImages" :start-index="galleryStart" @close="galleryOpen = false" />
 
-  <!-- CÓMO FUNCIONA -->
-  <section id="como-funciona" class="bg-white py-20 px-6">
-    <div v-reveal class="max-w-3xl mx-auto text-center mb-12">
-      <div class="inline-block bg-primary-100 text-primary-700 px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest mb-4 border border-primary-200">
-        Flujo de Trabajo
-      </div>
-      <h2 class="text-3xl font-black tracking-tighter text-azul-noche">¿Cómo funciona DuaLab?</h2>
-      <p class="text-gray-500 mt-2 text-sm font-medium">Tres pasos para transformar necesidades reales en aprendizaje práctico</p>
-    </div>
-    <div class="max-w-3xl mx-auto grid md:grid-cols-3 gap-4">
-      <div v-reveal="0">
-        <StepCard number="1" :icon="BuildingOffice2Icon" title="La Empresa propone"
-          desc="Identifican una fricción o cuello de botella real en su día a día." />
-      </div>
-      <div v-reveal="150">
-        <StepCard number="2" :icon="SparklesIcon" title="La IA lo transforma"
-          desc="DuaLab genera un reto académico alineado al currículo oficial." />
-      </div>
-      <div v-reveal="300">
-        <StepCard number="3" :icon="AcademicCapIcon" title="El Alumnado resuelve"
-          desc="Ganan experiencia práctica mientras aportan valor real a la empresa." />
-      </div>
-    </div>
-  </section>
+  <!-- CÓMO FUNCIONA: modal que abren "Cómo funciona" (hero) y "Descubre en qué consiste" -->
+  <ComoFuncionaModal :open="comoFuncionaOpen" @close="comoFuncionaOpen = false" @demo="onComoFuncionaDemo" />
 
-  <!-- PARA EMPRESAS -->
-  <ValueSection
-    tag="Para Empresas"
-    title="Identifica y atrae talento cualificado"
-    description="Propón retos reales y encuentra candidatos con habilidades demostradas. Conecta con centros educativos para formar a los profesionales que necesitas."
-    :features="empresasFeatures"
-    image="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=500&q=70"
-    color="empresas"
-    bg-gray
-  >
-    <template #actions>
-      <div class="flex flex-wrap gap-4">
-        <button
-          class="group inline-flex items-center gap-2.5 px-7 py-3.5 bg-empresas text-white rounded-full font-black text-sm uppercase tracking-widest shadow-[0_8px_25px_rgba(80,153,40,0.3)] hover:shadow-[0_14px_35px_rgba(80,153,40,0.4)] transition-all duration-300 hover:-translate-y-0.5 active:scale-95"
-          @click="scrollToContact"
-        >
-          Contactar ahora
-          <svg class="w-4 h-4 transition-transform group-hover:translate-x-1 duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
-        </button>
-        <RouterLink
-          class="inline-flex items-center gap-2 px-7 py-3.5 bg-white text-[#1F2937] border-2 border-gray-200 rounded-full font-black text-sm uppercase tracking-widest hover:border-empresas hover:text-empresas transition-all duration-300 hover:-translate-y-0.5 active:scale-95"
-          :to="{ name: 'empresas' }"
-        >Empresas asociadas</RouterLink>
-      </div>
-    </template>
-  </ValueSection>
-
-  <!-- PARA CENTROS EDUCATIVOS -->
-  <ValueSection
-    tag="Para Centros Educativos"
-    title="Mejora la empleabilidad de tus estudiantes"
-    description="Accede a retos actualizados y conecta con empresas que buscan talento. Ofrece formación práctica y relevante para el mercado laboral."
-    :features="centrosFeatures"
-    image="https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=500&q=70"
-    color="centros"
-    reverse
-  >
-    <template #actions>
-      <div class="flex flex-wrap gap-4">
-        <button
-          class="group inline-flex items-center gap-2.5 px-7 py-3.5 bg-centros text-white rounded-full font-black text-sm uppercase tracking-widest shadow-[0_8px_25px_rgba(48,114,170,0.3)] hover:shadow-[0_14px_35px_rgba(48,114,170,0.4)] transition-all duration-300 hover:-translate-y-0.5 active:scale-95"
-          @click="scrollToContact"
-        >
-          Solicitar demo
-          <svg class="w-4 h-4 transition-transform group-hover:translate-x-1 duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
-        </button>
-        <RouterLink
-          class="inline-flex items-center gap-2 px-7 py-3.5 bg-white text-[#1F2937] border-2 border-gray-200 rounded-full font-black text-sm uppercase tracking-widest hover:border-centros hover:text-centros transition-all duration-300 hover:-translate-y-0.5 active:scale-95"
-          :to="{ name: 'centros' }"
-        >Centros asociados</RouterLink>
-      </div>
-    </template>
-  </ValueSection>
-
-  <!-- PARA ALUMNOS -->
-  <ValueSection
-    section-id="para-alumnos"
-    tag="Para Alumnos"
-    title="Desarrolla habilidades que importan"
-    description="Resuelve retos reales de empresas, construye tu portfolio y destaca en tu carrera. Aprende haciendo y demuestra tu valía."
-    :features="alumnosFeatures"
-    cta-label="Explorar retos →"
-    image="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=500&q=70"
-    color="alumnos"
-    bg-gray
-    @cta="$router.push({ name: 'familias' })"
-  />
-
-  <!-- FAMILIAS -->
-  <section class="bg-primary-50 py-20 px-6">
-    <div v-reveal class="max-w-4xl mx-auto text-center mb-10">
-      <div class="inline-block bg-primary-100 text-primary-700 px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest mb-4 border border-primary-200">Formación</div>
-      <h2 class="text-3xl font-black tracking-tighter text-azul-noche">Familias Profesionales</h2>
+  <!-- FAMILIAS PROFESIONALES (solo el rótulo y "Profesionales" en tono Alumnado) -->
+  <section class="bg-white py-20 px-6">
+    <div v-reveal class="max-w-4xl mx-auto text-center mb-8">
+      <p class="section-eyebrow !text-alumnos">Formación</p>
+      <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight text-azul-noche">Familias <span class="text-alumnos">Profesionales</span></h2>
       <p class="text-gray-500 mt-2 font-medium">Retos organizados en áreas clave del mercado laboral</p>
     </div>
-    <div v-reveal="100" class="max-w-2xl mx-auto grid grid-cols-3 gap-4">
-      <FamiliaChip v-for="f in quickFamilias" :key="f.slug"
-                   :icon="f.icon" :label="f.label"
-                   @click="$router.push({ name: 'familia-detalle', params: { slug: f.slug } })" />
+    <div v-reveal="100" class="text-center">
+      <RouterLink :to="{ name: 'familias' }" class="btn-pill bg-primary-600 hover:bg-primary-700 px-8">Ver familias</RouterLink>
     </div>
   </section>
 
-  <!-- NOTICIAS -->
-  <section id="noticias" class="bg-white py-14 px-6">
-    <div v-reveal class="max-w-5xl mx-auto">
-      <div class="flex items-center justify-between mb-8">
-        <div>
-          <p class="inline-block bg-primary-100 text-primary-700 px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest border border-primary-200">Actualidad</p>
-          <h2 class="text-3xl font-black tracking-tighter text-azul-noche mt-3">Últimas noticias</h2>
-        </div>
-        <RouterLink :to="{ name: 'noticias' }"
-                    class="text-sm font-medium text-primary-600 hover:text-primary-700 flex items-center gap-1 transition-colors">
-          Ver todas
-          <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-            <path d="M6 3l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </RouterLink>
-      </div>
 
-      <div class="grid md:grid-cols-3 gap-5">
-        <!-- Tarjeta featured -->
-        <RouterLink :to="{ name: 'noticias' }"
-                    class="md:col-span-2 relative rounded-2xl overflow-hidden group cursor-pointer block">
-          <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=800&q=70"
-               alt="Noticia destacada"
-               class="w-full h-72 object-cover transition-transform duration-500 group-hover:scale-105" />
-          <div class="absolute inset-0 bg-gradient-to-t from-gray-900/80 via-gray-900/30 to-transparent" />
-          <div class="absolute bottom-0 left-0 right-0 p-6">
-            <span class="inline-block bg-primary-500 text-white text-[10px] font-bold px-2.5 py-1 rounded-full mb-3 tracking-wider uppercase">
-              Novedad
-            </span>
-            <h3 class="text-white font-bold text-lg leading-snug mb-2">
-              DuaLab revoluciona la FP Dual con IA: retos académicos generados automáticamente
-            </h3>
-            <p class="text-white/70 text-xs">19 jun 2026 · 4 min de lectura</p>
-          </div>
-        </RouterLink>
-
-        <!-- Tarjetas pequeñas apiladas -->
-        <div class="flex flex-col gap-5">
-          <RouterLink :to="{ name: 'noticias' }"
-                      class="relative rounded-2xl overflow-hidden group cursor-pointer block flex-1">
-            <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=400&q=70"
-                 alt="Caso de éxito"
-                 class="w-full h-full min-h-[120px] object-cover transition-transform duration-500 group-hover:scale-105" />
-            <div class="absolute inset-0 bg-gradient-to-t from-gray-900/75 via-gray-900/20 to-transparent" />
-            <div class="absolute bottom-0 left-0 right-0 p-4">
-              <span class="inline-block bg-emerald-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full mb-1.5 tracking-wider uppercase">
-                Caso de éxito
-              </span>
-              <h4 class="text-white font-semibold text-sm leading-snug">
-                150 alumnos resuelven retos reales de empresa en una semana
-              </h4>
-            </div>
-          </RouterLink>
-
-          <RouterLink :to="{ name: 'noticias' }"
-                      class="relative rounded-2xl overflow-hidden group cursor-pointer block flex-1">
-            <img src="https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=400&q=70"
-                 alt="Evento"
-                 class="w-full h-full min-h-[120px] object-cover transition-transform duration-500 group-hover:scale-105" />
-            <div class="absolute inset-0 bg-gradient-to-t from-gray-900/75 via-gray-900/20 to-transparent" />
-            <div class="absolute bottom-0 left-0 right-0 p-4">
-              <span class="inline-block bg-amber-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full mb-1.5 tracking-wider uppercase">
-                Evento
-              </span>
-              <h4 class="text-white font-semibold text-sm leading-snug">
-                DuaLab en el Congreso Nacional de FP: talento emergente
-              </h4>
-            </div>
-          </RouterLink>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- TESTIMONIOS -->
-  <section class="bg-primary-700 py-20 px-6">
-    <div v-reveal class="max-w-4xl mx-auto">
-      <div class="text-center mb-10">
-        <div class="inline-block bg-white/10 text-white px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest mb-4 border border-white/20">Testimonios</div>
-        <h2 class="text-3xl font-black tracking-tighter text-white">Lo que dicen de nosotros</h2>
-      </div>
-      <div class="grid md:grid-cols-3 gap-5">
-        <div v-reveal="0"><TestimonialCard
-          quote="Los microretos nos han ayudado a identificar talento con habilidades específicas que necesitábamos."
-          name="María González" role="Directora de RRHH, TechCorp" /></div>
-        <div v-reveal="150"><TestimonialCard
-          quote="Nuestros alumnos están más motivados y empleables. La conexión directa con empresas ha mejorado nuestras tasas de inserción."
-          name="Carlos Martínez" role="Director, IES Tecnológico" /></div>
-        <div v-reveal="300"><TestimonialCard
-          quote="Gracias a los retos pude demostrar mis habilidades y conseguí mi primer empleo antes de terminar el ciclo."
-          name="Laura Sánchez" role="Estudiante de Informática" /></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- CONTACTO -->
-  <section id="contact" class="bg-white py-20 px-6">
-    <div v-reveal class="max-w-xl mx-auto text-center mb-8">
-      <div class="inline-block bg-primary-100 text-primary-700 px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest mb-4 border border-primary-200">Contacto</div>
-      <h2 class="text-3xl font-black tracking-tighter text-azul-noche">¿Listo para empezar?</h2>
-      <p class="text-gray-500 mt-2 font-medium">Déjanos tus datos y nos pondremos en contacto contigo</p>
-    </div>
-    <div v-reveal="100">
-      <ContactForm />
-    </div>
-  </section>
+  <!-- CTA FINAL: transforma la Formación Dual -->
+  <CtaTransforma @agendar="goToContact()" />
 </template>
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
+import { useRouter } from 'vue-router'
 import dua1 from '@/assets/1_dua.jpeg'
 import dua2 from '@/assets/2_dua.jpg'
 import dua3 from '@/assets/3_dua.jpg'
@@ -359,20 +325,19 @@ import dua30 from '@/assets/dua_30.jpg'
 import dua31 from '@/assets/dua_31.jpg'
 import dua32 from '@/assets/dua_32.jpg'
 import dua33 from '@/assets/dua_33.jpg'
+import centroEducativo from '@/assets/centro_educativo.jpg'
+import consejeriaEducacion from '@/assets/consejeria_educacion.jpg'
 import StatItem        from '@/components/home/StatItem.vue'
-import ValueSection    from '@/components/home/ValueSection.vue'
-import FamiliaChip     from '@/components/home/FamiliaChip.vue'
-import StepCard        from '@/components/home/StepCard.vue'
+import EcosystemDiagram from '@/components/home/EcosystemDiagram.vue'
+import FeatureCard     from '@/components/home/FeatureCard.vue'
+import AgentCard       from '@/components/home/AgentCard.vue'
+import PlatformMockup  from '@/components/home/PlatformMockup.vue'
+import ComoFuncionaModal from '@/components/home/ComoFuncionaModal.vue'
+import CtaTransforma from '@/components/common/CtaTransforma.vue'
 import ServiceItem     from '@/components/home/ServiceItem.vue'
 import ServiceModal    from '@/components/home/ServiceModal.vue'
 import GalleryModal    from '@/components/home/GalleryModal.vue'
-import TestimonialCard from '@/components/home/TestimonialCard.vue'
-import ContactForm     from '@/components/home/ContactForm.vue'
 import {
-  BuildingOffice2Icon,
-  SparklesIcon,
-  AcademicCapIcon,
-  ComputerDesktopIcon,
   BriefcaseIcon,
   PresentationChartBarIcon,
   ClipboardDocumentListIcon,
@@ -384,6 +349,10 @@ import {
   NewspaperIcon,
   UserGroupIcon,
   ArrowTrendingUpIcon,
+  CalendarDaysIcon,
+  LightBulbIcon,
+  ChartBarIcon,
+  ChatBubbleLeftRightIcon,
 } from '@heroicons/vue/24/outline'
 
 // ── Directiva local: scroll-reveal (Intersection Observer) ────────────────────
@@ -418,9 +387,19 @@ const heroSlides = [
 ]
 
 const activeService = ref(null)
+const moreServicesOpen = ref(false)
+
+// La herramienta DuaLab (otra SPA): mismo destino que "Usar DuaLab" del navbar.
+const toolUrl = import.meta.env.VITE_TOOL_URL ?? (import.meta.env.DEV ? 'http://localhost:5173' : 'https://dualab.es')
 
 const galeriaImages = [dua11, dua14, dua21]
 const galleryOpen = ref(false)
+const galleryStart = ref(0)
+// Abre la galería en la foto pulsada (o en la primera desde "Ver más").
+function openGallery(img) {
+  galleryStart.value = img ? Math.max(allGalleryImages.indexOf(img), 0) : 0
+  galleryOpen.value = true
+}
 const allGalleryImages = [
   dua1, dua2, dua3, dua4, dua5, dua6, dua7, dua8,
   dua9, dua10, dua11, dua12, dua13, dua14,
@@ -446,11 +425,22 @@ onMounted(() => { heroTimer = setInterval(nextSlide, 5000) })
 onUnmounted(() => { clearInterval(heroTimer) })
 
 // ── Navigation ─────────────────────────────────────────────────────────────────
-function scrollToComoFunciona() {
-  document.getElementById('como-funciona')?.scrollIntoView({ behavior: 'smooth' })
+const router = useRouter()
+const comoFuncionaOpen = ref(false)
+// "Solicitar demo" del modal: misma acción que el del hero (página de contacto).
+function onComoFuncionaDemo() {
+  comoFuncionaOpen.value = false
+  goToContact()
 }
-function scrollToContact() {
-  document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })
+
+// Todos los "Solicitar demo", "Contactar"… llevan a /contacto; con `tipo`
+// ('centro', 'empresa', 'administracion') se abre con ese agente marcado.
+function goToContact(tipo = '') {
+  router.push({ name: 'contacto', query: tipo ? { tipo } : {} })
+}
+function onModalContact(tipo) {
+  activeService.value = null
+  goToContact(tipo)
 }
 
 // ── Data ───────────────────────────────────────────────────────────────────────
@@ -468,6 +458,175 @@ const alumnosFeatures = [
   { title: 'Experiencia práctica',   desc: 'Aplica tus conocimientos en situaciones reales' },
   { title: 'Portfolio profesional',  desc: 'Construye un portfolio de proyectos reales' },
   { title: 'Oportunidades laborales',desc: 'Conecta con empresas que buscan tu perfil' },
+]
+
+// Funcionalidades clave: cada tarjeta abre el mismo ServiceModal que "Otros
+// servicios", con contenido tomado de los servicios relacionados.
+const DEMO = { label: 'Solicitar demo', tipo: '' }
+const funcionalidades = [
+  {
+    title: 'Gestión de prácticas', icon: CalendarDaysIcon, iconClass: 'text-centros',
+    desc: 'Publicación de ofertas, asignación y seguimiento en un único entorno.',
+    modal: {
+      badge: 'Funcionalidad clave', icon: CalendarDaysIcon, image: dua24,
+      title: 'Gestión de prácticas',
+      description: 'Centraliza la **gestión de las prácticas de FP Dual**: publicación de ofertas, asignación del alumnado y seguimiento en un único entorno.',
+      highlights: [
+        { title: 'Procedimientos eficientes', desc: 'Diseñamos los flujos de trabajo necesarios para implantar la dual.' },
+        { title: 'Planificación estratégica', desc: 'Diseño y organización de cada etapa del proyecto.' },
+        { title: 'Evaluación continua', desc: 'Sistemas de seguimiento que garantizan una implementación sostenible.' },
+      ],
+      contact: DEMO,
+    },
+  },
+  {
+    title: 'Seguimiento del alumnado', icon: UserGroupIcon, iconClass: 'text-alumnos',
+    desc: 'Evolución, tutorías y progreso en tiempo real.',
+    modal: {
+      badge: 'Funcionalidad clave', icon: UserGroupIcon, image: dua19,
+      title: 'Seguimiento del alumnado',
+      description: 'Sigue la **evolución de cada estudiante**: tutorías, progreso y resultados en tiempo real, con orientación hacia sus oportunidades formativas y laborales.',
+      highlights: [
+        { title: 'Seguimiento real', desc: 'Mide el progreso de tus estudiantes en tiempo real.' },
+        { title: 'Orientación profesional', desc: 'Guiamos al alumnado hacia oportunidades alineadas con su perfil.' },
+        { title: 'Portfolio profesional', desc: 'Cada reto resuelto suma a un portfolio de proyectos reales.' },
+      ],
+      contact: DEMO,
+    },
+  },
+  {
+    title: 'Conexión con empresas', icon: BriefcaseIcon, iconClass: 'text-empresas',
+    desc: 'Captación de empresas, gestión de convenios y colaboración continua.',
+    modal: {
+      badge: 'Funcionalidad clave', icon: BriefcaseIcon, image: dua20,
+      title: 'Conexión con empresas',
+      description: 'Captamos y acompañamos a las **empresas colaboradoras**: prospección, convenios y formación de sus tutores para una colaboración continua.',
+      highlights: [
+        { title: 'Prospección efectiva', desc: 'Prospección de empresas para proyectos educativos en varias comunidades autónomas.' },
+        { title: 'Formación de tutores de empresa', desc: 'Tutores formados en proyectos de FP Dual en todo el territorio español.' },
+        { title: 'Red de empresas', desc: 'Facilita prácticas y empleo para tus alumnos.' },
+      ],
+      contact: DEMO,
+      link: { to: { name: 'empresas' }, label: 'Empresas asociadas' },
+    },
+  },
+  {
+    title: 'Retos y proyectos', icon: LightBulbIcon, iconClass: 'text-administraciones',
+    desc: 'Proyectos reales que conectan talento y necesidades del entorno productivo.',
+    modal: {
+      badge: 'Funcionalidad clave', icon: LightBulbIcon, image: dua18,
+      title: 'Retos y proyectos',
+      description: 'Transformamos **necesidades reales de las empresas** en retos académicos alineados al currículo oficial, gestionados de principio a fin.',
+      highlights: [
+        { title: 'La empresa propone', desc: 'Identifica una fricción o cuello de botella real en su día a día.' },
+        { title: 'La IA lo transforma', desc: 'DuaLab genera un reto académico alineado al currículo oficial.' },
+        { title: 'El alumnado resuelve', desc: 'Gana experiencia práctica mientras aporta valor real a la empresa.' },
+      ],
+      contact: DEMO,
+      link: { to: { name: 'familias' }, label: 'Explorar retos' },
+    },
+  },
+  {
+    title: 'Datos e indicadores', icon: ChartBarIcon, iconClass: 'text-empresas',
+    desc: 'Información clave para la toma de decisiones.',
+    modal: {
+      badge: 'Funcionalidad clave', icon: ChartBarIcon, image: dua33,
+      title: 'Datos e indicadores',
+      description: 'Indicadores y reportes para **analizar, gestionar y alcanzar tus objetivos formativos**, con el respaldo de nuestra consultoría especializada.',
+      highlights: [
+        { title: 'Indicadores y reportes', desc: 'Información siempre actualizada para la toma de decisiones.' },
+        { title: 'Estrategias a medida', desc: 'Planes de transformación adaptados a cada organización.' },
+        { title: 'Acompañamiento estratégico', desc: 'Te ayudamos a analizar, gestionar y alcanzar tus objetivos formativos.' },
+      ],
+      contact: DEMO,
+    },
+  },
+  {
+    title: 'Comunicación y coordinación', icon: ChatBubbleLeftRightIcon, iconClass: 'text-centros',
+    desc: 'Un espacio común para todos los agentes, con comunicaciones ágiles y trazables.',
+    modal: {
+      badge: 'Funcionalidad clave', icon: ChatBubbleLeftRightIcon, image: dua14,
+      title: 'Comunicación y coordinación',
+      description: 'Un **espacio común** para centros educativos, empresas, alumnado y administraciones, con comunicaciones ágiles y trazables.',
+      highlights: [
+        { title: 'Todos los agentes conectados', desc: 'Centros, empresas, alumnado y administraciones en un mismo entorno.' },
+        { title: 'Adaptación al entorno', desc: 'Trabajamos con centros, empresas y administraciones según sus necesidades.' },
+        { title: 'Recursos prácticos', desc: 'Guías y materiales aplicables directamente en el día a día formativo.' },
+      ],
+      contact: DEMO,
+      link: { to: { name: 'noticias' }, label: 'Ver publicaciones y noticias' },
+    },
+  },
+]
+
+const plataformaFeatures = [
+  'Seguimiento en tiempo real',
+  'Gestión documental',
+  'Tutorías y evaluaciones',
+  'Indicadores y reportes',
+  'Comunicación integrada',
+]
+
+// "Una solución para cada agente": la tarjeta muestra lo esencial y "Más
+// información" abre el modal con el contenido de las antiguas secciones
+// Para Empresas / Centros / Alumnos (mismo ServiceModal que los servicios).
+const agentes = [
+  {
+    title: 'Centros Educativos', color: 'centros', image: centroEducativo,
+    desc: 'Mejora la empleabilidad de tus estudiantes.',
+    bullets: ['Gestión integral de la FP Dual', 'Coordinación con empresas', 'Seguimiento del alumnado', 'Acceso a indicadores'],
+    modal: {
+      badge: 'Para Centros Educativos', image: centroEducativo,
+      title: 'Mejora la empleabilidad de tus estudiantes',
+      description: 'Accede a retos actualizados y conecta con empresas que buscan talento. Ofrece formación práctica y relevante para el mercado laboral.',
+      highlights: centrosFeatures,
+      contact: { label: 'Solicitar demo', tipo: 'centro' },
+      link: { to: { name: 'centros' }, label: 'Centros asociados' },
+    },
+  },
+  {
+    title: 'Empresas', color: 'empresas', image: dua32,
+    desc: 'Identifica y atrae talento cualificado.',
+    bullets: ['Acceso a talento cualificado', 'Plantea retos y proyectos', 'Participación en la formación', 'Refuerza la marca empleadora'],
+    modal: {
+      badge: 'Para Empresas', image: dua32,
+      title: 'Identifica y atrae talento cualificado',
+      description: 'Propón retos reales y encuentra candidatos con habilidades demostradas. Conecta con centros educativos para formar a los profesionales que necesitas.',
+      highlights: empresasFeatures,
+      contact: { label: 'Contactar ahora', tipo: 'empresa' },
+      link: { to: { name: 'empresas' }, label: 'Empresas asociadas' },
+    },
+  },
+  {
+    // id: destino del enlace "Alumnos" del navbar (#para-alumnos)
+    id: 'para-alumnos',
+    title: 'Alumnado', color: 'alumnos', image: dua4,
+    desc: 'Desarrolla habilidades que importan.',
+    bullets: ['Encuentra prácticas', 'Participa en retos', 'Desarrolla tus competencias', 'Conecta con empresas'],
+    modal: {
+      badge: 'Para Alumnos', image: dua4,
+      title: 'Desarrolla habilidades que importan',
+      description: 'Resuelve retos reales de empresas, construye tu portfolio y destaca en tu carrera. Aprende haciendo y demuestra tu valía.',
+      highlights: alumnosFeatures,
+      link: { to: { name: 'familias' }, label: 'Explorar retos' },
+    },
+  },
+  {
+    title: 'Administraciones', color: 'administraciones', image: consejeriaEducacion,
+    desc: 'Impulsa y haz crecer la Formación Dual.',
+    bullets: ['Impulso de la Formación Dual', 'Gestión de programas', 'Monitorización del impacto', 'Facilita la colaboración'],
+    modal: {
+      badge: 'Para Administraciones', image: consejeriaEducacion,
+      title: 'Impulsa la Formación Dual en tu territorio',
+      description: 'Coordina **programas de FP Dual**, mide su impacto y facilita la colaboración entre centros educativos y empresas desde un mismo entorno.',
+      highlights: [
+        { title: 'Gestión de programas',      desc: 'Visión conjunta de centros, empresas y alumnado participantes.' },
+        { title: 'Monitorización del impacto', desc: 'Indicadores para evaluar y mejorar la Formación Dual.' },
+        { title: 'Colaboración entre agentes', desc: 'Un espacio común para coordinar a todo el ecosistema.' },
+      ],
+      link: { to: { name: 'contacto' }, label: 'Contactar' },
+    },
+  },
 ]
 
 const serviciosItems = [
@@ -594,11 +753,6 @@ const serviciosItems = [
   },
 ]
 
-const quickFamilias = [
-  { slug: 'administracion-gestion',    label: 'Administración y Gestión',    icon: BriefcaseIcon },
-  { slug: 'comercio-marketing',        label: 'Comercio y Marketing',        icon: PresentationChartBarIcon },
-  { slug: 'informatica-comunicaciones', label: 'Informática y Comunicaciones', icon: ComputerDesktopIcon },
-]
 </script>
 
 <style scoped>
@@ -631,6 +785,22 @@ const quickFamilias = [
 .hero-btns {
   animation: heroFadeUp 1.1s cubic-bezier(0.16, 1, 0.3, 1) both;
   animation-delay: 1.45s;
+}
+
+/* ── Formas del diseño ───────────────────────────────────────────────────── */
+.blob-image {
+  clip-path: url(#blob-shape);
+}
+
+/* ── "Más servicios": despliegue suave ──────────────────────────────────── */
+.expand-enter-active,
+.expand-leave-active {
+  transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.expand-enter-from,
+.expand-leave-to {
+  opacity: 0;
+  transform: translateY(-8px);
 }
 
 /* ── Botón CTA: salto periódico para llamar la atención ─────────────────── */

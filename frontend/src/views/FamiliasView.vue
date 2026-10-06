@@ -24,6 +24,9 @@
       <p class="text-sm text-gray-500 mb-8">Explora los retos organizados por áreas de conocimiento</p>
 
       <p v-if="loading" class="text-gray-400 text-sm">Cargando…</p>
+      <p v-else-if="loadError" class="text-gray-500 text-sm">
+        No hemos podido cargar los retos en este momento. Inténtalo de nuevo más tarde.
+      </p>
       <p v-else-if="!familias.length" class="text-gray-400 text-sm">
         Todavía no hay retos publicados en el escaparate.
       </p>
@@ -42,6 +45,16 @@
           </div>
         </div>
       </div>
+
+      <!-- Más familias en camino -->
+      <div class="mt-14 rounded-2xl bg-primary-50 border border-primary-100 p-8">
+        <h2 class="text-lg font-bold text-azul-noche">Más familias <span class="text-primary-600">próximamente</span></h2>
+        <p class="text-sm text-gray-500 mt-1 mb-6">Estamos trabajando para traerte más familias profesionales.</p>
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+          <FamiliaCard v-for="f in familiasProximamente" :key="f.slug"
+                       :nombre="f.nombre" :icon="familiaIcon(f.nombre)" proximamente />
+        </div>
+      </div>
     </div>
   </section>
 </template>
@@ -49,17 +62,14 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import microretosPublicApi from '@/services/microretosPublicApi'
-import {
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  ComputerDesktopIcon,
-  BriefcaseIcon,
-  PresentationChartBarIcon,
-  BookOpenIcon,
-} from '@heroicons/vue/24/outline'
+import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/vue/24/outline'
+import FamiliaCard from '@/components/home/FamiliaCard.vue'
+import { familiasProximamente } from '@/data/familias'
+import { familiaIcon } from '@/data/familiaIcons'
 
 const familias = ref([])
 const loading  = ref(true)
+const loadError = ref(false)
 
 onMounted(async () => {
   try {
@@ -67,17 +77,10 @@ onMounted(async () => {
     familias.value = data.data ?? data
   } catch {
     familias.value = []
+    loadError.value = true
   } finally {
     loading.value = false
   }
 })
 
-const FAMILIA_ICONS = {
-  'Administración y Gestión':       BriefcaseIcon,
-  'Comercio y Marketing':           PresentationChartBarIcon,
-  'Informática y Comunicaciones':   ComputerDesktopIcon,
-}
-function familiaIcon(nombre) {
-  return FAMILIA_ICONS[nombre] ?? BookOpenIcon
-}
 </script>

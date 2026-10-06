@@ -10,3 +10,10 @@ Artisan::command('inspire', function () {
 
 Schedule::command('sanctum:prune-expired --hours=168')->weekly();
 Schedule::command('queue:prune-failed --hours=48')->daily();
+
+// Hosting compartido (Hostinger) sin workers persistentes: el cron
+// `* * * * * php artisan schedule:run` vacía la cola (correos del formulario
+// de contacto) cada minuto.
+Schedule::command('queue:work --stop-when-empty --tries=3 --max-time=50')
+    ->everyMinute()
+    ->withoutOverlapping();
