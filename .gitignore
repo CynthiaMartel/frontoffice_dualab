@@ -2,3 +2,7 @@
 
 # Contiene SSH_HOST/SSH_USER/SSH_PORT reales del servidor — nunca versionar
 /deploy.sh
+
+# Diseños de referencia (maquetas PNG y formularios PDF) — no se versionan
+/*.pdf
+/*.png
