@@ -34,6 +34,8 @@ class ContactoRequest extends FormRequest
             'accion'    => ['required', Rule::in(Op::ACCIONES)],
             'apellidos' => ['required', 'string', 'max:120'],
             'telefono'  => ['required', 'string', 'max:20'],
+            // Comentarios o peticiones libres, en todos los agentes (va a `datos`).
+            'comentarios' => ['nullable', 'string', 'max:2000'],
         ]);
 
         return $rules + match ($this->input('tipo')) {

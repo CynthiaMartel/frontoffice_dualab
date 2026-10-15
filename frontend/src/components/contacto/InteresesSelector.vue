@@ -1,10 +1,19 @@
 <template>
-  <!-- Intereses (selección múltiple). variante 'check': lista de casillas (empresa);
-       'tarjetas': tarjetas con icono (alumno, administración). -->
+  <!-- Intereses (selección múltiple). variante 'chips': píldoras compactas (empresa,
+       administración); 'check': lista de casillas; 'tarjetas': tarjetas con icono (alumno). -->
   <fieldset>
     <legend class="sr-only">Intereses</legend>
-    <div v-if="variante === 'check'" class="grid sm:grid-cols-2 gap-x-6 gap-y-2">
-      <label v-for="o in opciones" :key="o.value" class="flex items-center gap-2 text-sm text-gray-700 cursor-pointer">
+    <div v-if="variante === 'chips'" class="flex flex-wrap gap-2">
+      <label v-for="o in opciones" :key="o.value"
+             class="inline-flex items-center gap-1.5 min-h-9 rounded-full border px-3 py-1.5 text-xs font-semibold cursor-pointer transition-colors has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-primary-200"
+             :class="model.includes(o.value) ? 'border-primary-500 bg-primary-50 text-azul-noche' : 'border-gray-200 text-gray-600 hover:border-primary-200'">
+        <input type="checkbox" class="sr-only" :value="o.value" v-model="model" />
+        <svg v-if="model.includes(o.value)" class="w-3 h-3 text-primary-600 shrink-0" viewBox="0 0 10 10" fill="none" aria-hidden="true"><path d="M1.5 5l2.5 2.5L8.5 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        {{ o.label }}
+      </label>
+    </div>
+    <div v-else-if="variante === 'check'" class="grid sm:grid-cols-2 gap-x-6 gap-y-1.5">
+      <label v-for="o in opciones" :key="o.value" class="flex items-center gap-2 min-h-6 text-xs text-gray-700 cursor-pointer">
         <input type="checkbox" class="accent-primary-600 w-4 h-4" :value="o.value" v-model="model" />
         {{ o.label }}
       </label>

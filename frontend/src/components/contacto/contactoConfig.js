@@ -11,7 +11,7 @@ import {
   GlobeEuropeAfricaIcon,
   BriefcaseIcon,
 } from '@heroicons/vue/24/outline'
-import centroEducativo from '@/assets/centro_educativo.jpg'
+import dua17 from '@/assets/dua_17.jpg'
 import dua25 from '@/assets/dua_25.jpg'
 import dua4 from '@/assets/4_dua.jpeg'
 import dua31 from '@/assets/dua_31.jpg'
@@ -29,9 +29,8 @@ export const AGENTES = {
       { icon: Cog6ToothIcon, titulo: 'Te acompañamos', desc: 'En el proceso de registro e implantación.' },
       { icon: LightBulbIcon, titulo: 'Sin compromiso', desc: 'Conoce DuaLab y cómo puede ayudaros.' },
     ],
-    imagen: centroEducativo,
+    imagen: dua17,
     rotulo: ['Un ecosistema', 'que genera', 'oportunidades'],
-    registro: 'Registrarme como centro',
     pasos: ['Tipo de organización', 'Tus datos', 'Centro educativo', 'Confirmación'],
   },
   empresa: {
@@ -47,7 +46,6 @@ export const AGENTES = {
     ],
     imagen: dua25,
     rotulo: ['Empresas', 'que apuestan', 'por el talento'],
-    registro: 'Registrarme como empresa',
     pasos: ['Tipo de organización', 'Tus datos', 'Empresa', 'Confirmación'],
   },
   alumno: {
@@ -66,7 +64,6 @@ export const AGENTES = {
     ],
     imagen: dua4,
     rotulo: ['Ideas de hoy', 'para el mundo', 'de mañana'],
-    registro: 'Registrarme como alumno/a',
     pasos: ['Tipo de organización', 'Tus datos', 'Información académica', 'Intereses', 'Confirmación'],
   },
   administracion: {
@@ -82,7 +79,6 @@ export const AGENTES = {
     ],
     imagen: dua31,
     rotulo: ['Una FP Dual', 'que genera oportunidades', 'en tu territorio'],
-    registro: 'Registrarme como entidad',
     pasos: ['Tipo de organización', 'Tus datos', 'Información institucional', 'Intereses', 'Confirmación'],
   },
 }

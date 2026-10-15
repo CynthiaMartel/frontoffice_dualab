@@ -14,7 +14,7 @@
       pattern="[0-9 ]{9,11}"
       title="9 dígitos"
       placeholder="612 345 678"
-      class="flex-1 min-w-0 px-3.5 py-2.5 text-sm text-gray-900 outline-none"
+      class="flex-1 min-w-0 px-3.5 py-1.5 text-xs text-gray-900 outline-none"
       required
     />
   </div>

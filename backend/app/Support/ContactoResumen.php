@@ -31,6 +31,7 @@ final class ContactoResumen
         'familias' => 'Familias profesionales', 'familia' => 'Familia profesional',
         'fecha_nacimiento' => 'Fecha de nacimiento', 'centro_educativo' => 'Centro educativo',
         'ciclo' => 'Ciclo formativo', 'curso' => 'Curso', 'intereses' => 'Intereses', 'mensaje' => 'Mensaje',
+        'comentarios' => 'Comentarios',
     ];
 
     private const VALORES = [

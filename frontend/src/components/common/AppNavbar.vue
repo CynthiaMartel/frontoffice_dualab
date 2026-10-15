@@ -12,7 +12,7 @@
 
       <!-- Logo: separado de la D para que se vea completo el aspa azul, y con
            margen propio para no quedar pegado al resto de enlaces del topbar -->
-      <RouterLink :to="{ name: 'home' }" class="logo-animate group flex items-center gap-1 mr-6 shrink-0">
+      <RouterLink :to="{ name: 'home' }" class="logo-animate group flex items-center gap-1 mr-3 shrink-0">
         <img
           src="@/assets/logo_colores.png"
           alt="Logo DuaLab"
@@ -35,8 +35,9 @@
 
       <!-- Desktop nav (orden del diseño Dualab Web_HOME): DuaLab, Centros Educativos,
            Empresas, Alumnado, Entidades, Contacto; luego los dos botones destacados
-           (Conéctate / Solicita tu demo). Desde lg: con 6 enlaces no cabe en md. -->
-      <div class="hidden lg:flex items-center gap-5">
+           (Conéctate / Solicita tu demo). Desde xl: logo + 6 enlaces + 2 botones no caben en lg
+           (a 1024–1279 px desbordaba la pantalla). -->
+      <div class="hidden xl:flex items-center gap-3.5">
         <template v-for="(link, i) in navLinks" :key="link.name">
           <RouterLink
             v-if="link.to"
@@ -68,19 +69,19 @@
              enlace externo, nunca RouterLink) y Solicita tu demo (/contacto). -->
         <a
           :href="`${toolUrl}/login`"
-          class="nav-link inline-flex items-center gap-2 px-5 py-2.5 bg-white text-primary-700 border-2 border-primary-600 rounded-full font-black text-xs uppercase tracking-widest hover:bg-primary-600 hover:text-white transition-all duration-300 hover:-translate-y-0.5 active:scale-95 whitespace-nowrap"
+          class="nav-link inline-flex items-center gap-2 px-4 py-2.5 bg-white text-primary-700 border-2 border-primary-600 rounded-full font-black text-xs uppercase tracking-wider hover:bg-primary-600 hover:text-white transition-all duration-300 hover:-translate-y-0.5 active:scale-95 whitespace-nowrap"
           :style="{ animationDelay: `${180 + (navLinks.length + 1) * 100}ms` }"
         >Conéctate</a>
         <RouterLink
           :to="{ name: 'contacto' }"
-          class="nav-link inline-flex items-center gap-2 px-5 py-2.5 bg-primary-600 text-white rounded-full font-black text-xs uppercase tracking-widest shadow-[0_4px_14px_rgba(48,114,170,0.3)] hover:shadow-[0_8px_20px_rgba(48,114,170,0.4)] hover:bg-primary-700 transition-all duration-300 hover:-translate-y-0.5 active:scale-95 whitespace-nowrap"
+          class="nav-link inline-flex items-center gap-2 px-4 py-2.5 bg-primary-600 text-white rounded-full font-black text-xs uppercase tracking-widest shadow-[0_4px_14px_rgba(48,114,170,0.3)] hover:shadow-[0_8px_20px_rgba(48,114,170,0.4)] hover:bg-primary-700 transition-all duration-300 hover:-translate-y-0.5 active:scale-95 whitespace-nowrap"
           :style="{ animationDelay: `${180 + (navLinks.length + 2) * 100}ms` }"
         >Solicita tu demo</RouterLink>
       </div>
 
       <!-- Hamburger (mobile) -->
       <button
-        class="lg:hidden flex flex-col items-center justify-center w-9 h-9 gap-[5px] rounded-lg hover:bg-gray-100 transition-colors"
+        class="xl:hidden flex flex-col items-center justify-center w-9 h-9 gap-[5px] rounded-lg hover:bg-gray-100 transition-colors"
         :aria-label="menuOpen ? 'Cerrar menú' : 'Abrir menú'"
         @click="menuOpen = !menuOpen"
       >
@@ -101,7 +102,7 @@
 
     <!-- Mobile menu panel -->
     <Transition name="mobile-menu">
-      <div v-if="menuOpen" class="lg:hidden border-t border-gray-100 bg-white shadow-lg">
+      <div v-if="menuOpen" class="xl:hidden border-t border-gray-100 bg-white shadow-lg">
         <div class="max-w-6xl mx-auto px-6 py-4 flex flex-col">
           <template v-for="link in navLinks" :key="link.name">
             <RouterLink
