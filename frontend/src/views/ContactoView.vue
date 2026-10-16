@@ -3,12 +3,8 @@
        ALUMNOS / ADMINISTRACIONES"). Por defecto, centro educativo; ?tipo= lo cambia. -->
   <section ref="seccionForm" class="bg-superficie pt-8 pb-8 md:pt-12 md:pb-12 px-4 sm:px-6 scroll-mt-16">
     <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-[5fr_7fr] gap-6 md:gap-8 lg:gap-12">
-      <!-- Escritorio: los textos de cada agente se apilan en la misma celda y la columna no
-           salta al cambiar de agente. Móvil/tablet: solo el del agente activo. -->
-      <div class="grid grid-cols-1 min-w-0">
-        <ContactoHero v-for="t in TIPOS_DISPONIBLES" :key="t" :agente="AGENTES[t]" class="[grid-area:1/1]"
-                      :class="{ 'max-lg:hidden lg:invisible': t !== tipo }" :aria-hidden="t !== tipo || undefined" />
-      </div>
+      <!-- Columna izquierda: no cambia de tamaño al cambiar de agente (ver ContactoHero) -->
+      <ContactoHero :agentes="AGENTES_DISPONIBLES" :activo="tipo" class="min-w-0" />
 
       <div class="min-w-0 bg-white rounded-2xl shadow-[0_10px_40px_rgba(23,40,62,0.08)] p-4 sm:p-5 lg:px-6 lg:py-5 form-compacto">
         <ContactoStepper :pasos="agente.pasos" :completados="completados" class="mb-4" />
@@ -320,6 +316,7 @@ const MENSAJES_EXITO = {
 // Solo agentes disponibles (no bloqueados); cualquier otro valor → centro.
 // Agentes que se pueden elegir (los bloqueados no tienen formulario)
 const TIPOS_DISPONIBLES = TIPOS.filter((t) => !AGENTES[t].bloqueado)
+const AGENTES_DISPONIBLES = Object.fromEntries(TIPOS_DISPONIBLES.map((t) => [t, AGENTES[t]]))
 const tipoValido = (t) => (AGENTES[t] && !AGENTES[t].bloqueado ? t : null)
 const tipo = ref(tipoValido(route.query.tipo) ?? 'centro')
 const agente = computed(() => AGENTES[tipo.value])
