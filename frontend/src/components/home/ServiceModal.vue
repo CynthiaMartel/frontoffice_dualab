@@ -10,7 +10,7 @@
       >
         <div class="absolute inset-0 bg-gray-900/60 backdrop-blur-sm" @click="$emit('close')" />
 
-        <div class="relative bg-white rounded-2xl shadow-2xl max-w-3xl w-full max-h-[88vh] overflow-y-auto">
+        <div class="relative bg-white rounded-[2rem] shadow-2xl max-w-3xl w-full max-h-[88vh] overflow-y-auto">
           <button
             type="button"
             class="absolute top-4 right-4 z-10 w-9 h-9 flex items-center justify-center rounded-full bg-white/90 text-gray-500 hover:text-gray-700 hover:bg-white shadow transition-colors"
@@ -22,7 +22,7 @@
             </svg>
           </button>
 
-          <div class="grid md:grid-cols-2 gap-8 items-center p-8">
+          <div class="grid md:grid-cols-2 gap-8 items-center p-5 sm:p-8">
             <div>
               <span class="inline-flex items-center gap-1.5 text-xs font-black uppercase tracking-widest text-primary-700 bg-primary-100 border border-primary-200 px-4 py-1.5 rounded-full mb-4">
                 <component v-if="service.icon" :is="service.icon" class="w-3.5 h-3.5" />
@@ -40,7 +40,7 @@
 
               <ul class="mb-5 space-y-2">
                 <li v-for="h in service.highlights" :key="h.title" class="flex items-start gap-2.5">
-                  <div class="w-4.5 h-4.5 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <div class="w-[18px] h-[18px] rounded-full bg-green-100 flex items-center justify-center flex-shrink-0 mt-0.5">
                     <svg width="9" height="9" viewBox="0 0 10 10" fill="none">
                       <path d="M1.5 5l2.5 2.5L8.5 2" stroke="#16a34a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
@@ -73,7 +73,7 @@
 
             <div>
               <img :src="service.image" :alt="service.title"
-                   class="w-full h-56 md:h-64 object-cover rounded-xl" loading="lazy" />
+                   class="w-full h-40 sm:h-56 md:h-64 object-cover rounded-xl" loading="lazy" />
             </div>
           </div>
         </div>

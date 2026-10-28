@@ -26,6 +26,18 @@ const routes = [
     component: () => import('@/views/CentrosView.vue'),
   },
   {
+    // Path distinto (no /alumnado a secas): la herramienta ya usa /alumnado/...
+    // para su gestión interna — mismo dominio, tienen que no chocar.
+    path: '/para-alumnado',
+    name: 'alumnos',
+    component: () => import('@/views/AlumnadoView.vue'),
+  },
+  {
+    path: '/entidades',
+    name: 'entidades',
+    component: () => import('@/views/EntidadesView.vue'),
+  },
+  {
     path: '/familias',
     name: 'familias',
     component: () => import('@/views/FamiliasView.vue'),

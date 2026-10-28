@@ -84,7 +84,7 @@
 
   <!-- ECOSISTEMA -->
   <section id="ecosistema" class="bg-white py-20 px-6">
-    <div class="max-w-6xl mx-auto grid lg:grid-cols-[5fr_7fr] gap-14 items-center">
+    <div class="max-w-6xl mx-auto grid xl:grid-cols-[4fr_8fr] gap-14 items-center">
       <div v-reveal>
         <p class="section-eyebrow">Un ecosistema colaborativo</p>
         <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight text-azul-noche leading-tight">
@@ -507,7 +507,7 @@ const funcionalidades = [
         { title: 'Red de empresas', desc: 'Facilita prácticas y empleo para tus alumnos.' },
       ],
       contact: DEMO,
-      link: { to: { name: 'empresas' }, label: 'Empresas asociadas' },
+      link: { to: { name: 'empresas' }, label: 'Empresas' },
     },
   },
   {
@@ -581,7 +581,7 @@ const agentes = [
       description: 'Accede a retos actualizados y conecta con empresas que buscan talento. Ofrece formación práctica y relevante para el mercado laboral.',
       highlights: centrosFeatures,
       contact: { label: 'Solicitar demo', tipo: 'centro' },
-      link: { to: { name: 'centros' }, label: 'Centros asociados' },
+      link: { to: { name: 'centros' }, label: 'Centros' },
     },
   },
   {
@@ -594,7 +594,7 @@ const agentes = [
       description: 'Propón retos reales y encuentra candidatos con habilidades demostradas. Conecta con centros educativos para formar a los profesionales que necesitas.',
       highlights: empresasFeatures,
       contact: { label: 'Contactar ahora', tipo: 'empresa' },
-      link: { to: { name: 'empresas' }, label: 'Empresas asociadas' },
+      link: { to: { name: 'empresas' }, label: 'Empresas' },
     },
   },
   {
@@ -608,7 +608,7 @@ const agentes = [
       title: 'Desarrolla habilidades que importan',
       description: 'Resuelve retos reales de empresas, construye tu portfolio y destaca en tu carrera. Aprende haciendo y demuestra tu valía.',
       highlights: alumnosFeatures,
-      link: { to: { name: 'familias' }, label: 'Explorar retos' },
+      link: { to: { name: 'alumnos' }, label: 'Alumnado' },
     },
   },
   {
@@ -624,7 +624,7 @@ const agentes = [
         { title: 'Monitorización del impacto', desc: 'Indicadores para evaluar y mejorar la Formación Dual.' },
         { title: 'Colaboración entre agentes', desc: 'Un espacio común para coordinar a todo el ecosistema.' },
       ],
-      link: { to: { name: 'contacto' }, label: 'Contactar' },
+      link: { to: { name: 'entidades' }, label: 'Administraciones' },
     },
   },
 ]

@@ -144,11 +144,7 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
 import LogoLegend from '@/components/common/LogoLegend.vue'
-
-const router = useRouter()
-const route  = useRoute()
 
 const scrolled  = ref(false)
 const menuOpen  = ref(false)
@@ -164,21 +160,13 @@ function onScroll() {
 onMounted(() => window.addEventListener('scroll', onScroll, { passive: true }))
 onUnmounted(() => window.removeEventListener('scroll', onScroll))
 
-function goToAlumnos() {
-  if (route.name === 'home') {
-    document.getElementById('para-alumnos')?.scrollIntoView({ behavior: 'smooth' })
-  } else {
-    router.push({ name: 'home', hash: '#para-alumnos' })
-  }
-}
-
 // pending: enlaces pendientes de su nueva vista (se muestran sin navegar).
 const navLinks = [
   { label: 'DuaLab',             name: 'home',      to: { name: 'home' } },
   { label: 'Centros Educativos', name: 'centros',   to: { name: 'centros'  } },
   { label: 'Empresas',           name: 'empresas',  to: { name: 'empresas' } },
-  { label: 'Alumnado',           name: 'alumnos',   action: goToAlumnos },
-  { label: 'Entidades',          name: 'entidades', pending: true },
+  { label: 'Alumnado',           name: 'alumnos',   to: { name: 'alumnos'  } },
+  { label: 'Entidades',          name: 'entidades', to: { name: 'entidades' } },
   { label: 'Contacto',           name: 'contacto',  to: { name: 'contacto' } },
 ]
 </script>

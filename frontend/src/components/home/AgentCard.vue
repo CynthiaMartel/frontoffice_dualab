@@ -16,7 +16,7 @@
       </ul>
       <button
         type="button"
-        class="group mt-auto inline-flex items-center gap-2 font-heading font-bold text-sm transition-colors"
+        class="group mt-auto self-start inline-flex items-center gap-2 py-2 font-heading font-bold text-sm transition-colors"
         :class="theme.link"
         @click="$emit('more')"
       >

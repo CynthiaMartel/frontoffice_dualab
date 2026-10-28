@@ -93,8 +93,8 @@ const columns = [
     links: [
       { label: 'Centros',          to: { name: 'centros' } },
       { label: 'Empresas',         to: { name: 'empresas' } },
-      { label: 'Alumnado',         to: { name: 'home', hash: '#para-alumnos' } },
-      { label: 'Administraciones', to: { name: 'contacto' } },
+      { label: 'Alumnado',         to: { name: 'alumnos' } },
+      { label: 'Administraciones', to: { name: 'entidades' } },
     ],
   },
   {
