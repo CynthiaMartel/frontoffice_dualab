@@ -424,7 +424,8 @@ async function enviar(e) {
       errores.value = Object.fromEntries(Object.entries(errs).map(([k, v]) => [k.split('.')[0], v[0]]))
       errorGeneral.value = 'Revisa los campos marcados.'
     } else if (error.response?.status === 429) {
-      errorGeneral.value = 'Has enviado demasiadas solicitudes. Inténtalo de nuevo en un minuto.'
+      // 429 viene del throttle por IP (1 min) o del límite por email (3/hora): no prometer un minuto
+      errorGeneral.value = 'Has enviado varias solicitudes en poco tiempo. Inténtalo de nuevo dentro de una hora.'
     } else {
       errorGeneral.value = 'No hemos podido enviar tu solicitud. Inténtalo de nuevo más tarde.'
     }

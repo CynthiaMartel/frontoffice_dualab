@@ -33,6 +33,9 @@
     <p v-if="success" class="text-primary-600 text-sm text-center mt-3 font-medium">
       ✓ Solicitud recibida. Nos pondremos en contacto pronto.
     </p>
+    <p v-if="errorGeneral" class="text-red-600 text-sm text-center mt-3 font-medium" role="alert">
+      {{ errorGeneral }}
+    </p>
   </form>
 </template>
 
@@ -48,16 +51,27 @@ const form    = reactive({ nombre: '', email: '', tipo: props.tipo, telefono: ''
 watch(() => props.tipo, (t) => { form.tipo = t })
 const loading = ref(false)
 const success = ref(false)
+const errorGeneral = ref('')
 
 async function submit() {
   loading.value = true
+  success.value = false
+  errorGeneral.value = ''
   try {
     await ensureCsrfCookie()
     await api.post('/contacto', form)
     success.value = true
     Object.assign(form, { nombre: '', email: '', tipo: '', telefono: '' })
-  } catch (e) {
-    alert('Error al enviar. Inténtalo de nuevo.')
+  } catch (error) {
+    const status = error.response?.status
+    if (status === 422) {
+      errorGeneral.value = 'Revisa los datos del formulario.'
+    } else if (status === 429) {
+      // Mismo criterio que ContactoView: throttle por IP o límite de 3 envíos/hora por email
+      errorGeneral.value = 'Has enviado varias solicitudes en poco tiempo. Inténtalo de nuevo dentro de una hora.'
+    } else {
+      errorGeneral.value = 'No hemos podido enviar tu solicitud. Inténtalo de nuevo más tarde.'
+    }
   } finally {
     loading.value = false
   }
