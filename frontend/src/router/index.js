@@ -154,7 +154,7 @@ router.beforeEach(async (to) => {
   if (!sesion.conSesion) return { name: 'panel-acceso', query: { redirect: to.fullPath } }
   if (!sesion.puedeEntrar) return { name: 'panel-acceso', query: { sinPermiso: '1' } }
   if (!sesion.puede(to.meta.roles)) return sesion.inicio
-  document.title = `${to.meta.titulo ?? 'Panel'} · Gestión web · DuaLab`
+  document.title = `${to.meta.titulo ?? 'Panel'} · Gestión web`
 })
 
 export default router
