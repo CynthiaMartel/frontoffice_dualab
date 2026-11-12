@@ -6,12 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Contacto extends Model
 {
-    protected $fillable = ['nombre', 'apellidos', 'email', 'tipo', 'accion', 'telefono', 'cargo', 'datos'];
+    public const ESTADOS = ['nuevo', 'leido', 'archivado'];
+
+    // `estado` y `leido_en` solo los cambia el panel (forceFill en ContactoAdminService).
+    protected $fillable = ['nombre', 'apellidos', 'email', 'tipo', 'accion', 'telefono', 'cargo', 'datos', 'pagina_origen'];
 
     protected function casts(): array
     {
         return [
-            'datos' => 'array',
+            'datos'    => 'array',
+            'leido_en' => 'datetime',
         ];
     }
 }

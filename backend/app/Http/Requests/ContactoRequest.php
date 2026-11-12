@@ -23,6 +23,8 @@ class ContactoRequest extends FormRequest
                 ? array_diff(Op::TIPOS, Op::TIPOS_BLOQUEADOS)
                 : ['empresa', 'centro', 'alumno'])],
             'telefono' => ['nullable', 'string', 'max:20'],
+            // Ruta de la web desde la que se envía (bandeja de formularios del panel).
+            'pagina_origen' => ['nullable', 'string', 'max:255', 'regex:/^\/[^\s]*$/'],
         ];
 
         if (! $this->filled('accion')) {
@@ -112,7 +114,7 @@ class ContactoRequest extends FormRequest
     public function datosComunes(): array
     {
         return collect($this->validated())
-            ->only(['nombre', 'apellidos', 'email', 'tipo', 'accion', 'telefono', 'cargo'])
+            ->only(['nombre', 'apellidos', 'email', 'tipo', 'accion', 'telefono', 'cargo', 'pagina_origen'])
             ->all();
     }
 
@@ -120,7 +122,7 @@ class ContactoRequest extends FormRequest
     public function datosEspecificos(): ?array
     {
         $especificos = collect($this->validated())
-            ->except(['nombre', 'apellidos', 'email', 'tipo', 'accion', 'telefono', 'cargo'])
+            ->except(['nombre', 'apellidos', 'email', 'tipo', 'accion', 'telefono', 'cargo', 'pagina_origen'])
             ->all();
 
         return $especificos ?: null;

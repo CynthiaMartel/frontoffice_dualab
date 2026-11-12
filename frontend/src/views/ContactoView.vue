@@ -272,6 +272,7 @@ import {
   CheckCircleIcon, LockClosedIcon, UserPlusIcon, ArrowRightIcon, InformationCircleIcon, PlayIcon,
 } from '@heroicons/vue/24/outline'
 import api, { ensureCsrfCookie } from '@/services/api'
+import { paginaOrigen } from '@/utils/paginaOrigen'
 import ContactoHero from '@/components/contacto/ContactoHero.vue'
 import CtaTransforma from '@/components/common/CtaTransforma.vue'
 import ContactoStepper from '@/components/contacto/ContactoStepper.vue'
@@ -284,6 +285,7 @@ import {
   PROVINCIAS, MUNICIPIOS, FAMILIAS_FP, MAX_FAMILIAS_CENTRO, SECTORES, TAMANOS, COLABORA,
   CURSOS, TIPOS_ENTIDAD, AMBITOS, INTERESES,
 } from '@/data/contacto'
+import { usePagina } from '@/composables/usePagina'
 
 const route = useRoute()
 const router = useRouter()
@@ -415,7 +417,7 @@ async function enviar(e) {
   enviando.value = true
   try {
     await ensureCsrfCookie()
-    await api.post('/contacto', payload)
+    await api.post('/contacto', { ...payload, pagina_origen: paginaOrigen({ anterior: true }) })
     enviado.value = true
   } catch (error) {
     if (error.response?.status === 422) {
@@ -446,6 +448,9 @@ function reiniciar() {
   enviado.value = false
   accion.value = 'info'
 }
+
+// SEO editable desde el panel de gestión web (config/cms_paginas.php → contacto)
+usePagina('contacto', { titulo: 'Contacto' })
 </script>
 
 <style scoped>
