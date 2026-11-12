@@ -143,6 +143,8 @@ const router = createRouter({
 // llama a /auth/me). Es solo UX: cada endpoint /api/admin lo protege el backend.
 router.beforeEach(async (to) => {
   if (!to.matched.some(r => r.meta.panel)) return
+  // Todo el panel (también el acceso y crear contraseña) se ve como «Gestión web» en la pestaña
+  document.title = 'Gestión web'
   const { usePanelSesion } = await import('@/stores/panelSesion')
   const sesion = usePanelSesion()
   if (!sesion.iniciada) await sesion.init()
@@ -154,7 +156,6 @@ router.beforeEach(async (to) => {
   if (!sesion.conSesion) return { name: 'panel-acceso', query: { redirect: to.fullPath } }
   if (!sesion.puedeEntrar) return { name: 'panel-acceso', query: { sinPermiso: '1' } }
   if (!sesion.puede(to.meta.roles)) return sesion.inicio
-  document.title = `${to.meta.titulo ?? 'Panel'} · Gestión web`
 })
 
 export default router
