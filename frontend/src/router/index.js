@@ -158,4 +158,17 @@ router.beforeEach(async (to) => {
   if (!sesion.puede(to.meta.roles)) return sesion.inicio
 })
 
+// El panel tiene su propio icono en la pestaña (turquesa con «W»): comparte build con la web
+// pública y sin esto se confundiría con ella. Al volver a la web se repone el de la web.
+const iconosWeb = {}
+router.afterEach((to) => {
+  const enPanel = to.matched.some(r => r.meta.panel)
+  for (const [rel, archivo] of [['icon', 'favicon.png'], ['apple-touch-icon', 'apple-touch-icon.png']]) {
+    const enlace = document.querySelector(`link[rel="${rel}"]`)
+    if (!enlace) continue
+    iconosWeb[rel] ??= enlace.getAttribute('href')
+    enlace.setAttribute('href', enPanel ? `${import.meta.env.BASE_URL}gestion-web-icono/${archivo}` : iconosWeb[rel])
+  }
+})
+
 export default router
