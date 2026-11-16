@@ -17,8 +17,23 @@ const avisoTailwind = {
   },
 }
 
+// Identificador de este build: __APP_VERSION__ en el bundle y dist/version.json
+// (composables/useNuevaVersion.js los compara para avisar de un deploy nuevo)
+const APP_VERSION = Date.now().toString(36)
+
+const versionJson = {
+  name: 'version-json',
+  apply: 'build',
+  generateBundle() {
+    this.emitFile({ type: 'asset', fileName: 'version.json', source: JSON.stringify({ version: APP_VERSION }) })
+  },
+}
+
 export default defineConfig({
-  plugins: [vue(), avisoTailwind],
+  plugins: [vue(), avisoTailwind, versionJson],
+  define: {
+    __APP_VERSION__: JSON.stringify(APP_VERSION),
+  },
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
