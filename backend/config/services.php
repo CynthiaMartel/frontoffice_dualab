@@ -35,6 +35,12 @@ return [
         ],
     ],
 
+    // API firmada para DuaLab Central (espacio «Primer contacto»: la bandeja de formularios vista
+    // desde Central). El mismo valor va en el .env de la app DuaLab (FRONTOFFICE_CENTRAL_SECRETO).
+    'central' => [
+        'secreto' => env('CENTRAL_API_SECRETO'),
+    ],
+
     // Biblioteca de medios del panel de gestión web (misma cuenta que la app DuaLab,
     // otra carpeta). Sin estas variables, los archivos se guardan en el disco local.
     'cloudinary' => [

@@ -184,11 +184,10 @@ import { fecha, haceCuanto } from '../utilidades'
 import { NOMBRES_ROLES } from '../roles'
 
 const DESCRIPCION_ROLES = [
-  { rol: 'editor', texto: 'Crea contenido: páginas, noticias (las envía a revisión), medios y SEO. También atiende los formularios.' },
-  { rol: 'contactos', texto: 'Solo atiende los formularios recibidos: los lee, los archiva y los exporta. No toca la web.' },
+  { rol: 'editor', texto: 'Crea contenido: páginas, noticias (las envía a revisión), medios y SEO.' },
   { rol: 'admin', texto: 'Todo lo anterior y además aprueba noticias, cambia apariencia, idiomas, analítica e integraciones, y gestiona el equipo.' },
 ]
-const CLASES_ROL = { admin: 'bg-administraciones-dark/10 text-administraciones-dark', editor: 'bg-sky-50 text-sky-800', contactos: 'bg-violet-50 text-violet-800' }
+const CLASES_ROL = { admin: 'bg-administraciones-dark/10 text-administraciones-dark', editor: 'bg-sky-50 text-sky-800' }
 
 const route = useRoute()
 const avisos = useAvisos()

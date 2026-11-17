@@ -1,6 +1,5 @@
 <template>
-  <CabeceraPanel antetitulo="Formularios" titulo="Integraciones" subtitulo="Envía cada formulario recibido a tu CRM o a tu herramienta de email marketing."
-                 :volver="{ name: 'panel-formularios' }" volver-label="Formularios recibidos" />
+  <CabeceraPanel antetitulo="Contactos" titulo="Integraciones" subtitulo="Envía cada formulario recibido a tu CRM o a tu herramienta de email marketing." />
 
   <div v-if="error" class="gw-tarjeta p-6 text-center">
     <p class="text-sm text-gray-700">{{ error }}</p>

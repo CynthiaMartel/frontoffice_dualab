@@ -103,7 +103,6 @@ function enlace(a) {
     pagina: { name: 'panel-pagina', params: { clave: a.objeto.ref } },
     entrada: { name: 'panel-entrada', params: { id: a.objeto.ref } },
     medio: { name: 'panel-medios' },
-    formulario: { name: 'panel-formularios' },
     usuario: { name: 'panel-usuarios' },
   }[a.objeto.tipo] ?? null
 }

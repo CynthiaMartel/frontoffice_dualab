@@ -8,13 +8,13 @@
 
 return [
 
-    // Roles del panel. Quién aporta qué: el editor crea contenido, «contactos» solo atiende
-    // los formularios y el admin además aprueba, configura y gestiona usuarios.
-    'roles_panel'     => ['admin', 'editor', 'contactos'],
+    // Roles del panel. Quién aporta qué: el editor crea contenido y el admin además aprueba, configura
+    // y gestiona usuarios. Atención al cliente (formularios y correo de info@) ya no es de Gestión web:
+    // es un rol de la app DuaLab que trabaja en DuaLab Central («Primer contacto»), por la API firmada.
+    'roles_panel'     => ['admin', 'editor'],
     'roles_contenido' => ['admin', 'editor'],
-    'roles_contactos' => ['admin', 'editor', 'contactos'],
     'roles_admin'     => ['admin'],
-    'nombres_roles'   => ['admin' => 'Administración', 'editor' => 'Edición', 'contactos' => 'Atención de contactos'],
+    'nombres_roles'   => ['admin' => 'Administración', 'editor' => 'Edición'],
 
     // Buzón al que también llegan los formularios (Hostinger) y su webmail
     'buzon' => [

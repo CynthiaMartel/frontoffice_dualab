@@ -147,13 +147,13 @@ class GestionWebTest extends TestCase
         Contacto::create(['nombre' => 'Ana', 'email' => 'ana@x.com', 'tipo' => 'centro', 'accion' => 'demo', 'pagina_origen' => '/centros']);
         $rapido = Contacto::create(['nombre' => '=HYPERLINK("x")', 'email' => 'b@x.com', 'tipo' => 'empresa']);
 
-        $this->actingAs($admin)->getJson('/api/admin/formularios?formulario=centro')
+        $this->central()->getJson('/api/integraciones/central/formularios?formulario=centro')
             ->assertOk()->assertJsonCount(1, 'data')->assertJsonPath('data.0.formulario', 'centro');
 
-        $this->actingAs($admin)->getJson("/api/admin/formularios/{$rapido->id}")
+        $this->central()->getJson("/api/integraciones/central/formularios/{$rapido->id}")
             ->assertOk()->assertJsonPath('formulario', 'rapido')->assertJsonPath('estado', 'leido');
 
-        $csv = $this->actingAs($admin)->get('/api/admin/formularios/exportar')->assertOk()->streamedContent();
+        $csv = $this->central()->get('/api/integraciones/central/formularios/exportar')->assertOk()->streamedContent();
         $this->assertStringContainsString("'=HYPERLINK", $csv); // fórmula neutralizada
     }
 

@@ -18,15 +18,22 @@
         <p v-if="grupo.titulo" class="nav-grupo">{{ grupo.titulo }}</p>
         <ul class="space-y-0.5">
           <li v-for="item in grupo.items" :key="item.label">
-            <RouterLink :to="item.to" class="nav-item" :class="activo(item) ? 'nav-item--activo' : 'nav-item--reposo'"
+            <!-- Enlace a otra herramienta (p. ej. DuaLab Central): se abre en otra pestaña -->
+            <a v-if="item.href" :href="item.href" target="_blank" rel="noopener" class="nav-item nav-item--reposo">
+              <component :is="item.icono" class="h-5 w-5 shrink-0" aria-hidden="true" />
+              <span class="min-w-0 flex-1">
+                <span class="block truncate">{{ item.label }}</span>
+                <span v-if="item.equivalente" class="block truncate text-xs font-medium opacity-60">{{ item.equivalente }}</span>
+              </span>
+              <ArrowTopRightOnSquareIcon class="h-4 w-4 shrink-0 opacity-60" aria-hidden="true" />
+              <span class="sr-only">(se abre en otra pestaña)</span>
+            </a>
+            <RouterLink v-else :to="item.to" class="nav-item" :class="activo(item) ? 'nav-item--activo' : 'nav-item--reposo'"
                         :aria-current="activo(item) ? 'page' : undefined">
               <component :is="item.icono" class="h-5 w-5 shrink-0" aria-hidden="true" />
               <span class="min-w-0 flex-1">
                 <span class="block truncate">{{ item.label }}</span>
                 <span v-if="item.equivalente" class="block truncate text-xs font-medium opacity-60">antes: {{ item.equivalente }}</span>
-              </span>
-              <span v-if="item.badge === 'formularios' && nuevos" class="nav-badge" :aria-label="`${nuevos} formularios nuevos`">
-                {{ nuevos > 99 ? '99+' : nuevos }}
               </span>
             </RouterLink>
             <!-- Submenú (como en WordPress): visible cuando la sección está activa -->
@@ -60,12 +67,12 @@
 </template>
 
 <script setup>
-import { computed, ref, watch } from 'vue'
+import { computed } from 'vue'
 import { useRoute } from 'vue-router'
+import { ArrowTopRightOnSquareIcon } from '@heroicons/vue/24/outline'
 import logo from '@/assets/logo_colores.png'
 import { GRUPOS_PANEL } from '../navegacion'
 import { usePanelSesion } from '@/stores/panelSesion'
-import { formulariosService } from '@/services/admin/formulariosService'
 
 defineProps({ abierto: { type: Boolean, default: false } })
 defineEmits(['cerrar'])
@@ -77,20 +84,7 @@ const grupos = computed(() => GRUPOS_PANEL
   .map(g => ({ ...g, items: g.items.filter(i => sesion.puede(i.roles)) }))
   .filter(g => g.items.length))
 
-const activo = item => (item.exacta ? route.path === '/gestion-web' || route.path === '/gestion-web/' : route.path.startsWith(item.prefijo))
-
-// Contador de formularios nuevos: al navegar, como mucho cada 30 s
-const nuevos = ref(0)
-let ultima = 0
-async function refrescarNuevos() {
-  if (Date.now() - ultima < 30000) return
-  ultima = Date.now()
-  try {
-    const r = await formulariosService.listar({ estado: 'nuevo', per_page: 1 })
-    nuevos.value = r.meta.total
-  } catch { /* el contador no es crítico */ }
-}
-watch(() => route.fullPath, refrescarNuevos, { immediate: true })
+const activo = item => !item.href && (item.exacta ? route.path === '/gestion-web' || route.path === '/gestion-web/' : route.path.startsWith(item.prefijo))
 </script>
 
 <style scoped>

@@ -1,6 +1,7 @@
-import { CONTACTOS, CONTENIDO, SOLO_ADMIN } from './roles'
+import { CONTENIDO, SOLO_ADMIN } from './roles'
+import { URL_PRIMER_CONTACTO } from './central'
 import {
-  ClipboardDocumentListIcon, UsersIcon,
+  ClipboardDocumentListIcon, EnvelopeIcon, UsersIcon,
   HomeIcon, DocumentDuplicateIcon, NewspaperIcon, PhotoIcon, InboxIcon,
   LanguageIcon, MagnifyingGlassCircleIcon, ChartBarIcon, SwatchIcon,
 } from '@heroicons/vue/24/outline'
@@ -45,16 +46,12 @@ export const GRUPOS_PANEL = [
     ],
   },
   {
+    // Formularios y correo de info@ se atienden en DuaLab Central («Primer contacto»): aquí queda
+    // la integración que manda los formularios a captaciones y el enlace a Central
     titulo: 'Contactos',
     items: [
-      {
-        label: 'Formularios', to: { name: 'panel-formularios' }, icono: InboxIcon, prefijo: '/gestion-web/formularios',
-        equivalente: 'Flamingo', badge: 'formularios', roles: CONTACTOS,
-        hijos: [
-          { label: 'Recibidos', to: { name: 'panel-formularios' }, rutas: ['panel-formularios'], roles: CONTACTOS },
-          { label: 'Integraciones', to: { name: 'panel-integraciones' }, rutas: ['panel-integraciones'], roles: SOLO_ADMIN },
-        ],
-      },
+      { label: 'Integraciones', to: { name: 'panel-integraciones' }, icono: InboxIcon, prefijo: '/gestion-web/formularios/integraciones', roles: SOLO_ADMIN },
+      { label: 'Formularios y correo', href: URL_PRIMER_CONTACTO, icono: EnvelopeIcon, equivalente: 'en DuaLab Central', roles: CONTENIDO },
     ],
   },
   {

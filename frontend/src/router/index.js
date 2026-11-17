@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { CONTACTOS, CONTENIDO, SOLO_ADMIN } from '@/admin/roles'
+import { CONTENIDO, SOLO_ADMIN } from '@/admin/roles'
 
 const routes = [
   {
@@ -110,8 +110,10 @@ const routes = [
       { path: 'entradas/nueva', name: 'panel-entrada-nueva', component: () => import('@/admin/vistas/EntradaEditorView.vue'), meta: { titulo: 'Nueva entrada', roles: CONTENIDO } },
       { path: 'entradas/categorias', name: 'panel-categorias', component: () => import('@/admin/vistas/CategoriasView.vue'), meta: { titulo: 'Categorías', roles: CONTENIDO } },
       { path: 'entradas/:id(\\d+)', name: 'panel-entrada', component: () => import('@/admin/vistas/EntradaEditorView.vue'), meta: { titulo: 'Editar entrada', roles: CONTENIDO } },
-      { path: 'formularios', name: 'panel-formularios', component: () => import('@/admin/vistas/FormulariosView.vue'), meta: { titulo: 'Formularios', roles: CONTACTOS } },
+      // Formularios y Correo se atienden en DuaLab Central («Primer contacto»): los enlaces antiguos explican dónde
+      { path: 'formularios', name: 'panel-formularios', component: () => import('@/admin/vistas/EnCentralView.vue'), meta: { titulo: 'Formularios', roles: CONTENIDO } },
       { path: 'formularios/integraciones', name: 'panel-integraciones', component: () => import('@/admin/vistas/IntegracionesView.vue'), meta: { titulo: 'Integraciones', roles: SOLO_ADMIN } },
+      { path: 'correo', name: 'panel-correo', component: () => import('@/admin/vistas/EnCentralView.vue'), meta: { titulo: 'Correo', roles: CONTENIDO } },
       { path: 'medios', name: 'panel-medios', component: () => import('@/admin/vistas/MediosView.vue'), meta: { titulo: 'Medios', roles: CONTENIDO } },
       { path: 'perfil', name: 'panel-perfil', component: () => import('@/admin/vistas/PerfilView.vue'), meta: { titulo: 'Mi perfil' } },
       { path: 'idiomas', name: 'panel-idiomas', component: () => import('@/admin/vistas/IdiomasView.vue'), meta: { titulo: 'Idiomas', roles: SOLO_ADMIN } },
