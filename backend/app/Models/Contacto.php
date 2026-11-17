@@ -18,4 +18,10 @@ class Contacto extends Model
             'leido_en' => 'datetime',
         ];
     }
+
+    /** Correos enviados desde el panel en respuesta a este formulario */
+    public function respuestas()
+    {
+        return $this->hasMany(CorreoEnvio::class)->latest();
+    }
 }

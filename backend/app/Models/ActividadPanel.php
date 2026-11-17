@@ -21,7 +21,7 @@ class ActividadPanel extends Model
     public const SECCIONES = [
         'paginas' => 'Páginas', 'entradas' => 'Entradas', 'categorias' => 'Categorías', 'medios' => 'Medios',
         'apariencia' => 'Apariencia', 'idiomas' => 'Idiomas', 'seo' => 'SEO', 'analitica' => 'Analítica',
-        'formularios' => 'Formularios', 'integraciones' => 'Integraciones', 'usuarios' => 'Usuarios', 'perfil' => 'Perfil',
+        'formularios' => 'Formularios', 'correo' => 'Correo', 'integraciones' => 'Integraciones', 'usuarios' => 'Usuarios', 'perfil' => 'Perfil',
     ];
 
     public function usuario()

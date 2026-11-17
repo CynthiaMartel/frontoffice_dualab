@@ -72,7 +72,6 @@
 import { nextTick, reactive, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { EyeIcon, EyeSlashIcon } from '@heroicons/vue/24/outline'
-import '../panel.css'
 import logo from '@/assets/logo_colores.png'
 import { usePanelSesion } from '@/stores/panelSesion'
 import { sesionService } from '@/services/admin/sesionService'

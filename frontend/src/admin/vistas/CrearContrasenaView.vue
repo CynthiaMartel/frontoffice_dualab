@@ -67,7 +67,6 @@
 import { computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { CheckCircleIcon, EyeIcon, EyeSlashIcon } from '@heroicons/vue/24/outline'
-import '../panel.css'
 import logo from '@/assets/logo_colores.png'
 import { sesionService } from '@/services/admin/sesionService'
 import { mensajeError } from '@/services/admin/panelApi'
