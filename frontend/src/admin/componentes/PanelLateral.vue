@@ -1,5 +1,6 @@
 <!-- Menú lateral del panel de gestión web: mismo lenguaje que el SidePanel de la app
-     DuaLab (azul noche, entradas .nav-item, activo en turquesa del rol admin) y la
+     DuaLab (entradas .nav-item, activo en turquesa del rol admin) sobre un turquesa muy oscuro
+     a juego con el icono de Gestión web (antes azul noche) y la
      estructura de WordPress (secciones con submenú desplegado en la sección activa). -->
 <template>
   <Transition name="gw-fade">
@@ -8,7 +9,7 @@
 
   <aside
     id="gw-menu"
-    class="fixed bottom-0 left-0 top-16 z-40 flex w-72 max-w-[85vw] flex-col border-r border-azul-noche-border bg-azul-noche
+    class="fixed bottom-0 left-0 top-16 z-40 flex w-72 max-w-[85vw] flex-col border-r border-white/10 bg-[#0E3233]
            shadow-[6px_0_32px_rgba(0,0,0,0.25)] transition-transform duration-300 lg:translate-x-0"
     :class="abierto ? 'translate-x-0' : '-translate-x-full'"
     aria-label="Menú del panel"
@@ -51,7 +52,7 @@
 
       <!-- Banner de marca al fondo, como en la app -->
       <div class="mt-auto pt-4 [@media(max-height:640px)]:hidden" aria-hidden="true">
-        <div class="relative h-24 overflow-hidden rounded-2xl border border-white/15 bg-gradient-to-br from-[#2E5F8F] via-[#24486E] to-[#1B3553] px-4 py-3 shadow-[0_8px_24px_rgba(0,0,0,0.25)]">
+        <div class="relative h-24 overflow-hidden rounded-2xl border border-white/15 bg-gradient-to-br from-[#0F7C7D] via-[#0B5F60] to-[#083F40] px-4 py-3 shadow-[0_8px_24px_rgba(0,0,0,0.25)]">
           <svg class="absolute inset-x-0 bottom-0 h-12 w-full" viewBox="0 0 240 48" preserveAspectRatio="none">
             <path d="M0 30 C60 14 120 46 240 22 V48 H0Z" fill="#FF8920" opacity="0.85" />
             <path d="M0 38 C70 26 140 50 240 34 V48 H0Z" fill="#3FC7C8" opacity="0.9" />
