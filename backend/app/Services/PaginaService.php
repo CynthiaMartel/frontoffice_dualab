@@ -118,6 +118,34 @@ class PaginaService
     }
 
     /**
+     * Preguntas frecuentes de una página (sección «preguntas»: item_N_titulo = pregunta,
+     * item_N_texto = respuesta), con lo editado en el panel o el texto original.
+     * Para los datos estructurados FAQPage y llms.txt.
+     *
+     * @return list<array{pregunta: string, respuesta: string}>
+     */
+    public function preguntas(string $clave, string $idioma): array
+    {
+        $campos = config("cms_paginas.$clave.secciones.preguntas.campos");
+        if (! $campos) {
+            return [];
+        }
+        $valores = (array) $this->publico($clave, $idioma)['valores'];
+        $valor   = fn ($campo) => ($valores["preguntas.$campo"] ?? null) ?: ($campos[$campo]['defecto'] ?? null);
+
+        $lista = [];
+        for ($n = 1; isset($campos["item_{$n}_titulo"]); $n++) {
+            $pregunta  = $valor("item_{$n}_titulo");
+            $respuesta = $valor("item_{$n}_texto");
+            if ($pregunta && $respuesta) {
+                $lista[] = ['pregunta' => $pregunta, 'respuesta' => $respuesta];
+            }
+        }
+
+        return $lista;
+    }
+
+    /**
      * Guarda los cambios del editor. Un campo vacío o igual al original se borra
      * (vuelve a mostrarse el texto original de la vista).
      */

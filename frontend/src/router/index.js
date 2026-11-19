@@ -119,6 +119,7 @@ const routes = [
       { path: 'idiomas', name: 'panel-idiomas', component: () => import('@/admin/vistas/IdiomasView.vue'), meta: { titulo: 'Idiomas', roles: SOLO_ADMIN } },
       { path: 'apariencia', name: 'panel-apariencia', component: () => import('@/admin/vistas/AparienciaView.vue'), meta: { titulo: 'Apariencia', roles: SOLO_ADMIN } },
       { path: 'seo', name: 'panel-seo', component: () => import('@/admin/vistas/SeoView.vue'), meta: { titulo: 'SEO', roles: CONTENIDO } },
+      { path: 'geo', name: 'panel-geo', component: () => import('@/admin/vistas/GeoView.vue'), meta: { titulo: 'GEO (IA)', roles: CONTENIDO } },
       { path: 'usuarios', name: 'panel-usuarios', component: () => import('@/admin/vistas/UsuariosView.vue'), meta: { titulo: 'Usuarios', roles: SOLO_ADMIN } },
       { path: 'actividad', name: 'panel-actividad', component: () => import('@/admin/vistas/ActividadView.vue'), meta: { titulo: 'Actividad', roles: SOLO_ADMIN } },
       { path: 'analitica', name: 'panel-analitica', component: () => import('@/admin/vistas/AnaliticaView.vue'), meta: { titulo: 'Analítica', roles: SOLO_ADMIN } },

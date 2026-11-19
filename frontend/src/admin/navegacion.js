@@ -3,10 +3,10 @@ import { URL_PRIMER_CONTACTO } from './central'
 import {
   ClipboardDocumentListIcon, EnvelopeIcon, UsersIcon,
   HomeIcon, DocumentDuplicateIcon, NewspaperIcon, PhotoIcon, InboxIcon,
-  LanguageIcon, MagnifyingGlassCircleIcon, ChartBarIcon, SwatchIcon,
+  LanguageIcon, MagnifyingGlassCircleIcon, ChartBarIcon, SwatchIcon, SparklesIcon,
 } from '@heroicons/vue/24/outline'
 
-// Menú lateral del panel: Escritorio, Contenido, Sitio web (aspecto global), Visibilidad (Google),
+// Menú lateral del panel: Escritorio, Contenido, Sitio web (aspecto global), Visibilidad (Google e IA),
 // Contactos y Equipo. `roles`: quién lo ve (ver roles.js); el backend lo vuelve a comprobar. `equivalente`: el plugin de WordPress al que sustituye,
 // para quien viene de WordPress.
 export const GRUPOS_PANEL = [
@@ -42,6 +42,7 @@ export const GRUPOS_PANEL = [
     titulo: 'Visibilidad',
     items: [
       { label: 'SEO', to: { name: 'panel-seo' }, icono: MagnifyingGlassCircleIcon, prefijo: '/gestion-web/seo', equivalente: 'All in One SEO', roles: CONTENIDO },
+      { label: 'GEO (IA)', to: { name: 'panel-geo' }, icono: SparklesIcon, prefijo: '/gestion-web/geo', equivalente: 'llms.txt y Schema', roles: CONTENIDO },
       { label: 'Analítica', to: { name: 'panel-analitica' }, icono: ChartBarIcon, prefijo: '/gestion-web/analitica', equivalente: 'Site Kit', roles: SOLO_ADMIN },
     ],
   },

@@ -85,6 +85,11 @@ return [
         ],
     ],
 
+    // index.html compilado de la web (frontend/dist): el backend lo sirve con el texto de cada
+    // página ya escrito para Google y las IA (ver HtmlPublicoService). En producción, la ruta
+    // absoluta de public_html/home/index.html (WEB_INDEX_HTML en el .env del servidor).
+    'web_index' => env('WEB_INDEX_HTML') ?: base_path('../frontend/dist/index.html'),
+
     // Rastreadores de IA que se pueden bloquear desde SEO → Buscadores de IA (robots.txt).
     // Clave = User-agent exacto; bloquear uno no afecta a Google ni a Bing.
     'bots_ia' => [

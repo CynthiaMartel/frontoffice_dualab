@@ -1,4 +1,17 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Montserrat:wght@600;700;800&family=Caveat:wght@500;600&display=swap');
+/* Tipografías servidas desde nuestro dominio (@fontsource), no desde Google Fonts: así no se
+   envía la IP del visitante a Google sin consentimiento (RGPD). Solo el subconjunto latino,
+   que ya incluye tildes y ñ. */
+@import "@fontsource/inter/latin-300.css";
+@import "@fontsource/inter/latin-400.css";
+@import "@fontsource/inter/latin-500.css";
+@import "@fontsource/inter/latin-600.css";
+@import "@fontsource/inter/latin-700.css";
+@import "@fontsource/inter/latin-800.css";
+@import "@fontsource/montserrat/latin-600.css";
+@import "@fontsource/montserrat/latin-700.css";
+@import "@fontsource/montserrat/latin-800.css";
+@import "@fontsource/caveat/latin-500.css";
+@import "@fontsource/caveat/latin-600.css";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

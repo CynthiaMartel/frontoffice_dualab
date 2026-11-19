@@ -1,10 +1,12 @@
 <!-- "Hay una versión nueva": tras un deploy, una pestaña abierta (la web o el panel de gestión
-     web) sigue con el código anterior hasta recargar. Abajo a la izquierda para no tapar el
-     aviso de cookies ni los avisos del panel (abajo a la derecha); en móvil, arriba, bajo la cabecera. -->
+     web) sigue con el código anterior hasta recargar. En el panel, abajo a la derecha como en las
+     demás herramientas (los avisos del panel suben encima, ver AvisosPanel); en la web, abajo a la
+     izquierda para no tapar el aviso de cookies. En móvil, arriba, bajo la cabecera. -->
 <template>
   <Transition name="aviso-version">
     <div v-if="hayNuevaVersion && !enVistaPrevia" role="status"
-         class="fixed inset-x-3 top-20 z-[70] mx-auto max-w-sm rounded-2xl bg-azul-noche p-4 text-white shadow-2xl sm:inset-x-auto sm:left-5 sm:top-auto sm:bottom-5 sm:mx-0">
+         class="fixed inset-x-3 top-20 z-[70] mx-auto max-w-sm rounded-2xl bg-azul-noche p-4 text-white shadow-2xl sm:inset-x-auto sm:top-auto sm:bottom-5 sm:mx-0 sm:w-[min(24rem,calc(100vw-2rem))]"
+         :class="enPanel ? 'sm:right-4' : 'sm:left-5'">
       <div class="flex items-start gap-3">
         <ArrowPathIcon class="mt-0.5 h-5 w-5 shrink-0 text-white/80" aria-hidden="true" />
         <div class="min-w-0">

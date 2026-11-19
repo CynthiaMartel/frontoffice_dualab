@@ -1,141 +1,52 @@
 <template>
-  <CabeceraPanel antetitulo="Visibilidad" titulo="SEO" subtitulo="Ajustes generales de buscadores, redes sociales e IA (lo que hacía All in One SEO). El SEO de cada página o entrada se edita en ella." />
+  <CabeceraPanel antetitulo="Visibilidad" titulo="SEO" subtitulo="Ajustes generales de Google y redes sociales (lo que hacía All in One SEO). El SEO de cada página o entrada se edita en ella; lo de las IA, en GEO (IA)." />
 
   <div v-if="cargando" class="gw-tarjeta h-64 animate-pulse" aria-busy="true" />
   <div v-else class="grid gap-6 xl:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
-    <form class="space-y-6" @submit.prevent="guardar">
-      <section class="gw-tarjeta space-y-5 p-5 sm:p-6">
-        <h2 class="font-heading text-base font-bold text-azul-noche">General</h2>
-        <div class="grid gap-4 sm:grid-cols-[1fr_8rem]">
-          <div>
-            <label for="gw-seo-sitio" class="gw-etiqueta">Nombre del sitio</label>
-            <input id="gw-seo-sitio" v-model="form.titulo_sitio" type="text" maxlength="80" class="gw-campo" placeholder="DuaLab" />
-            <p class="gw-ayuda">Se añade al final del título de cada página: «Centros {{ form.separador || '|' }} {{ form.titulo_sitio || 'DuaLab' }}».</p>
-          </div>
-          <div>
-            <label for="gw-seo-sep" class="gw-etiqueta">Separador</label>
-            <select id="gw-seo-sep" v-model="form.separador" class="gw-campo">
-              <option v-for="s in ['|', '-', '–', '·', '•']" :key="s" :value="s">{{ s }}</option>
-            </select>
-          </div>
+    <form class="gw-tarjeta space-y-5 p-5 sm:p-6" @submit.prevent="guardar">
+      <div class="grid gap-4 sm:grid-cols-[1fr_8rem]">
+        <div>
+          <label for="gw-seo-sitio" class="gw-etiqueta">Nombre del sitio</label>
+          <input id="gw-seo-sitio" v-model="form.titulo_sitio" type="text" maxlength="80" class="gw-campo" placeholder="DuaLab" />
+          <p class="gw-ayuda">Se añade al final del título de cada página: «Centros {{ form.separador || '|' }} {{ form.titulo_sitio || 'DuaLab' }}».</p>
         </div>
         <div>
-          <label for="gw-seo-desc" class="gw-etiqueta">Descripción por defecto</label>
-          <textarea id="gw-seo-desc" v-model="form.descripcion" rows="3" maxlength="320" class="gw-campo" />
-          <p class="gw-ayuda">Para las páginas que no tengan la suya, y presentación de DuaLab para Google y las IA. {{ (form.descripcion || '').length }} caracteres (ideal 120–160).</p>
-          <p v-if="errores['ajustes.descripcion']" class="gw-error">{{ errores['ajustes.descripcion'] }}</p>
+          <label for="gw-seo-sep" class="gw-etiqueta">Separador</label>
+          <select id="gw-seo-sep" v-model="form.separador" class="gw-campo">
+            <option v-for="s in ['|', '-', '–', '·', '•']" :key="s" :value="s">{{ s }}</option>
+          </select>
         </div>
-        <div>
-          <p class="gw-etiqueta">Imagen por defecto al compartir en redes</p>
-          <CampoImagen v-model="form.imagen_og" titulo-selector="Imagen para redes sociales" />
-          <p class="gw-ayuda">1200 × 630 px. Se usa cuando la página o entrada no tiene una propia.</p>
-        </div>
-        <label class="flex items-start gap-3 rounded-xl border p-4" :class="form.indexar ? 'border-gray-200' : 'border-amber-300 bg-amber-50'">
-          <input v-model="form.indexar" type="checkbox" role="switch" class="gw-interruptor mt-0.5" />
-          <span>
-            <span class="block text-sm font-semibold text-azul-noche">Permitir que los buscadores muestren la web</span>
-            <span class="gw-ayuda block">{{ form.indexar ? 'Activado: lo normal en producción.' : 'Desactivado: ninguna página aparecerá en Google ni en las IA. Úsalo solo en pruebas.' }}</span>
-          </span>
-        </label>
-        <div v-if="sesion.esAdmin">
-          <label for="gw-gsc" class="gw-etiqueta">Código de verificación de Search Console</label>
-          <input id="gw-gsc" v-model.trim="form.search_console" type="text" class="gw-campo" placeholder="Solo el valor de content=&quot;…&quot;" />
-          <p class="gw-ayuda">Search Console → Añadir propiedad → Prefijo de URL → Etiqueta HTML. Pega solo el código, no toda la etiqueta. Después envía allí el sitemap.</p>
-          <p v-if="errores['ajustes.search_console']" class="gw-error">Pega solo el código (letras, números, guiones).</p>
-        </div>
-      </section>
-
-      <section class="gw-tarjeta space-y-5 p-5 sm:p-6">
-        <div>
-          <h2 class="font-heading text-base font-bold text-azul-noche">Datos de la organización</h2>
-          <p class="mt-1 text-sm text-texto-secundario">Google y las IA los leen en todas las páginas (datos estructurados) para saber quién es DuaLab, dónde está y cómo contactar.</p>
-        </div>
-        <div class="grid gap-4 sm:grid-cols-2">
-          <div class="sm:col-span-2">
-            <label for="gw-org-nombre" class="gw-etiqueta">Nombre de la organización</label>
-            <input id="gw-org-nombre" v-model="form.org_nombre" type="text" maxlength="120" class="gw-campo" placeholder="DuaLab" />
-            <p class="gw-ayuda">Sin nombre no se publican estos datos.</p>
-          </div>
-          <div>
-            <label for="gw-org-email" class="gw-etiqueta">Correo de contacto</label>
-            <input id="gw-org-email" v-model.trim="form.org_email" type="email" maxlength="120" class="gw-campo" placeholder="info@dualab.es" />
-            <p v-if="errores['ajustes.org_email']" class="gw-error">{{ errores['ajustes.org_email'] }}</p>
-          </div>
-          <div>
-            <label for="gw-org-tel" class="gw-etiqueta">Teléfono</label>
-            <input id="gw-org-tel" v-model.trim="form.org_telefono" type="tel" maxlength="30" class="gw-campo" />
-            <p v-if="errores['ajustes.org_telefono']" class="gw-error">Solo números, espacios y + ( ) -.</p>
-          </div>
-          <div class="sm:col-span-2">
-            <label for="gw-org-dir" class="gw-etiqueta">Dirección</label>
-            <input id="gw-org-dir" v-model="form.org_direccion" type="text" maxlength="160" class="gw-campo" placeholder="Calle y número" />
-          </div>
-          <div>
-            <label for="gw-org-cp" class="gw-etiqueta">Código postal</label>
-            <input id="gw-org-cp" v-model.trim="form.org_codigo_postal" type="text" maxlength="10" class="gw-campo" />
-          </div>
-          <div>
-            <label for="gw-org-loc" class="gw-etiqueta">Localidad</label>
-            <input id="gw-org-loc" v-model="form.org_localidad" type="text" maxlength="80" class="gw-campo" />
-          </div>
-          <div class="sm:col-span-2">
-            <label for="gw-org-prov" class="gw-etiqueta">Provincia</label>
-            <input id="gw-org-prov" v-model="form.org_provincia" type="text" maxlength="80" class="gw-campo" />
-          </div>
-        </div>
-        <div>
-          <p class="gw-etiqueta">Logo</p>
-          <CampoImagen v-model="form.org_logo" titulo-selector="Logo de la organización" />
-          <p class="gw-ayuda">Cuadrado o apaisado, mínimo 112 px. Si lo dejas vacío se usa el logo de Apariencia.</p>
-        </div>
-        <fieldset>
-          <legend class="gw-etiqueta">Perfiles en redes sociales</legend>
-          <ul class="space-y-2">
-            <li v-for="(red, i) in form.org_redes" :key="i" class="flex items-center gap-2">
-              <input v-model.trim="form.org_redes[i]" type="url" maxlength="255" class="gw-campo" placeholder="https://www.linkedin.com/company/…" :aria-label="`Perfil ${i + 1}`" />
-              <button type="button" class="gw-accion-icono shrink-0" :aria-label="`Quitar perfil ${i + 1}`" title="Quitar" @click="form.org_redes.splice(i, 1)"><XMarkIcon class="h-5 w-5" aria-hidden="true" /></button>
-            </li>
-          </ul>
-          <p v-if="erroresRedes" class="gw-error">{{ erroresRedes }}</p>
-          <button v-if="form.org_redes.length < 8" type="button" class="gw-accion-secundaria mt-2" @click="form.org_redes.push('')">
-            <PlusIcon class="h-4 w-4" aria-hidden="true" /> Añadir perfil
-          </button>
-        </fieldset>
-      </section>
-
-      <section class="gw-tarjeta space-y-5 p-5 sm:p-6">
-        <div>
-          <h2 class="font-heading text-base font-bold text-azul-noche">Buscadores de IA</h2>
-          <p class="mt-1 text-sm text-texto-secundario">Para que ChatGPT, Claude, Perplexity o Gemini recomienden DuaLab, tienen que poder leer la web.</p>
-        </div>
-        <div>
-          <label for="gw-llms" class="gw-etiqueta">Presentación para las IA (llms.txt)</label>
-          <textarea id="gw-llms" v-model="form.llms_resumen" rows="6" maxlength="3000" class="gw-campo" placeholder="Qué es DuaLab, a quién se dirige (centros de FP, empresas, alumnado, administraciones), qué ofrece y en qué se diferencia." />
-          <p class="gw-ayuda">Texto llano, frases claras y concretas. Va al principio de llms.txt, seguido de la lista de páginas y noticias, que se genera sola. {{ (form.llms_resumen || '').length }}/3000</p>
-        </div>
-        <fieldset v-if="sesion.esAdmin">
-          <legend class="gw-etiqueta">Qué IA pueden leer la web</legend>
-          <p class="gw-ayuda mb-2">Apagar una la bloquea en robots.txt. No afecta a Google ni a Bing.</p>
-          <ul class="grid gap-2 sm:grid-cols-2">
-            <li v-for="(nombre, bot) in BOTS_IA" :key="bot">
-              <label class="flex h-full items-start gap-3 rounded-xl border border-gray-200 p-3">
-                <input type="checkbox" role="switch" class="gw-interruptor mt-0.5" :checked="!form.ia_bloqueados.includes(bot)" @change="alternarBot(bot, $event.target.checked)" />
-                <span class="min-w-0">
-                  <span class="block break-words text-sm font-semibold text-azul-noche">{{ nombre }}</span>
-                  <span class="gw-ayuda block break-all">{{ bot }}</span>
-                </span>
-              </label>
-            </li>
-          </ul>
-        </fieldset>
-      </section>
-
+      </div>
+      <div>
+        <label for="gw-seo-desc" class="gw-etiqueta">Descripción por defecto</label>
+        <textarea id="gw-seo-desc" v-model="form.descripcion" rows="3" maxlength="320" class="gw-campo" />
+        <p class="gw-ayuda">Para las páginas que no tengan la suya. {{ (form.descripcion || '').length }} caracteres (ideal 120–160).</p>
+        <p v-if="errores['ajustes.descripcion']" class="gw-error">{{ errores['ajustes.descripcion'] }}</p>
+      </div>
+      <div>
+        <p class="gw-etiqueta">Imagen por defecto al compartir en redes</p>
+        <CampoImagen v-model="form.imagen_og" titulo-selector="Imagen para redes sociales" />
+        <p class="gw-ayuda">1200 × 630 px. Se usa cuando la página o entrada no tiene una propia.</p>
+      </div>
+      <label class="flex items-start gap-3 rounded-xl border p-4" :class="form.indexar ? 'border-gray-200' : 'border-amber-300 bg-amber-50'">
+        <input v-model="form.indexar" type="checkbox" role="switch" class="gw-interruptor mt-0.5" />
+        <span>
+          <span class="block text-sm font-semibold text-azul-noche">Permitir que los buscadores muestren la web</span>
+          <span class="gw-ayuda block">{{ form.indexar ? 'Activado: lo normal en producción.' : 'Desactivado: ninguna página aparecerá en Google ni en las IA. Úsalo solo en pruebas.' }}</span>
+        </span>
+      </label>
+      <div v-if="sesion.esAdmin">
+        <label for="gw-gsc" class="gw-etiqueta">Código de verificación de Search Console</label>
+        <input id="gw-gsc" v-model.trim="form.search_console" type="text" class="gw-campo" placeholder="Solo el valor de content=&quot;…&quot;" />
+        <p class="gw-ayuda">Search Console → Añadir propiedad → Prefijo de URL → Etiqueta HTML. Pega solo el código, no toda la etiqueta. Después envía allí el sitemap.</p>
+        <p v-if="errores['ajustes.search_console']" class="gw-error">Pega solo el código (letras, números, guiones).</p>
+      </div>
       <button type="submit" class="gw-accion-principal" :disabled="guardando">{{ guardando ? 'Guardando…' : 'Guardar ajustes' }}</button>
     </form>
 
     <div class="space-y-6">
       <section class="gw-tarjeta p-5">
-        <h2 class="font-heading text-base font-bold text-azul-noche">Archivos para buscadores e IA</h2>
+        <h2 class="font-heading text-base font-bold text-azul-noche">Archivos para buscadores</h2>
         <p class="mt-1 text-sm text-texto-secundario">Se generan solos con lo que hay en el panel. Envía el sitemap a Google Search Console.</p>
         <ul class="mt-3 space-y-3">
           <li v-for="a in archivos" :key="a.url">
@@ -164,10 +75,9 @@
 
 <script setup>
 import { computed, onMounted, reactive, ref } from 'vue'
-import { ArrowTopRightOnSquareIcon, CheckCircleIcon, PlusIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+import { ArrowTopRightOnSquareIcon, CheckCircleIcon } from '@heroicons/vue/24/outline'
 import CabeceraPanel from '../componentes/CabeceraPanel.vue'
 import CampoImagen from '../componentes/CampoImagen.vue'
-import { BOTS_IA } from '../botsIa'
 import { ajustesService } from '@/services/admin/ajustesService'
 import { paginasService } from '@/services/admin/paginasService'
 import { mensajeError, erroresCampos } from '@/services/admin/panelApi'
@@ -177,13 +87,10 @@ import { usePanelSesion } from '@/stores/panelSesion'
 const avisos = useAvisos()
 const sesion = usePanelSesion()
 
-const VACIO = {
-  titulo_sitio: '', separador: '|', descripcion: '', imagen_og: '', indexar: true, search_console: '',
-  org_nombre: '', org_logo: '', org_email: '', org_telefono: '', org_direccion: '', org_codigo_postal: '',
-  org_localidad: '', org_provincia: '', org_redes: [], llms_resumen: '', ia_bloqueados: [],
-}
-// Solo los cambia el admin: el editor no los envía (el backend los rechazaría)
-const SOLO_ADMIN = ['search_console', 'ia_bloqueados']
+// Solo estos ajustes del grupo seo: los de la organización y las IA se guardan en GEO (IA)
+const VACIO = { titulo_sitio: '', separador: '|', descripcion: '', imagen_og: '', indexar: true, search_console: '' }
+// Solo lo cambia el admin: el editor no lo envía (el backend lo rechazaría)
+const SOLO_ADMIN = ['search_console']
 
 const form = reactive(structuredClone(VACIO))
 const paginas = ref([])
@@ -195,20 +102,12 @@ const errores = ref({})
 // (en local, vite.config.js las pasa al backend)
 const archivos = [
   { titulo: 'Sitemap', url: `${window.location.origin}/sitemap.xml`, ayuda: 'Páginas publicadas y noticias. Envíalo a Search Console.' },
-  { titulo: 'robots.txt', url: `${window.location.origin}/robots.txt`, ayuda: 'Qué buscadores e IA pueden leer la web.' },
-  { titulo: 'llms.txt', url: `${window.location.origin}/llms.txt`, ayuda: 'Resumen de DuaLab para las IA.' },
+  { titulo: 'robots.txt', url: `${window.location.origin}/robots.txt`, ayuda: 'Qué buscadores e IA pueden leer la web (las IA se eligen en GEO).' },
 ]
 const pendientes = computed(() => paginas.value.filter(p => p.ruta && !p.ruta.includes(':') && !p.seo_completo))
-const erroresRedes = computed(() => Object.entries(errores.value).find(([k]) => k.startsWith('ajustes.org_redes'))?.[1])
 
 function aplicar(d) {
-  for (const [clave, defecto] of Object.entries(VACIO)) {
-    form[clave] = Array.isArray(defecto) ? [...(d[clave] ?? [])] : (d[clave] ?? defecto)
-  }
-}
-
-function alternarBot(bot, permitido) {
-  form.ia_bloqueados = permitido ? form.ia_bloqueados.filter(b => b !== bot) : [...form.ia_bloqueados, bot]
+  for (const [clave, defecto] of Object.entries(VACIO)) form[clave] = d[clave] ?? defecto
 }
 
 onMounted(async () => {
@@ -226,7 +125,7 @@ async function guardar() {
   try {
     const datos = Object.fromEntries(Object.entries(form)
       .filter(([clave]) => sesion.esAdmin || !SOLO_ADMIN.includes(clave))
-      .map(([clave, valor]) => [clave, Array.isArray(valor) ? valor.filter(Boolean) : (valor === '' ? null : valor)]))
+      .map(([clave, valor]) => [clave, valor === '' ? null : valor]))
     aplicar(await ajustesService.guardar('seo', datos))
     avisos.ok('Ajustes de SEO guardados.')
   } catch (e) {

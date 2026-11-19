@@ -100,6 +100,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // ── Contenido y ajustes del panel: admin y editor ─────────────────────────
     Route::prefix('admin')->name('admin.')->middleware('can:gestionar-web')->group(function () {
         Route::get('escritorio', Admin\EscritorioController::class)->name('escritorio');
+        Route::get('vista-buscadores', Admin\VistaBuscadoresController::class)->middleware('throttle:30,1,panel-vista-buscadores')->name('vista-buscadores');
         Route::get('actividad/{tipo}/{ref}', [Admin\ActividadController::class, 'historial'])->name('actividad.historial');
 
         Route::get('paginas',          [Admin\PaginaController::class, 'index'])->name('paginas.index');

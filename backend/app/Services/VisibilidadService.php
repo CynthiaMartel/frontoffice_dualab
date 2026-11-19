@@ -79,6 +79,15 @@ class VisibilidadService
                 $partes[] = "## Páginas\n\n".implode("\n", $lista);
             }
 
+            // Preguntas frecuentes de todas las páginas: respuestas listas para que una IA las cite
+            $faq = collect(config('cms_paginas'))->keys()
+                ->reject(fn ($clave) => $paginas->get($clave)?->publicada === false)
+                ->flatMap(fn ($clave) => array_map(fn ($p) => "### {$this->unaLinea($p['pregunta'])}\n\n{$this->unaLinea($p['respuesta'], 600)}",
+                    app(PaginaService::class)->preguntas($clave, $idioma)));
+            if ($faq->isNotEmpty()) {
+                $partes[] = "## Preguntas frecuentes\n\n".$faq->implode("\n\n");
+            }
+
             $noticias = Entrada::visibles()->where('idioma', $idioma)->latest('publicada_en')->take(20)->get()
                 ->map(fn ($e) => "- [{$this->unaLinea($e->titulo)}]($base/noticias/{$e->slug})".($e->extracto ? ': '.$this->unaLinea($e->extracto) : ''));
             if ($noticias->isNotEmpty()) {
@@ -128,8 +137,8 @@ class VisibilidadService
     }
 
     /** Texto en una línea y sin Markdown que lo rompa (los textos los escriben editores). */
-    private function unaLinea(string $texto): string
+    private function unaLinea(string $texto, int $max = 300): string
     {
-        return Str::limit(trim(preg_replace('/\s+/', ' ', str_replace(['[', ']'], ['(', ')'], strip_tags($texto)))), 300);
+        return Str::limit(trim(preg_replace('/\s+/', ' ', str_replace(['[', ']'], ['(', ')'], strip_tags($texto)))), $max);
     }
 }
