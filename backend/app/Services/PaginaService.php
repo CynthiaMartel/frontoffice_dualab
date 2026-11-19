@@ -84,7 +84,7 @@ class PaginaService
                     'defecto'  => $c['defecto'] ?? null,
                 ])->values(),
             ])->values(),
-            'valores'         => $pagina ? $this->valores($pagina, $idioma) : (object) [],
+            'valores'         => ($pagina ? $this->valores($pagina, $idioma) : []) ?: (object) [],
             'seo'             => $this->seo->paraPanel($pagina?->seo->firstWhere('idioma', $idioma)),
             'editada_en'      => $pagina?->updated_at,
         ];
@@ -96,7 +96,8 @@ class PaginaService
         $idiomaBase = Idioma::codigoPorDefecto();
         $idioma     = Idioma::resolver($idiomaPedido);
 
-        return Cache::remember("web.pagina.$clave.$idioma", now()->addHour(), function () use ($clave, $idioma, $idiomaBase) {
+        // Solo arrays en caché (cache.serializable_classes = false): el {} vacío se pone al salir
+        $datos = Cache::remember("web.pagina.$clave.$idioma", now()->addHour(), function () use ($clave, $idioma, $idiomaBase) {
             $pagina = Pagina::with('seo')->firstWhere('clave', $clave);
 
             // Idioma no activado para esta página → se sirve en el idioma base.
@@ -108,10 +109,12 @@ class PaginaService
                 'clave'     => $clave,
                 'idioma'    => $idioma,
                 'publicada' => $pagina?->publicada ?? true,
-                'valores'   => $pagina ? $this->optimizarImagenes($this->valores($pagina, $idioma)) : (object) [],
+                'valores'   => $pagina ? $this->optimizarImagenes($this->valores($pagina, $idioma)) : [],
                 'seo'       => $this->seo->paraPublico($pagina?->seo->firstWhere('idioma', $idioma)),
             ];
         });
+
+        return ['valores' => $datos['valores'] ?: (object) []] + $datos;
     }
 
     /**
@@ -167,18 +170,15 @@ class PaginaService
     public function olvidarCache(string $clave): void
     {
         Cache::forget('web.sitemap');
+        Cache::forget('web.llms');
         foreach (Idioma::pluck('codigo') as $codigo) {
             Cache::forget("web.pagina.$clave.$codigo");
         }
     }
 
     /** Fotos de Cloudinary en formato y tamaño para la web (las guardadas no cambian). */
-    private function optimizarImagenes(array|object $valores): array|object
+    private function optimizarImagenes(array $valores): array
     {
-        if (is_object($valores)) {
-            return $valores;
-        }
-
         return array_map(fn ($v) => match (true) {
             is_string($v) => CloudinaryService::optimizar($v),
             is_array($v) && array_is_list($v) => array_map(fn ($u) => is_string($u) ? CloudinaryService::optimizar($u, 1600) : $u, $v),
@@ -186,16 +186,14 @@ class PaginaService
         }, $valores);
     }
 
-    private function valores(Pagina $pagina, string $idioma): array|object
+    private function valores(Pagina $pagina, string $idioma): array
     {
         $tipos = collect($this->campos($pagina->clave))->map(fn ($c) => $c['tipo']);
 
-        $valores = $pagina->contenidos()->where('idioma', $idioma)->pluck('valor', 'campo')
+        return $pagina->contenidos()->where('idioma', $idioma)->pluck('valor', 'campo')
             ->filter(fn ($v, $campo) => $tipos->has($campo)) // campos retirados del esquema
             ->map(fn ($v, $campo) => in_array($tipos[$campo], ['boton', 'galeria'], true) ? json_decode($v, true) : $v)
             ->all();
-
-        return $valores ?: (object) [];
     }
 
     private function normalizar(string $tipo, mixed $valor): string|array|null

@@ -9,6 +9,9 @@ use App\Models\Contacto;
 use App\Models\CorreoEnvio;
 use App\Models\CorreoMensaje;
 use App\Services\CorreoSincronizacionService;
+use App\Services\CorreoSmtpService;
+use Mockery;
+use Symfony\Component\Mime\Email;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -123,6 +126,55 @@ class IntegracionCentralTest extends TestCase
             ->assertJsonStructure(['resumen' => ['por_estado'], 'salida']);
         $this->firmado('GET', "/api/integraciones/central/correo/{$c->id}")->assertOk()
             ->assertJsonPath('texto', "Hola,\nqueremos colaborar.")->assertJsonPath('estado', 'leido');
+    }
+
+    public function test_bandejas_aparte_por_asunto_o_remitente(): void
+    {
+        $guardar = fn (int $uid, string $de, string $asunto) => app(CorreoSincronizacionService::class)->guardar('info', 'INBOX', 1, $uid, [
+            'message_id' => "<m{$uid}@ejemplo.com>", 'in_reply_to' => null, 'referencias' => null,
+            'de_email' => $de, 'de_nombre' => null, 'para' => [], 'cc' => [], 'responder_a' => [],
+            'asunto' => $asunto, 'fecha' => now()->subMinutes($uid), 'texto' => 'x', 'html' => null, 'adjuntos' => [],
+        ]);
+        $respuesta = $guardar(1, 'profe@centro.test', 'Re: Tus retos · Ref. SR-3');
+        $sinRef    = $guardar(2, 'PROFE@centro.test', 'Una duda');
+        $otro      = $guardar(3, 'empresa@ejemplo.com', 'Queremos colaborar');
+
+        $ids = fn ($r) => collect($r->assertOk()->json('data'))->pluck('id')->sort()->values()->all();
+        $q = http_build_query(['incluir_asunto' => 'Ref. SR-', 'incluir_de' => ['profe@centro.test']]);
+        $this->assertSame([$respuesta->id, $sinRef->id], $ids($this->firmado('GET', "/api/integraciones/central/correo?{$q}")));
+
+        $q = http_build_query(['excluir_asunto' => 'Ref. SR-', 'excluir_de' => ['profe@centro.test']]);
+        $r = $this->firmado('GET', "/api/integraciones/central/correo?{$q}");
+        $this->assertSame([$otro->id], $ids($r));
+        // El contador de no leídos tampoco cuenta lo excluido
+        $this->assertSame(1, $r->json('resumen.por_estado.nuevo'));
+    }
+
+    public function test_envio_con_html_maquetado_sale_limpio_y_sin_firma_añadida(): void
+    {
+        $capturado = new \stdClass;
+        $smtp = Mockery::mock(CorreoSmtpService::class);
+        $smtp->shouldReceive('enviar')->andReturnUsing(function ($buzon, Email $email) use ($capturado) {
+            $capturado->email = $email;
+
+            return 'MIME-de-prueba';
+        });
+        $this->app->instance(CorreoSmtpService::class, $smtp);
+
+        $this->firmado('POST', '/api/integraciones/central/correo/enviar', [
+            'tipo' => 'nuevo', 'para' => ['profe@centro.test'], 'asunto' => 'Tus retos · Ref. SR-3',
+            'texto' => "Hola\n\nUn saludo, DuaLab",
+            'html' => '<table style="background:#EDF4FA"><tr><td><a href="https://dualab.es/x" style="background:#509928">Ver</a>'
+                . '<script>alert(1)</script><img src="x" onerror="alert(1)"></td></tr></table>',
+        ])->assertStatus(202);
+
+        $envio = CorreoEnvio::latest('id')->first();
+        $this->assertStringContainsString('background:#509928', $envio->html);
+        $this->assertStringNotContainsString('script', $envio->html);
+        $this->assertStringNotContainsString('onerror', $envio->html);
+
+        $this->assertSame($envio->html, $capturado->email->getHtmlBody());
+        $this->assertSame("Hola\n\nUn saludo, DuaLab", $capturado->email->getTextBody());
     }
 
     public function test_responder_desde_central_encola_el_correo_con_adjunto(): void

@@ -65,7 +65,10 @@ return [
                                         .'text-align,text-decoration,vertical-align,width,max-width,height,'
                                         .'margin,margin-top,margin-bottom,margin-left,margin-right,'
                                         .'padding,padding-top,padding-bottom,padding-left,padding-right,'
-                                        .'border,border-top,border-bottom,border-left,border-right,border-collapse',
+                                        .'border,border-top,border-bottom,border-left,border-right,border-collapse,'
+                                        // Correos con diseño de la app (franjas de color, cabecera). Solo propiedades que
+                                        // HTMLPurifier conoce: con una desconocida avisa y la limpieza falla para todos
+                                        .'background,letter-spacing,white-space',
             'URI.AllowedSchemes'       => ['http' => true, 'https' => true, 'mailto' => true, 'tel' => true],
             'HTML.TargetBlank'         => true,
             'HTML.TargetNoopener'      => true,

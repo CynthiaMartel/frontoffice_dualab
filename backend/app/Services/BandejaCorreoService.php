@@ -27,10 +27,16 @@ class BandejaCorreoService
         return $this->consulta($filtros)->orderByDesc('fecha')->orderByDesc('id')->paginate($porPagina);
     }
 
-    /** Contadores por estado, estado de la sincronización y el aviso de retención. */
-    public function resumen(string $buzon): array
+    /**
+     * Contadores por estado, estado de la sincronización y el aviso de retención. Con $filtros, los
+     * contadores respetan incluir_* / excluir_* (bandejas aparte de Central), no la búsqueda ni el estado.
+     */
+    public function resumen(string $buzon, array $filtros = []): array
     {
-        $porEstado = CorreoMensaje::where('buzon', $buzon)->where('carpeta', CorreoSincronizacionService::rutaCarpeta($buzon, 'recibidos'))->selectRaw('estado, count(*) as total')->groupBy('estado')->pluck('total', 'estado');
+        $porEstado = $this->porOrigen(
+            CorreoMensaje::where('buzon', $buzon)->where('carpeta', CorreoSincronizacionService::rutaCarpeta($buzon, 'recibidos')),
+            $filtros,
+        )->selectRaw('estado, count(*) as total')->groupBy('estado')->pluck('total', 'estado');
         $sync = CorreoSincronizacion::where('buzon', $buzon)->orderByDesc('sincronizado_en')->first();
         $config = config("correo.buzones.{$buzon}");
 
@@ -113,7 +119,7 @@ class BandejaCorreoService
     {
         $buzon = $f['buzon'] ?? 'info';
 
-        return CorreoMensaje::query()
+        return $this->porOrigen(CorreoMensaje::query(), $f)
             ->where('buzon', $buzon)
             ->where('carpeta', CorreoSincronizacionService::rutaCarpeta($buzon, $f['carpeta'] ?? 'recibidos'))
             ->when($f['estado'] ?? null, fn ($q, $e) => $q->where('estado', $e), fn ($q) => $q->where('estado', '!=', 'archivado'))
@@ -122,5 +128,36 @@ class BandejaCorreoService
                 $like = '%'.addcslashes($texto, '%_\\').'%';
                 $q->where(fn ($w) => $w->where('asunto', 'like', $like)->orWhere('de_email', 'like', $like)->orWhere('de_nombre', 'like', $like));
             });
+    }
+
+    /**
+     * incluir_asunto / incluir_de: solo lo que lleva ese texto en el asunto O llega de esos remitentes.
+     * excluir_asunto / excluir_de: todo menos eso. Los emails se comparan sin distinguir mayúsculas.
+     */
+    private function porOrigen(Builder $q, array $f): Builder
+    {
+        $like = fn (string $t) => '%'.addcslashes($t, '%_\\').'%';
+        $emails = fn (array $l) => array_values(array_unique(array_map(fn ($e) => strtolower(trim((string) $e)), $l)));
+        $incluirAsunto = $f['incluir_asunto'] ?? null;
+        $incluirDe = $emails($f['incluir_de'] ?? []);
+
+        if ($incluirAsunto || $incluirDe) {
+            $q->where(function ($w) use ($incluirAsunto, $incluirDe, $like) {
+                if ($incluirAsunto) {
+                    $w->orWhere('asunto', 'like', $like($incluirAsunto));
+                }
+                if ($incluirDe) {
+                    $w->orWhereIn(DB::raw('LOWER(de_email)'), $incluirDe);
+                }
+            });
+        }
+        if ($excluirAsunto = $f['excluir_asunto'] ?? null) {
+            $q->where(fn ($w) => $w->whereNull('asunto')->orWhere('asunto', 'not like', $like($excluirAsunto)));
+        }
+        if ($excluirDe = $emails($f['excluir_de'] ?? [])) {
+            $q->where(fn ($w) => $w->whereNull('de_email')->orWhereNotIn(DB::raw('LOWER(de_email)'), $excluirDe));
+        }
+
+        return $q;
     }
 }

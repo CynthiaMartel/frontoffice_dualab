@@ -37,7 +37,7 @@ class CentralCorreoController extends Controller
         $pagina = $this->bandeja->listar($f, min((int) ($f['per_page'] ?? 25), 100));
 
         return CorreoResource::collection($pagina)->additional([
-            'resumen'    => $this->bandeja->resumen($f['buzon'] ?? 'info'),
+            'resumen'    => $this->bandeja->resumen($f['buzon'] ?? 'info', $f),
             'salida'     => $this->bandeja->salida($f['buzon'] ?? 'info'),
             'remitentes' => $this->bandeja->remitentesConocidos($pagina->getCollection()),
         ]);

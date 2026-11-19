@@ -50,6 +50,11 @@ export default defineConfig({
         target: 'http://localhost:8001',
         changeOrigin: true,
       },
+      // Como en producción (.htaccess de la raíz de dualab.es): los sirve el backend
+      '^/(robots\\.txt|llms\\.txt|sitemap\\.xml)$': {
+        target: 'http://localhost:8001',
+        changeOrigin: true,
+      },
     },
   },
 })

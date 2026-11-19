@@ -7,6 +7,7 @@ use App\Http\Requests\Admin\UpdateAjustesRequest;
 use App\Jobs\EnviarFormularioAWebhook;
 use App\Models\Ajuste;
 use App\Services\ActividadService;
+use App\Services\VisibilidadService;
 use App\Models\Contacto;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -60,6 +61,7 @@ class AjusteController extends Controller
             Ajuste::guardar($clave, $valor);
         }
         Cache::forget('web.configuracion');
+        VisibilidadService::olvidarCache();
         $this->actividad->registrar($request->user(), $grupo === 'integraciones' ? 'integraciones' : $grupo, 'editar', self::DESCRIPCIONES[$grupo]);
 
         return $this->show($grupo);

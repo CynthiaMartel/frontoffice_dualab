@@ -18,7 +18,7 @@ class CorreoEnvio extends Model
 
     // Lo rellena CorreoEnvioService desde datos validados; estado, error y fechas solo los cambia el job (forceFill)
     protected $fillable = [
-        'user_id', 'buzon', 'tipo', 'correo_mensaje_id', 'contacto_id', 'para', 'cc', 'cco', 'asunto', 'texto',
+        'user_id', 'buzon', 'tipo', 'correo_mensaje_id', 'contacto_id', 'para', 'cc', 'cco', 'asunto', 'texto', 'html',
         'message_id', 'in_reply_to', 'referencias',
     ];
 

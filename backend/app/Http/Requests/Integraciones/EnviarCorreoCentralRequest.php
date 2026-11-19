@@ -39,6 +39,14 @@ class EnviarCorreoCentralRequest extends EnviarCorreoRequest
         $this->getInputSource()->remove('adjuntos_b64');
     }
 
+    public function rules(): array
+    {
+        return parent::rules() + [
+            // Versión maquetada opcional (solo desde Central): se limpia al guardarla (CorreoEnvioService)
+            'html' => ['nullable', 'string', 'max:300000'],
+        ];
+    }
+
     public function after(): array
     {
         return array_merge(parent::after(), [function (Validator $v) {

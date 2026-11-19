@@ -13,6 +13,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Mews\Purifier\Facades\Purifier;
 use Throwable;
 
 /**
@@ -51,6 +52,8 @@ class CorreoEnvioService
                     'cco'               => array_values(array_unique($datos['cco'] ?? [])),
                     'asunto'            => $datos['asunto'],
                     'texto'             => $datos['texto'],
+                    // Versión maquetada (solo desde Central): limpia, como el HTML de los correos que llegan
+                    'html'              => filled($datos['html'] ?? null) ? (trim(Purifier::clean($datos['html'], 'correo')) ?: null) : null,
                     'message_id'        => '<'.Str::uuid().'@'.$dominio.'>',
                 ] + $hilo);
 

@@ -65,13 +65,14 @@ class EnviarCorreoJob implements ShouldQueue
 
     private function mensaje(CorreoEnvio $envio, array $buzon): Email
     {
-        $texto = rtrim($envio->texto)."\n\n".$buzon['firma'];
+        // Con versión maquetada (envíos de Central con diseño propio), su texto ya lleva despedida y pie
+        $texto = $envio->html ? rtrim($envio->texto) : rtrim($envio->texto)."\n\n".$buzon['firma'];
         $email = (new Email())
             ->from(new Address($buzon['email'], $buzon['nombre']))
             ->to(...$envio->para)
             ->subject($envio->asunto)
             ->text($texto)
-            ->html($this->html($texto));
+            ->html($envio->html ?: $this->html($texto));
         if ($envio->cc) {
             $email->cc(...$envio->cc);
         }

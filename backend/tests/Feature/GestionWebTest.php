@@ -9,6 +9,7 @@ use App\Models\Entrada;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
@@ -372,5 +373,25 @@ class GestionWebTest extends TestCase
                 'consumo' => ['plan' => 'Free', 'creditos_usados' => 0.18, 'creditos_limite' => 25, 'archivos' => 180]]);
         $this->assertStringNotContainsString('secreto-xyz', $r->getContent());
         $this->assertStringNotContainsString('clave-publica', $r->getContent());
+    }
+
+    public function test_web_publica_sale_igual_desde_la_cache_en_disco(): void
+    {
+        // Como en producción: caché en archivo, que no deserializa objetos (cache.serializable_classes = false)
+        $carpeta = storage_path('framework/cache/test-'.uniqid());
+        config(['cache.default' => 'file', 'cache.stores.file.path' => $carpeta]);
+
+        try {
+            foreach ([1, 2] as $vez) { // la segunda vez sale de la caché
+                $config = $this->getJson('/api/web/configuracion')->assertOk()->assertDontSee('__PHP_Incomplete_Class');
+                $this->assertIsList($config->json('idiomas'));
+                $this->assertArrayHasKey('apariencia.paleta', $config->json('ajustes'));
+
+                $pagina = $this->getJson('/api/web/paginas/centros')->assertOk()->assertDontSee('__PHP_Incomplete_Class');
+                $this->assertStringContainsString('"valores":{}', $pagina->getContent(), "lectura $vez");
+            }
+        } finally {
+            File::deleteDirectory($carpeta);
+        }
     }
 }
