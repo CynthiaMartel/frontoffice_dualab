@@ -5,7 +5,6 @@ namespace App\Services;
 use App\Jobs\EnviarFormularioAWebhook;
 use App\Mail\ContactoAvisoInternoMail;
 use App\Mail\ContactoConfirmacionMail;
-use App\Models\Ajuste;
 use App\Models\Contacto;
 use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use Illuminate\Support\Facades\Mail;
@@ -31,9 +30,9 @@ class ContactoService
             Mail::to($destino)->queue(new ContactoAvisoInternoMail($contacto));
         }
 
-        // Integraciones (CRM / mail marketing) configuradas en el panel de gestión web.
-        if (Ajuste::leer('integraciones.webhook_activo')) {
-            EnviarFormularioAWebhook::dispatch($contacto);
+        // Avisos configurados en Gestión web → Mailing y webhook: la app DuaLab y, si lo hay, un CRM externo
+        foreach (EnviarFormularioAWebhook::destinosActivos() as $destino) {
+            EnviarFormularioAWebhook::dispatch($contacto, $destino);
         }
 
         return $contacto;

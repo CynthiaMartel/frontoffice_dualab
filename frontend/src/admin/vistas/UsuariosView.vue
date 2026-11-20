@@ -75,7 +75,7 @@
             <button type="button" class="gw-accion-peligro !h-9" @click="accion(u, 'destruir')">Eliminar del todo</button>
           </template>
           <template v-else>
-            <RouterLink :to="{ name: 'panel-actividad', query: { user_id: u.id } }" class="gw-accion-secundaria !h-9">Actividad</RouterLink>
+            <RouterLink :to="{ name: 'panel-actividad', query: { user_id: u.id } }" class="gw-accion-secundaria !h-9">Historial</RouterLink>
             <button type="button" class="gw-accion-secundaria !h-9" @click="abrirEdicion(u)">Editar</button>
             <template v-if="!u.eres_tu">
               <template v-if="u.pendiente_activar">

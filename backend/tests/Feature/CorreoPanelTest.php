@@ -116,6 +116,26 @@ class CorreoPanelTest extends TestCase
         $this->central()->patchJson("/api/integraciones/central/correo/{$correo->id}", ['estado' => 'borrado'])->assertUnprocessable();
     }
 
+    // Central: la papelera saca el correo de la bandeja; borrar del todo solo desde la papelera
+    public function test_papelera_del_correo(): void
+    {
+        $correo = $this->guardar(1);
+        $otro = $this->guardar(2, ['message_id' => '<otro@ejemplo.com>']);
+
+        $this->central()->deleteJson("/api/integraciones/central/correo/{$correo->id}")->assertUnprocessable();
+        $this->central()->patchJson("/api/integraciones/central/correo/{$correo->id}", ['estado' => 'papelera'])->assertOk();
+        $this->central()->patchJson("/api/integraciones/central/correo/{$otro->id}", ['estado' => 'papelera'])->assertOk();
+        $this->central()->getJson('/api/integraciones/central/correo')->assertJsonCount(0, 'data')
+            ->assertJsonPath('resumen.por_estado.papelera', 2);
+        $this->central()->getJson('/api/integraciones/central/correo?estado=papelera')->assertJsonCount(2, 'data');
+
+        $this->central()->deleteJson("/api/integraciones/central/correo/{$correo->id}")->assertNoContent();
+        $this->assertModelMissing($correo);
+        $this->central()->deleteJson('/api/integraciones/central/correo/papelera')->assertOk()->assertJsonPath('eliminados', 1);
+        $this->assertModelMissing($otro);
+        $this->assertSame(2, ActividadPanel::where('seccion', 'correo')->whereIn('accion', ['borrar', 'vaciar'])->count());
+    }
+
     public function test_adjuntos_se_descargan_solo_desde_su_correo_y_siempre_como_descarga(): void
     {
         $admin = $this->usuario('admin');

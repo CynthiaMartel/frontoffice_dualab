@@ -160,10 +160,12 @@ return [
         'analitica.gtm_id'        => ['reglas' => ['nullable', 'string', 'regex:/^GTM-[A-Z0-9]{4,12}$/'], 'publico' => true],
         'analitica.activa'        => ['reglas' => ['nullable', 'boolean'],          'publico' => true],
 
-        // Integraciones de formularios (Flamingo + CRM/mail marketing)
-        'integraciones.webhook_url'    => ['reglas' => ['nullable', 'url:https', 'max:500'], 'publico' => false],
-        'integraciones.webhook_activo' => ['reglas' => ['nullable', 'boolean'],           'publico' => false],
-        'integraciones.webhook_secreto' => ['reglas' => ['nullable', 'string', 'min:16', 'max:120'], 'publico' => false, 'secreto' => true],
+        // Integraciones de formularios. El aviso a la app DuaLab (captaciones en Central) no está aquí:
+        // es del servidor (config/services.php → app_dualab). crm_*: aviso opcional a un CRM externo
+        // (HubSpot, Pipedrive, Zapier, n8n…)
+        'integraciones.crm_url'        => ['reglas' => ['nullable', 'url:https', 'max:500'], 'publico' => false],
+        'integraciones.crm_activo'     => ['reglas' => ['nullable', 'boolean'],           'publico' => false],
+        'integraciones.crm_secreto'    => ['reglas' => ['nullable', 'string', 'min:16', 'max:120'], 'publico' => false, 'secreto' => true],
         'integraciones.brevo_api_key'  => ['reglas' => ['nullable', 'string', 'max:200'], 'publico' => false, 'secreto' => true],
         'integraciones.brevo_lista_id' => ['reglas' => ['nullable', 'integer', 'min:1'],  'publico' => false],
         'integraciones.mailchimp_api_key' => ['reglas' => ['nullable', 'string', 'max:200'], 'publico' => false, 'secreto' => true],

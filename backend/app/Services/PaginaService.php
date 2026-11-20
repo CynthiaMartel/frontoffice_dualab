@@ -118,6 +118,35 @@ class PaginaService
     }
 
     /**
+     * Foto de lo que muestra la página (texto editado o el original) para el historial:
+     * valores por campo y su nombre en el panel («Cabecera · Título»). Ver ActividadService::cambios.
+     *
+     * @return array{valores: array<string, mixed>, etiquetas: array<string, string>}
+     */
+    public function foto(string $clave, string $idioma): array
+    {
+        $d = $this->detalle($clave, $idioma);
+        $editados = (array) $d['valores'];
+        $valores = ['publicada' => $d['publicada'], 'idiomas_activos' => $d['idiomas_activos']];
+        $etiquetas = ['publicada' => 'Publicada', 'idiomas_activos' => 'Idiomas activos'];
+
+        foreach ($d['secciones'] as $seccion) {
+            foreach ($seccion['campos'] as $c) {
+                $valor = $editados[$c['clave']] ?? $c['defecto'];
+                // Una galería se resume en cuántas fotos tiene: sus direcciones no dicen nada
+                $valores[$c['clave']]   = $c['tipo'] === 'galeria' && is_array($valor) ? count($valor).' fotos' : $valor;
+                $etiquetas[$c['clave']] = "{$seccion['titulo']} · {$c['etiqueta']}";
+            }
+        }
+        foreach (SeoService::ETIQUETAS as $campo => $etiqueta) {
+            $valores["seo.$campo"]   = $d['seo'][$campo] ?? null;
+            $etiquetas["seo.$campo"] = $etiqueta;
+        }
+
+        return ['valores' => $valores, 'etiquetas' => $etiquetas];
+    }
+
+    /**
      * Preguntas frecuentes de una página (sección «preguntas»: item_N_titulo = pregunta,
      * item_N_texto = respuesta), con lo editado en el panel o el texto original.
      * Para los datos estructurados FAQPage y llms.txt.

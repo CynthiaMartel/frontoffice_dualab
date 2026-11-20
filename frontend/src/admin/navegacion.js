@@ -1,13 +1,12 @@
 import { CONTENIDO, SOLO_ADMIN } from './roles'
-import { URL_PRIMER_CONTACTO } from './central'
 import {
-  ClipboardDocumentListIcon, EnvelopeIcon, UsersIcon,
+  ClipboardDocumentListIcon, UsersIcon,
   HomeIcon, DocumentDuplicateIcon, NewspaperIcon, PhotoIcon, InboxIcon,
   LanguageIcon, MagnifyingGlassCircleIcon, ChartBarIcon, SwatchIcon, SparklesIcon,
 } from '@heroicons/vue/24/outline'
 
 // Menú lateral del panel: Escritorio, Contenido, Sitio web (aspecto global), Visibilidad (Google e IA),
-// Contactos y Equipo. `roles`: quién lo ve (ver roles.js); el backend lo vuelve a comprobar. `equivalente`: el plugin de WordPress al que sustituye,
+// Formularios y Equipo. `roles`: quién lo ve (ver roles.js); el backend lo vuelve a comprobar. `equivalente`: el plugin de WordPress al que sustituye,
 // para quien viene de WordPress.
 export const GRUPOS_PANEL = [
   {
@@ -47,19 +46,18 @@ export const GRUPOS_PANEL = [
     ],
   },
   {
-    // Formularios y correo de info@ se atienden en DuaLab Central («Primer contacto»): aquí queda
-    // la integración que manda los formularios a captaciones y el enlace a Central
-    titulo: 'Contactos',
+    // Los formularios y el correo de info@ se atienden en DuaLab Central («Primer contacto», enlazado
+    // desde la propia pantalla): aquí solo queda adónde se manda cada formulario (mailing y webhook)
+    titulo: 'Formularios',
     items: [
-      { label: 'Integraciones', to: { name: 'panel-integraciones' }, icono: InboxIcon, prefijo: '/gestion-web/formularios/integraciones', roles: SOLO_ADMIN },
-      { label: 'Formularios y correo', href: URL_PRIMER_CONTACTO, icono: EnvelopeIcon, equivalente: 'en DuaLab Central', roles: CONTENIDO },
+      { label: 'Mailing y webhook', to: { name: 'panel-integraciones' }, icono: InboxIcon, prefijo: '/gestion-web/formularios/integraciones', equivalente: 'Integraciones', roles: SOLO_ADMIN },
     ],
   },
   {
     titulo: 'Equipo',
     items: [
       { label: 'Usuarios', to: { name: 'panel-usuarios' }, icono: UsersIcon, prefijo: '/gestion-web/usuarios', roles: SOLO_ADMIN },
-      { label: 'Actividad', to: { name: 'panel-actividad' }, icono: ClipboardDocumentListIcon, prefijo: '/gestion-web/actividad', roles: SOLO_ADMIN },
+      { label: 'Historial', to: { name: 'panel-actividad' }, icono: ClipboardDocumentListIcon, prefijo: '/gestion-web/historial', roles: SOLO_ADMIN },
     ],
   },
 ]

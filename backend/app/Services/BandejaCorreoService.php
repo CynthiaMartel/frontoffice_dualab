@@ -79,6 +79,16 @@ class BandejaCorreoService
         }
     }
 
+    /** Borrar del todo: solo lo que ya está en la papelera, con los archivos de sus adjuntos. */
+    public function vaciarPapelera(string $buzon): int
+    {
+        $n = 0;
+        CorreoMensaje::where('buzon', $buzon)->where('estado', 'papelera')->with('adjuntos')
+            ->each(function (CorreoMensaje $m) use (&$n) { $m->delete(); $n++; });
+
+        return $n;
+    }
+
     /** Siempre como descarga (nunca se abre en el navegador) y sin adivinar el tipo. */
     public function descargar(CorreoAdjunto $adjunto): StreamedResponse
     {
@@ -122,7 +132,7 @@ class BandejaCorreoService
         return $this->porOrigen(CorreoMensaje::query(), $f)
             ->where('buzon', $buzon)
             ->where('carpeta', CorreoSincronizacionService::rutaCarpeta($buzon, $f['carpeta'] ?? 'recibidos'))
-            ->when($f['estado'] ?? null, fn ($q, $e) => $q->where('estado', $e), fn ($q) => $q->where('estado', '!=', 'archivado'))
+            ->when($f['estado'] ?? null, fn ($q, $e) => $q->where('estado', $e), fn ($q) => $q->whereNotIn('estado', ['archivado', 'papelera']))
             ->when($f['adjuntos'] ?? false, fn ($q) => $q->where('tiene_adjuntos', true))
             ->when($f['buscar'] ?? null, function ($q, $texto) {
                 $like = '%'.addcslashes($texto, '%_\\').'%';

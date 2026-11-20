@@ -51,11 +51,14 @@ Route::prefix('integraciones/central')->name('central.')
 
         // Correo de info@ (específicas antes de correo/{correo}; el adjunto tiene que ser de ese correo)
         Route::post('correo/enviar',                    [CentralCorreoController::class, 'enviar'])->middleware('throttle:20,1,central-correo-enviar')->name('correo.enviar');
+        Route::get('correo/envios/{envio}',             [CentralCorreoController::class, 'envio'])->whereNumber('envio')->name('correo.envio');
         Route::post('correo/envios/{envio}/reintentar', [CentralCorreoController::class, 'reintentar'])->whereNumber('envio')->middleware('throttle:10,1,central-correo-enviar')->name('correo.reintentar');
         Route::delete('correo/envios/{envio}',          [CentralCorreoController::class, 'descartar'])->whereNumber('envio')->name('correo.descartar');
+        Route::delete('correo/papelera',                [CentralCorreoController::class, 'vaciarPapelera'])->name('correo.vaciar');
         Route::get('correo',                            [CentralCorreoController::class, 'index'])->name('correo.index');
         Route::get('correo/{correo}',                   [CentralCorreoController::class, 'show'])->whereNumber('correo')->name('correo.show');
         Route::patch('correo/{correo}',                 [CentralCorreoController::class, 'update'])->whereNumber('correo')->name('correo.update');
+        Route::delete('correo/{correo}',                [CentralCorreoController::class, 'destroy'])->whereNumber('correo')->name('correo.destroy');
         Route::get('correo/{correo}/adjuntos/{adjunto}', [CentralCorreoController::class, 'adjunto'])
             ->scopeBindings()->whereNumber(['correo', 'adjunto'])->middleware('throttle:30,1,central-correo-adjuntos')->name('correo.adjunto');
     });

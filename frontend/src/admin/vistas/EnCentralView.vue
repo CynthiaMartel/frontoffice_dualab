@@ -1,7 +1,7 @@
 <!-- Formularios y Correo ya no están en Gestión web: se atienden en DuaLab Central («Primer contacto»).
      Esta pantalla recibe los enlaces antiguos (/gestion-web/formularios, /gestion-web/correo). -->
 <template>
-  <CabeceraPanel antetitulo="Contactos" :titulo="titulo" subtitulo="Ahora se atiende en DuaLab Central, en el espacio «Primer contacto»." />
+  <CabeceraPanel antetitulo="Formularios" :titulo="titulo" subtitulo="Ahora se atiende en DuaLab Central, en el espacio «Primer contacto»." />
 
   <section class="gw-tarjeta mx-auto max-w-2xl p-6 text-center sm:p-8">
     <EnvelopeIcon class="mx-auto h-10 w-10 text-administraciones-dark" aria-hidden="true" />

@@ -16,7 +16,8 @@ class CorreoMensaje extends Model
 {
     use Prunable;
 
-    public const ESTADOS = ['nuevo', 'leido', 'archivado'];
+    // papelera: lo quitó DuaLab Central; solo la copia local (el original sigue en el webmail)
+    public const ESTADOS = ['nuevo', 'leido', 'archivado', 'papelera'];
 
     // Todo lo pone la sincronización; `estado` y `leido_en` solo los cambia el panel (forceFill)
     protected $fillable = [

@@ -112,7 +112,7 @@ const routes = [
       { path: 'entradas/:id(\\d+)', name: 'panel-entrada', component: () => import('@/admin/vistas/EntradaEditorView.vue'), meta: { titulo: 'Editar entrada', roles: CONTENIDO } },
       // Formularios y Correo se atienden en DuaLab Central («Primer contacto»): los enlaces antiguos explican dónde
       { path: 'formularios', name: 'panel-formularios', component: () => import('@/admin/vistas/EnCentralView.vue'), meta: { titulo: 'Formularios', roles: CONTENIDO } },
-      { path: 'formularios/integraciones', name: 'panel-integraciones', component: () => import('@/admin/vistas/IntegracionesView.vue'), meta: { titulo: 'Integraciones', roles: SOLO_ADMIN } },
+      { path: 'formularios/integraciones', name: 'panel-integraciones', component: () => import('@/admin/vistas/IntegracionesView.vue'), meta: { titulo: 'Mailing y webhook', roles: SOLO_ADMIN } },
       { path: 'correo', name: 'panel-correo', component: () => import('@/admin/vistas/EnCentralView.vue'), meta: { titulo: 'Correo', roles: CONTENIDO } },
       { path: 'medios', name: 'panel-medios', component: () => import('@/admin/vistas/MediosView.vue'), meta: { titulo: 'Medios', roles: CONTENIDO } },
       { path: 'perfil', name: 'panel-perfil', component: () => import('@/admin/vistas/PerfilView.vue'), meta: { titulo: 'Mi perfil' } },
@@ -121,7 +121,9 @@ const routes = [
       { path: 'seo', name: 'panel-seo', component: () => import('@/admin/vistas/SeoView.vue'), meta: { titulo: 'SEO', roles: CONTENIDO } },
       { path: 'geo', name: 'panel-geo', component: () => import('@/admin/vistas/GeoView.vue'), meta: { titulo: 'GEO (IA)', roles: CONTENIDO } },
       { path: 'usuarios', name: 'panel-usuarios', component: () => import('@/admin/vistas/UsuariosView.vue'), meta: { titulo: 'Usuarios', roles: SOLO_ADMIN } },
-      { path: 'actividad', name: 'panel-actividad', component: () => import('@/admin/vistas/ActividadView.vue'), meta: { titulo: 'Actividad', roles: SOLO_ADMIN } },
+      { path: 'historial', name: 'panel-actividad', component: () => import('@/admin/vistas/ActividadView.vue'), meta: { titulo: 'Historial', roles: SOLO_ADMIN } },
+      // Antes se llamaba «Actividad»: los enlaces guardados siguen funcionando
+      { path: 'actividad', redirect: to => ({ name: 'panel-actividad', query: to.query }) },
       { path: 'analitica', name: 'panel-analitica', component: () => import('@/admin/vistas/AnaliticaView.vue'), meta: { titulo: 'Analítica', roles: SOLO_ADMIN } },
     ],
   },

@@ -27,7 +27,7 @@ class CentralCorreoController extends Controller
 {
     use RegistraActividadCentral;
 
-    private const ESTADOS = ['nuevo' => 'no leído', 'leido' => 'leído', 'archivado' => 'archivado'];
+    private const ESTADOS = ['nuevo' => 'no leído', 'leido' => 'leído', 'archivado' => 'archivado', 'papelera' => 'en la papelera'];
 
     public function __construct(private BandejaCorreoService $bandeja, private CorreoEnvioService $envios) {}
 
@@ -59,6 +59,28 @@ class CentralCorreoController extends Controller
         return new CorreoResource($correo->load('adjuntos'));
     }
 
+    /** Borrar del todo la copia local de un correo que ya está en la papelera (el original sigue en el webmail). */
+    public function destroy(Request $request, CorreoMensaje $correo): JsonResponse
+    {
+        if ($correo->estado !== 'papelera') {
+            return response()->json(['message' => 'Solo se borra del todo lo que está en la papelera.'], 422);
+        }
+        $id = $correo->id;
+        $correo->load('adjuntos')->delete();
+        $this->registrarCentral($request, 'correo', 'borrar', "borró del todo el correo #{$id}", 'correo', $id);
+
+        return response()->json(null, 204);
+    }
+
+    public function vaciarPapelera(Request $request): JsonResponse
+    {
+        $buzon = $request->validate(['buzon' => ['nullable', \Illuminate\Validation\Rule::in(array_keys(config('correo.buzones')))]])['buzon'] ?? 'info';
+        $n = $this->bandeja->vaciarPapelera($buzon);
+        $this->registrarCentral($request, 'correo', 'vaciar', "vació la papelera del correo ({$n})", 'correo', 0);
+
+        return response()->json(['eliminados' => $n]);
+    }
+
     public function adjunto(CorreoMensaje $correo, CorreoAdjunto $adjunto): StreamedResponse
     {
         return $this->bandeja->descargar($adjunto);
@@ -71,6 +93,29 @@ class CentralCorreoController extends Controller
         $this->registrarCentral($request, 'correo', $envio->tipo, "envió un correo (envío #{$envio->id})", 'correo_envio', $envio->id);
 
         return response()->json(['id' => $envio->id, 'estado' => $envio->estado], 202);
+    }
+
+    /**
+     * Un envío tal como salió (para el Historial de Central: «qué envió»). Se lee en el momento;
+     * Central no lo copia. Los envíos se guardan 4 meses (CorreoEnvio::prunable).
+     */
+    public function envio(CorreoEnvio $envio): JsonResponse
+    {
+        $envio->load('adjuntos');
+
+        return response()->json([
+            'id'         => $envio->id,
+            'tipo'       => $envio->tipo,
+            'para'       => $envio->para ?? [],
+            'cc'         => $envio->cc ?? [],
+            'cco'        => $envio->cco ?? [],
+            'asunto'     => $envio->asunto,
+            'texto'      => $envio->texto,
+            'estado'     => $envio->estado,
+            'enviado_en' => $envio->enviado_en?->toIso8601String(),
+            'creado_en'  => $envio->created_at?->toIso8601String(),
+            'adjuntos'   => $envio->adjuntos->map(fn ($a) => ['nombre' => $a->nombre, 'tamano' => $a->tamano])->values(),
+        ]);
     }
 
     public function reintentar(Request $request, CorreoEnvio $envio): JsonResponse

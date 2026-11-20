@@ -206,4 +206,20 @@ class IntegracionCentralTest extends TestCase
         ])->assertStatus(422)->assertJsonValidationErrors('adjuntos.0');
         Queue::assertNothingPushed();
     }
+    public function test_central_lee_un_envio_para_su_historial(): void
+    {
+        $envio = \App\Models\CorreoEnvio::create([
+            'buzon' => 'info', 'tipo' => 'nuevo', 'para' => ['empresa@ejemplo.com'], 'cc' => [], 'cco' => [],
+            'asunto' => 'Propuesta DuaLab', 'texto' => 'Hola, os mandamos la propuesta.', 'message_id' => '<x@dualab.es>',
+        ]);
+
+        $this->firmado('GET', "/api/integraciones/central/correo/envios/{$envio->id}")->assertOk()
+            ->assertJsonPath('para', ['empresa@ejemplo.com'])
+            ->assertJsonPath('asunto', 'Propuesta DuaLab')
+            ->assertJsonPath('texto', 'Hola, os mandamos la propuesta.')
+            ->assertJsonPath('adjuntos', []);
+
+        $this->firmado('GET', '/api/integraciones/central/correo/envios/999')->assertNotFound();
+        $this->getJson("/api/integraciones/central/correo/envios/{$envio->id}")->assertStatus(401);
+    }
 }
