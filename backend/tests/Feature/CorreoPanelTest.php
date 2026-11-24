@@ -411,6 +411,31 @@ class CorreoPanelTest extends TestCase
         $this->assertSame(0, CorreoEnvio::count());
     }
 
+    public function test_envio_inmediato_y_si_el_smtp_falla_pasa_a_la_cola_sin_marcarse_en_error(): void
+    {
+        Queue::fake();
+        $this->usuario('admin');
+        $this->central()->postJson('/api/integraciones/central/correo/enviar', ['tipo' => 'nuevo', 'para' => ['a@ejemplo.com'], 'asunto' => 'Hola', 'texto' => 'Texto'])
+            ->assertStatus(202);
+        $envio = CorreoEnvio::sole();
+        Queue::fake();   // olvida el de la petición (en tests va siempre a la cola)
+
+        // El SMTP no responde: a la cola, con sus reintentos; el envío sigue pendiente
+        $smtp = Mockery::mock(CorreoSmtpService::class);
+        $smtp->shouldReceive('enviar')->once()->andThrow(new \RuntimeException('timeout'));
+        $this->app->instance(CorreoSmtpService::class, $smtp);
+        \App\Support\EnvioAlResponder::ejecutar(new EnviarCorreoJob($envio->id));
+        Queue::assertPushed(EnviarCorreoJob::class, fn ($j) => $j->envioId === $envio->id);
+        $this->assertSame('pendiente', $envio->fresh()->estado);
+
+        // Responde: sale ya, sin pasar por la cola
+        Queue::fake();
+        $this->smtpFalso();
+        \App\Support\EnvioAlResponder::ejecutar(new EnviarCorreoJob($envio->id));
+        Queue::assertNothingPushed();
+        $this->assertSame('enviado', $envio->fresh()->estado);
+    }
+
     public function test_lo_enviado_se_guarda_en_enviados_y_no_se_reenvia(): void
     {
         config(['correo.buzones.info.guardar_en_enviados' => true]);

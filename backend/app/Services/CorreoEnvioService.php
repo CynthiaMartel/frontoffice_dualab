@@ -9,6 +9,7 @@ use App\Models\CorreoAdjunto;
 use App\Models\CorreoEnvio;
 use App\Models\CorreoMensaje;
 use App\Models\User;
+use App\Support\EnvioAlResponder;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -96,7 +97,8 @@ class CorreoEnvioService
             Contacto::whereKey($datos['contacto_id'])->where('estado', 'nuevo')->update(['estado' => 'leido', 'leido_en' => now()]);
         }
 
-        EnviarCorreoJob::dispatch($envio->id);
+        // Sin esperar al cron de la cola; si el SMTP falla, a la cola con sus reintentos
+        EnvioAlResponder::despachar(new EnviarCorreoJob($envio->id));
 
         return $envio;
     }
@@ -105,7 +107,7 @@ class CorreoEnvioService
     {
         abort_unless($envio->estado === 'error', 422, 'Solo se pueden reintentar los envíos que han fallado.');
         $envio->forceFill(['estado' => 'pendiente', 'error' => null])->save();
-        EnviarCorreoJob::dispatch($envio->id);
+        EnvioAlResponder::despachar(new EnviarCorreoJob($envio->id));
     }
 
     public function descartar(CorreoEnvio $envio): void
